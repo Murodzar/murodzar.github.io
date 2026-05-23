@@ -1,0 +1,26 @@
+{
+  "name": "Murad Jewellery",
+  "short_name": "Murad Jewellery",
+  "description": "Zargarlik Markazi - Buyurtma va Katalog",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a1410",
+  "theme_color": "#c9a84c",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "shopping"],
+  "lang": "uz"
+}
