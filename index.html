@@ -1587,7 +1587,7 @@ function switchAdminTab(name,el) {
   else if(name==='orders') renderOrders();
   else if(name==='arxiv') renderArxiv();
   else if(name==='remont') renderRemont();
-  else if(name==='xarid') { renderXarid(); if(xaridList.length && xaridList[0].images.length===0) loadXaridImages(); }
+  else if(name==='xarid') { loadXarid(); }
   else if(name==='qarz') renderQarz();
   else if(name==='catalog') renderCatalog();
   else if(name==='notes') renderNotes();
