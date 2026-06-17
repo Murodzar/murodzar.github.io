@@ -98,7 +98,6 @@ canvas{display:block;width:100%;height:100%;}
   <button id="btn-dl">⬇ STL</button>
 </div>
 
-<!-- Dropdowns -->
 <div class="dropdown" id="dd-file">
   <div class="dd-item" id="di-open">📂 Open STL</div>
   <div class="dd-item" id="di-open2">📂 Open STL 2 (compare)</div>
@@ -138,7 +137,6 @@ canvas{display:block;width:100%;height:100%;}
 <input type="file" id="fi1" accept=".stl" style="display:none">
 <input type="file" id="fi2" accept=".stl" style="display:none">
 
-<!-- Info -->
 <div id="info-panel">
   <div class="mass-grid">
     <div class="mc ag"><div class="ml">Kumush</div><div class="mv" id="m-ag">—</div></div>
@@ -153,7 +151,6 @@ canvas{display:block;width:100%;height:100%;}
   </div>
 </div>
 
-<!-- Tools bar -->
 <div id="toolsbar">
   <div class="trow">
     <span class="tlb">Kesim:</span>
@@ -161,13 +158,12 @@ canvas{display:block;width:100%;height:100%;}
     <div class="tsep"></div>
     <span class="tlb">Joriy Ø:</span>
     <input class="tin" type="number" id="cur-d" placeholder="auto" step="0.5">
-    <span class="tlb">→ Yangi:</span>
-    <input class="tin" type="number" id="new-d" placeholder="18.5" step="0.5">
-    <button class="tb" id="btn-scale">↔ Scale</button>
+    <span class="tlb">→ Yangi Ø:</span>
+    <input class="tin" type="number" id="new-d" placeholder="18.5" step="0.1">
+    <button class="tb on" id="btn-scale" style="font-weight:bold;">↔ Razmerni O'zgartirish</button>
   </div>
 </div>
 
-<!-- Canvas -->
 <div id="canvas-area">
   <div class="cwrap" id="cwrap1">
     <div class="dhint" id="hint1">
@@ -175,7 +171,7 @@ canvas{display:block;width:100%;height:100%;}
         <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
         <polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>
       </svg>
-      <p>File → Open STL<br><span style="font-size:11px;color:#30363d">Aylantirrish: bir barmoq<br>Zoom: ikki barmoq / g'ildirak</span></p>
+      <p>File → Open STL<br><span style="font-size:11px;color:#30363d">Aylantirish: bir barmoq<br>Zoom: ikki barmoq / g'ildirak</span></p>
     </div>
     <div class="ld" id="ld1"><div class="sp"></div>Yuklanmoqda...</div>
     <canvas id="c1"></canvas>
@@ -197,7 +193,6 @@ canvas{display:block;width:100%;height:100%;}
 
 <div id="flash"></div>
 
-<!-- Price modal -->
 <div id="modal-bg">
   <div id="modal">
     <h3>💰 Narx hisoblash</h3>
@@ -290,12 +285,7 @@ function parseSTL(buf){
 }
 
 // ── ESTIMATE INNER DIAMETER
-// Ring inner diameter: the largest empty circle in XY plane at mid-Z
-// We approximate by finding min distance from center to mesh boundary
 function estimateInnerDia(positions, bbox){
-  // Sample points at mid Z, find minimum radius of bounding ring
-  // Simple approach: XY extent - wall thickness estimate
-  // Better: find points near mid-Z and compute inner radius
   const midZ=(bbox.min.z+bbox.max.z)/2;
   const zTol=(bbox.max.z-bbox.min.z)*0.05;
   let minR=Infinity;
@@ -379,7 +369,7 @@ function updateInfo(n,vol,b,name,innerD){
   document.getElementById('m-vol').textContent=Math.round(vol);
   document.getElementById('m-tri').textContent=n.toLocaleString();
   const b2=M[0]?M[0].geometry.boundingBox:b;
-  document.getElementById('m-dims').textContent=`${(b.max.x-b.min.x).toFixed(1)}×${(b.max.y-b.min.y).toFixed(1)}×${(b.max.z-b.min.z).toFixed(1)}`;
+  document.getElementById('m-dims').textContent=`${(b2.max.x-b2.min.x).toFixed(1)}×${(b2.max.y-b2.min.y).toFixed(1)}×${(b2.max.z-b2.min.z).toFixed(1)}`;
   document.getElementById('m-id').textContent=innerD||'—';
 }
 
@@ -390,7 +380,6 @@ function applyMode(){
     const col=i===0?matColor:'#58a6ff';
     const geo=m.geometry||m.children[0]?.geometry;
     if(!geo) return;
-    // remove old
     SC[i].remove(m);
     let obj;
     if(renderMode==='points'){
@@ -421,40 +410,51 @@ function saveSTL(){
   a.click();
 }
 
-// ── SCALE
+// ── PROPORCIONAL SCALE FUNKSIYASI (MUKAMMALLASHTIRILGAN)
 function doScale(){
   if(!M[0]){alert('Avval fayl oching');return;}
   const curD=parseFloat(document.getElementById('cur-d').value);
   const newD=parseFloat(document.getElementById('new-d').value);
   if(!curD||!newD||curD<=0||newD<=0){alert('Ikkala diametrni kiriting');return;}
-  const s=newD/curD;
+  
+  const s=newD/curD; // Kattalashish koeffitsiyenti
   const geo=M[0].geometry;
-  geo.scale(s,s,1);
+  
+  // Z o'qi bilan birga to'liq 3D proporsiyada masshtablash
+  geo.scale(s, s, s); 
   geo.computeBoundingBox();
-  curVol=curVol*s*s;
-  // Rebuild STL buffer with scaled vertices
+  
+  // Hajmni geometrik proporsiyada qayta hisoblash (Hajm s kubiga proporsional)
+  curVol=curVol*(s*s*s);
+  
+  // Yangi masshtablangan koordinatalar bilan STL buferini qaytadan yig'ish
   const pos=geo.attributes.position.array;
   const nor=geo.attributes.normal.array;
   const n=pos.length/9;
   const buf=new ArrayBuffer(84+n*50);
   const view=new DataView(buf);
-  // header
+  
+  // STL Header yaratish
   const enc=new TextEncoder();
-  const hdr=enc.encode('Murad Jewellery STL - scaled');
+  const hdr=enc.encode('Murad Jewellery STL - 3D Scaled');
   new Uint8Array(buf,0,80).set(hdr);
   view.setUint32(80,n,true);
+  
   let off=84;
   for(let i=0;i<n;i++){
     view.setFloat32(off,nor[i*9],true);view.setFloat32(off+4,nor[i*9+1],true);view.setFloat32(off+8,nor[i*9+2],true);off+=12;
     for(let j=0;j<3;j++){view.setFloat32(off,pos[i*9+j*3],true);view.setFloat32(off+4,pos[i*9+j*3+1],true);view.setFloat32(off+8,pos[i*9+j*3+2],true);off+=12;}
     view.setUint16(off,0,true);off+=2;
   }
+  
   curBuf=buf;
   const b=geo.boundingBox;
   document.getElementById('m-id').textContent=newD.toFixed(1)+' mm';
   document.getElementById('cur-d').value=newD.toFixed(1);
+  
+  // Ma'lumotlar panelini yangilash
   updateInfo(curTri,curVol,b,'scaled →Ø'+newD,newD.toFixed(1)+' mm');
-  alert(`✓ ${curD}mm → ${newD}mm (×${s.toFixed(4)})\nEndi ⬇ STL bilan yuklab olishingiz mumkin`);
+  alert(`✓ Uzuk muvaffaqiyatli o'zgartirildi!\nEski razmer: ${curD}mm → Yangi razmer: ${newD}mm.\nVazn va hajm qayta hisoblandi. Yuklab olishingiz mumkin.`);
 }
 
 // ── CONTROLS
@@ -513,7 +513,6 @@ function closeMenus(){
     if(!isOpen){
       dd.classList.add('show');
       this.classList.add('open');
-      // position
       const r=this.getBoundingClientRect();
       dd.style.left=r.left+'px';
       document.getElementById('overlay').style.display='block';
@@ -570,7 +569,6 @@ document.getElementById('di-price').addEventListener('click',()=>{document.getEl
 document.getElementById('di-clip').addEventListener('click',function(){
   clipOn=!clipOn;
   this.textContent=clipOn?'✂ Kesim (yopish)':'✂ Kesim (cross-section)';
-  document.getElementById('toolsbar').style.display=(clipOn||true)?'block':'none';
   closeMenus();
 });
 ['gold','silver','g18','dark'].forEach(k=>{
@@ -601,7 +599,7 @@ document.getElementById('cwrap1').addEventListener('drop',e=>{e.preventDefault()
 // Clip slider
 document.getElementById('clip-sl').addEventListener('input',function(){clipVal=parseInt(this.value);});
 
-// Scale
+// Scale trigger
 document.getElementById('btn-scale').addEventListener('click',doScale);
 
 // Price modal
