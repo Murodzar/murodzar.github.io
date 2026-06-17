@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#111111">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="STL Viewer">
+<link rel="manifest" href="stl-manifest.json">
+<title>STL Viewer — Murad Jewellery</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #1a1a1a;
+    color: #e8e0d0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  header {
+    padding: 10px 14px;
+    background: #111;
+    border-bottom: 1px solid #2a2a2a;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+  header h1 {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #c9a84c;
+  }
+  #file-label {
+    background: #c9a84c;
+    color: #111;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #file-input { display: none; }
+  #filename {
+    font-size: 11px;
+    color: #666;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #info-panel {
+    display: none;
+    background: #141414;
+    border-bottom: 1px solid #2a2a2a;
+    padding: 8px 14px;
+    flex-shrink: 0;
+  }
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+  .info-card {
+    background: #1e1e1e;
+    border-radius: 8px;
+    padding: 7px 10px;
+    text-align: center;
+  }
+  .info-card .label {
+    font-size: 10px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+  }
+  .info-card .value {
+    font-size: 14px;
+    font-weight: 700;
+    color: #c9a84c;
+  }
+  .info-card.silver .value { color: #aac4d0; }
+  .info-card.gold18 .value { color: #e8c96a; }
+  .info-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .info-small {
+    font-size: 11px;
+    color: #555;
+    flex: 1;
+    text-align: center;
+  }
+  .info-small b { color: #888; }
+
+  #canvas-wrap {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    touch-action: none;
+  }
+  canvas { display: block; width: 100%; height: 100%; }
+
+  #controls {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    gap: 6px;
+    background: rgba(0,0,0,0.65);
+    padding: 8px 12px;
+    border-radius: 30px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .btn {
+    background: #222;
+    border: 1px solid #3a3a3a;
+    color: #ccc;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    white-space: nowrap;
+  }
+  .btn:active { background: #c9a84c; color: #111; }
+
+  #drop-hint {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    pointer-events: none;
+  }
+  #drop-hint svg { opacity: 0.2; }
+  #drop-hint p { font-size: 14px; color: #555; text-align: center; padding: 0 40px; }
+
+  #loading {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+    background: rgba(0,0,0,0.8);
+    font-size: 13px;
+    color: #c9a84c;
+  }
+  .spinner {
+    width: 36px; height: 36px;
+    border: 3px solid #333;
+    border-top-color: #c9a84c;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⬡ STL Viewer</h1>
+  <label id="file-label" for="file-input">📂 Fayl ochish</label>
+  <input type="file" id="file-input" accept=".stl">
+  <span id="filename">STL fayl tanlang</span>
+</header>
+
+<div id="info-panel">
+  <div class="info-grid">
+    <div class="info-card silver">
+      <div class="label">Kumush</div>
+      <div class="value" id="mass-ag">—</div>
+    </div>
+    <div class="info-card">
+      <div class="label">585 Tillo</div>
+      <div class="value" id="mass-585">—</div>
+    </div>
+    <div class="info-card gold18">
+      <div class="label">750 Tillo</div>
+      <div class="value" id="mass-750">—</div>
+    </div>
+  </div>
+  <div class="info-row">
+    <span class="info-small">Hajm: <b id="vol">—</b> mm³</span>
+    <span class="info-small">Razmer: <b id="dims">—</b></span>
+    <span class="info-small">Tri: <b id="tri-count">—</b></span>
+  </div>
+</div>
+
+<div id="canvas-wrap">
+  <div id="drop-hint">
+    <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1">
+      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+      <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+      <line x1="12" y1="22.08" x2="12" y2="12"/>
+    </svg>
+    <p>STL fayl tanlang<br><span style="font-size:12px;color:#444">Aylantirrish: bir barmoq<br>Zoom: ikki barmoq</span></p>
+  </div>
+  <div id="loading"><div class="spinner"></div>Yuklanmoqda...</div>
+  <canvas id="canvas"></canvas>
+  <div id="controls">
+    <button class="btn" id="btn-reset">↺</button>
+    <button class="btn" id="btn-wire">▦</button>
+    <button class="btn" id="btn-color">🎨</button>
+    <button class="btn" id="btn-top">Top</button>
+    <button class="btn" id="btn-front">Front</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const canvas = document.getElementById('canvas');
+const wrap = document.getElementById('canvas-wrap');
+
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setClearColor(0x1a1a1a);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, 1, 0.01, 100000);
+camera.position.set(0, 0, 100);
+
+scene.add(new THREE.AmbientLight(0xffffff, 0.45));
+const d1 = new THREE.DirectionalLight(0xfff5e0, 0.9); d1.position.set(1, 2, 3); scene.add(d1);
+const d2 = new THREE.DirectionalLight(0xb0c8ff, 0.4); d2.position.set(-2, -1, -2); scene.add(d2);
+const d3 = new THREE.DirectionalLight(0xffffff, 0.2); d3.position.set(0, -3, 1); scene.add(d3);
+
+let mesh = null, wireMode = false;
+const colors = ['#c9a84c','#c0c0c0','#e8e0d0','#7ec8c8'];
+let colorIdx = 0;
+let rotX = -20, rotY = 30, zoom = 1, panX = 0, panY = 0;
+
+function resize() {
+  const w = wrap.clientWidth, h = wrap.clientHeight;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+}
+resize();
+window.addEventListener('resize', resize);
+
+// Mouse
+let dragging = false, lastX = 0, lastY = 0;
+canvas.addEventListener('mousedown', e => { dragging = true; lastX = e.clientX; lastY = e.clientY; });
+window.addEventListener('mouseup', () => dragging = false);
+window.addEventListener('mousemove', e => {
+  if (!dragging || !mesh) return;
+  if (e.buttons === 1) { rotY += (e.clientX-lastX)*0.5; rotX += (e.clientY-lastY)*0.5; }
+  else if (e.buttons === 2) { panX += (e.clientX-lastX)*0.05*zoom; panY -= (e.clientY-lastY)*0.05*zoom; }
+  lastX = e.clientX; lastY = e.clientY;
+});
+canvas.addEventListener('wheel', e => { zoom *= e.deltaY>0?1.1:0.9; zoom=Math.max(0.001,Math.min(100,zoom)); });
+canvas.addEventListener('contextmenu', e => e.preventDefault());
+
+// Touch
+let t0x=0,t0y=0,t1dist=null,tPanX=0,tPanY=0;
+canvas.addEventListener('touchstart', e => {
+  e.preventDefault();
+  if (e.touches.length===1) { t0x=e.touches[0].clientX; t0y=e.touches[0].clientY; }
+  if (e.touches.length===2) t1dist = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+}, {passive:false});
+canvas.addEventListener('touchmove', e => {
+  e.preventDefault();
+  if (!mesh) return;
+  if (e.touches.length===1) {
+    rotY += (e.touches[0].clientX-t0x)*0.5;
+    rotX += (e.touches[0].clientY-t0y)*0.5;
+    t0x=e.touches[0].clientX; t0y=e.touches[0].clientY;
+  }
+  if (e.touches.length===2) {
+    const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+    if (t1dist) zoom *= t1dist/d;
+    zoom=Math.max(0.001,Math.min(100,zoom));
+    t1dist=d;
+  }
+}, {passive:false});
+
+function animate() {
+  requestAnimationFrame(animate);
+  if (mesh) {
+    mesh.rotation.x = THREE.MathUtils.degToRad(rotX);
+    mesh.rotation.y = THREE.MathUtils.degToRad(rotY);
+    camera.position.z = 100 * zoom;
+    mesh.position.x = panX;
+    mesh.position.y = panY;
+  }
+  renderer.render(scene, camera);
+}
+animate();
+
+function parseSTL(buffer) {
+  const view = new DataView(buffer);
+  const n = view.getUint32(80, true);
+  const pos = new Float32Array(n*9), nor = new Float32Array(n*9);
+  let vol = 0, off = 84;
+  for (let i=0; i<n; i++) {
+    const nx=view.getFloat32(off,true),ny=view.getFloat32(off+4,true),nz=view.getFloat32(off+8,true); off+=12;
+    const v=[];
+    for (let j=0; j<3; j++) {
+      const x=view.getFloat32(off,true),y=view.getFloat32(off+4,true),z=view.getFloat32(off+8,true);
+      pos[i*9+j*3]=x; pos[i*9+j*3+1]=y; pos[i*9+j*3+2]=z;
+      nor[i*9+j*3]=nx; nor[i*9+j*3+1]=ny; nor[i*9+j*3+2]=nz;
+      v.push([x,y,z]); off+=12;
+    }
+    off+=2;
+    vol+=(v[0][0]*(v[1][1]*v[2][2]-v[1][2]*v[2][1])+v[0][1]*(v[1][2]*v[2][0]-v[1][0]*v[2][2])+v[0][2]*(v[1][0]*v[2][1]-v[1][1]*v[2][0]))/6;
+  }
+  return { pos, nor, n, vol: Math.abs(vol) };
+}
+
+function loadSTL(buffer, name) {
+  const ld = document.getElementById('loading');
+  ld.style.display = 'flex';
+  setTimeout(() => {
+    try {
+      const { pos, nor, n, vol } = parseSTL(buffer);
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      geo.setAttribute('normal', new THREE.BufferAttribute(nor, 3));
+      const mat = new THREE.MeshPhongMaterial({ color: new THREE.Color(colors[colorIdx]), specular: 0xffffff, shininess: 90, side: THREE.DoubleSide });
+      if (mesh) scene.remove(mesh);
+      mesh = new THREE.Mesh(geo, mat);
+      geo.computeBoundingBox();
+      const b = geo.boundingBox;
+      mesh.position.set(-(b.min.x+b.max.x)/2, -(b.min.y+b.max.y)/2, -(b.min.z+b.max.z)/2);
+      scene.add(mesh);
+      const sz = Math.max(b.max.x-b.min.x, b.max.y-b.min.y, b.max.z-b.min.z);
+      zoom = sz/80; rotX=-20; rotY=30; panX=0; panY=0;
+
+      document.getElementById('mass-ag').textContent  = (vol*10.5/1000).toFixed(2)+' g';
+      document.getElementById('mass-585').textContent = (vol*13.0/1000).toFixed(2)+' g';
+      document.getElementById('mass-750').textContent = (vol*15.5/1000).toFixed(2)+' g';
+      document.getElementById('vol').textContent = Math.round(vol);
+      document.getElementById('tri-count').textContent = n.toLocaleString();
+      document.getElementById('dims').textContent = `${(b.max.x-b.min.x).toFixed(1)}×${(b.max.y-b.min.y).toFixed(1)}×${(b.max.z-b.min.z).toFixed(1)}`;
+      document.getElementById('filename').textContent = name;
+      document.getElementById('info-panel').style.display = 'block';
+      document.getElementById('drop-hint').style.display = 'none';
+      document.getElementById('controls').style.display = 'flex';
+    } catch(e) { alert('Xato: ' + e.message); }
+    ld.style.display = 'none';
+  }, 60);
+}
+
+document.getElementById('file-input').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = ev => loadSTL(ev.target.result, f.name);
+  r.readAsArrayBuffer(f);
+});
+
+wrap.addEventListener('dragover', e => e.preventDefault());
+wrap.addEventListener('drop', e => {
+  e.preventDefault();
+  const f = e.dataTransfer.files[0];
+  if (!f || !f.name.toLowerCase().endsWith('.stl')) return;
+  const r = new FileReader(); r.onload = ev => loadSTL(ev.target.result, f.name); r.readAsArrayBuffer(f);
+});
+
+document.getElementById('btn-reset').onclick = () => { rotX=-20; rotY=30; panX=0; panY=0; if(mesh){const b=mesh.geometry.boundingBox;const sz=Math.max(b.max.x-b.min.x,b.max.y-b.min.y,b.max.z-b.min.z);zoom=sz/80;} };
+document.getElementById('btn-wire').onclick = () => { if(mesh){wireMode=!wireMode;mesh.material.wireframe=wireMode;} };
+document.getElementById('btn-color').onclick = () => { if(mesh){colorIdx=(colorIdx+1)%colors.length;mesh.material.color.set(colors[colorIdx]);} };
+document.getElementById('btn-top').onclick = () => { rotX=-90; rotY=0; };
+document.getElementById('btn-front').onclick = () => { rotX=0; rotY=0; };
+
+// PWA service worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('stl-sw.js').catch(()=>{});
+}
+</script>
+</body>
+</html>
