@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0d1117">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="STL Viewer">
+<!-- Fix 6: stl-manifest.json va stl-sw.js mavjud bo'lmasa xato beradi — o'chirildi -->
+<title>STL Viewer — Murad Jewellery Pro</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{background:#0d1117;color:#e6edf3;font-family:'Segoe UI',system-ui,sans-serif;height:100dvh;display:flex;flex-direction:column;overflow:hidden;}
+#topbar{background:#161b22;border-bottom:1px solid #30363d;display:flex;align-items:center;flex-shrink:0;}
+.menu-btn{color:#c9d1d9;padding:12px 16px;font-size:13px;font-weight:600;cursor:pointer;border-right:1px solid #30363d;white-space:nowrap;user-select:none;}
+.menu-btn:active,.menu-btn.open{background:#21262d;color:#c9a84c;}
+#title{color:#c9a84c;font-size:12px;font-weight:700;padding:0 12px;letter-spacing:.1em;flex:1;text-align:center;}
+#btn-dl{background:#c9a84c;color:#0d1117;border:none;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;margin-right:8px;border-radius:6px;white-space:nowrap;display:none;}
+.dropdown{display:none;position:fixed;top:44px;background:#1c2128;border:1px solid #30363d;border-radius:8px;z-index:200;min-width:160px;box-shadow:0 8px 24px rgba(0,0,0,.5);}
+.dropdown.show{display:block;}
+.dd-item{padding:11px 18px;font-size:13px;color:#c9d1d9;cursor:pointer;border-bottom:1px solid #21262d;}
+.dd-item:last-child{border-bottom:none;}
+.dd-item:active,.dd-item.active{background:#c9a84c;color:#0d1117;}
+.dd-sep{height:1px;background:#30363d;margin:2px 0;}
+#info-panel{display:none;background:#161b22;border-bottom:1px solid #30363d;padding:8px 12px;flex-shrink:0;}
+.mass-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:6px;}
+.mc{background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:7px;text-align:center;}
+.mc .ml{font-size:9px;color:#484f58;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;}
+.mc .mv{font-size:14px;font-weight:700;color:#c9a84c;}
+.mc.ag .mv{color:#79c0ff;}.mc.g18 .mv{color:#f0d070;}
+.meta{display:flex;gap:12px;flex-wrap:wrap;}
+.meta span{font-size:11px;color:#8b949e;}.meta b{color:#c9a84c;}
+#toolsbar{display:none;background:#161b22;border-bottom:1px solid #30363d;padding:6px 10px;flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.trow{display:flex;gap:8px;align-items:center;min-width:max-content;}
+.tb{background:#21262d;border:1px solid #30363d;color:#8b949e;padding:6px 12px;border-radius:16px;font-size:11px;cursor:pointer;white-space:nowrap;}
+.tb:active,.tb.on{background:#c9a84c;color:#0d1117;border-color:#c9a84c;}
+.tsep{width:1px;height:18px;background:#30363d;flex-shrink:0;}
+.tin{background:#0d1117;border:1px solid #30363d;color:#e0d0a0;padding:5px 8px;border-radius:6px;font-size:11px;width:65px;text-align:center;}
+.tlb{font-size:11px;color:#8b949e;white-space:nowrap;}
+.val-lbl{color:#79c0ff;font-weight:bold;font-size:11px;min-width:35px;}
+input[type=range]{width:75px;accent-color:#c9a84c;cursor:pointer;}
+#canvas-area{flex:1;display:flex;position:relative;overflow:hidden;}
+.cwrap{flex:1;position:relative;overflow:hidden;touch-action:none;}
+#cwrap2{display:none;border-left:2px solid #c9a84c;}
+canvas{display:block;width:100%;height:100%;}
+.dhint{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;pointer-events:none;}
+.dhint svg{opacity:.12;}
+.dhint p{font-size:13px;color:#484f58;text-align:center;line-height:1.6;}
+.ld{position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;background:rgba(13,17,23,.9);font-size:12px;color:#c9a84c;z-index:10;}
+.sp{width:28px;height:28px;border:2px solid #30363d;border-top-color:#c9a84c;border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.vlabel{position:absolute;top:8px;left:8px;font-size:10px;color:#c9a84c;background:rgba(0,0,0,.6);padding:3px 9px;border-radius:10px;}
+#ctrls{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:none;gap:5px;background:rgba(13,17,23,.8);padding:7px 12px;border-radius:28px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:5;border:1px solid #21262d;}
+.cb{background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:7px 13px;border-radius:16px;font-size:11px;cursor:pointer;}
+.cb:active{background:#c9a84c;color:#0d1117;}
+#flash{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;transition:opacity .1s;z-index:999;}
+#overlay{display:none;position:fixed;inset:0;z-index:100;}
+#modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;align-items:flex-end;justify-content:center;}
+#modal-bg.show{display:flex;}
+#modal{background:#1c2128;border:1px solid #30363d;border-radius:16px 16px 0 0;padding:20px;width:100%;max-width:480px;}
+#modal h3{color:#c9a84c;font-size:14px;margin-bottom:14px;text-align:center;}
+.mr{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.mr label{font-size:12px;color:#8b949e;width:130px;flex-shrink:0;}
+.mr input{flex:1;background:#0d1117;border:1px solid #30363d;color:#e0d0a0;padding:8px 10px;border-radius:6px;font-size:13px;}
+#price-result{background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:12px;margin:10px 0;display:none;}
+.pr-line{font-size:12px;margin-bottom:4px;}
+.mb{background:#c9a84c;color:#0d1117;border:none;padding:10px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;width:100%;margin-top:4px;}
+.mb.sec{background:#21262d;color:#8b949e;margin-top:6px;}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div class="menu-btn" id="mb-file">File</div>
+  <div class="menu-btn" id="mb-view">View</div>
+  <div class="menu-btn" id="mb-mode">Mode</div>
+  <div class="menu-btn" id="mb-tools">Tools</div>
+  <div id="title">⬡ MURAD JEWELLERY PRO</div>
+  <button id="btn-dl">⬇ STL YUKLAB OLISH</button>
+</div>
+
+<div class="dropdown" id="dd-file">
+  <div class="dd-item" id="di-open">📂 Open STL</div>
+  <div class="dd-item" id="di-open2">📂 Open STL 2 (compare)</div>
+  <div class="dd-sep"></div>
+  <div class="dd-item" id="di-save">⬇ Save STL</div>
+  <div class="dd-item" id="di-shot">📷 Screenshot PNG</div>
+</div>
+<div class="dropdown" id="dd-view">
+  <div class="dd-item" data-view="top">Top</div>
+  <div class="dd-item" data-view="bottom">Bottom</div>
+  <div class="dd-item" data-view="left">Left</div>
+  <div class="dd-item" data-view="right">Right</div>
+  <div class="dd-item" data-view="front">Front</div>
+  <div class="dd-item" data-view="back">Back</div>
+  <div class="dd-sep"></div>
+  <div class="dd-item" data-view="reset">↺ Reset</div>
+  <div class="dd-item" id="di-compare">⊞ Compare mode</div>
+  <div class="dd-item" id="di-auto">▶ Auto-rotate</div>
+</div>
+<div class="dropdown" id="dd-mode">
+  <div class="dd-item active" data-mode="shaded">Shaded</div>
+  <div class="dd-item" data-mode="combined">Combined (Shaded+Wire)</div>
+  <div class="dd-item" data-mode="wireframe">Wireframe</div>
+  <div class="dd-item" data-mode="points">Points</div>
+</div>
+<div class="dropdown" id="dd-tools">
+  <div class="dd-item" id="di-price">💰 Narx hisoblash</div>
+  <div class="dd-item" id="di-clip">✂ Kesim (cross-section)</div>
+  <div class="dd-sep"></div>
+  <div class="dd-item" id="di-gold">🟡 Rang: 585 oltin</div>
+  <div class="dd-item" id="di-silver">⚪ Rang: Kumush</div>
+  <div class="dd-item" id="di-g18">🟡 Rang: 750 oltin</div>
+  <div class="dd-item" id="di-dark">⚫ Rang: Qora</div>
+</div>
+
+<div id="overlay"></div>
+<input type="file" id="fi1" accept=".stl" style="display:none">
+<input type="file" id="fi2" accept=".stl" style="display:none">
+
+<div id="info-panel">
+  <div class="mass-grid">
+    <div class="mc ag"><div class="ml">Kumush</div><div class="mv" id="m-ag">—</div></div>
+    <div class="mc"><div class="ml">585 Tillo</div><div class="mv" id="m-585">—</div></div>
+    <div class="mc g18"><div class="ml">750 Tillo</div><div class="mv" id="m-750">—</div></div>
+  </div>
+  <div class="meta">
+    <span>Hajm: <b id="m-vol">—</b> mm³</span>
+    <span>Gabarit: <b id="m-dims">—</b> mm</span>
+    <span>Ichki Ø: <b id="m-id">—</b> mm</span>
+    <span>Devor: <b id="m-wall" style="color:#79c0ff;">—</b> mm</span>
+    <span>Tri: <b id="m-tri">—</b></span>
+  </div>
+</div>
+
+<div id="toolsbar">
+  <div class="trow">
+    <span class="tlb">Asl Ø:</span>
+    <input class="tin" type="number" id="cur-d" readonly style="background:#1f242c;color:#888;">
+    <span class="tlb">→ Yangi Ø:</span>
+    <input class="tin" type="number" id="new-d" placeholder="17.5" step="0.1">
+    <button class="tb on" id="btn-scale" style="background:#c9a84c;color:#0d1117;border:none;font-weight:bold;">↔ Hisoblash</button>
+    <div class="tsep"></div>
+    <span class="tlb">Kesim:</span>
+    <input type="range" id="clip-sl" min="-100" max="100" value="0">
+    <span class="val-lbl" id="clip-val">0%</span>
+  </div>
+</div>
+
+<div id="canvas-area">
+  <div class="cwrap" id="cwrap1">
+    <div class="dhint" id="hint1">
+      <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+        <polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>
+      </svg>
+      <p>File → Open STL<br><span style="font-size:11px;color:#484f58">Aylantirish: bir barmoq / chap sichqoncha<br>Zoom: ikki barmoq / g'ildirak</span></p>
+    </div>
+    <div class="ld" id="ld1"><div class="sp"></div>Yuklanmoqda...</div>
+    <canvas id="c1"></canvas>
+    <div class="vlabel" id="vl1" style="display:none">Model 1</div>
+    <div id="ctrls">
+      <button class="cb" onclick="setView('top')">Top</button>
+      <button class="cb" onclick="setView('front')">Front</button>
+      <button class="cb" onclick="setView('side')">Side</button>
+      <button class="cb" onclick="setView('reset')">↺</button>
+    </div>
+  </div>
+  <div class="cwrap" id="cwrap2">
+    <div class="dhint" id="hint2"><p style="color:#484f58">File → Open STL 2</p></div>
+    <div class="ld" id="ld2"><div class="sp"></div>Yuklanmoqda...</div>
+    <canvas id="c2"></canvas>
+    <div class="vlabel">Model 2</div>
+  </div>
+</div>
+
+<div id="flash"></div>
+
+<div id="modal-bg">
+  <div id="modal">
+    <h3>💰 Narx hisoblash</h3>
+    <div class="mr"><label>Kumush (so'm/g):</label><input type="number" id="p-ag" placeholder="12 000"></div>
+    <div class="mr"><label>585 tillo (so'm/g):</label><input type="number" id="p-585" placeholder="850 000"></div>
+    <div class="mr"><label>750 tillo (so'm/g):</label><input type="number" id="p-750" placeholder="1 100 000"></div>
+    <div id="price-result">
+      <div style="font-size:10px;color:#484f58;margin-bottom:6px">Hisoblangan (material narxi):</div>
+      <div class="pr-line" id="pr-ag" style="color:#79c0ff"></div>
+      <div class="pr-line" id="pr-585" style="color:#c9a84c"></div>
+      <div class="pr-line" id="pr-750" style="color:#f0d070"></div>
+    </div>
+    <button class="mb" id="calc-p">Hisobla</button>
+    <button class="mb sec" id="close-m">Yopish</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+"use strict";
+
+/* ════════════════════════════════════════════════
+   STATE
+   - Geometriya bir marta yaratiladi va saqlanadi (geom[]).
+   - Mode/rang o'zgarsa faqat MATERIAL almashadi, geometriya emas.
+   - Bu xotira to'planishini oldini oladi.
+════════════════════════════════════════════════ */
+const M=[null,null];      // mesh/points obyektlari
+const geom=[null,null];   // BufferGeometry (qayta ishlatiladi)
+const SC=[],CA=[],RE=[];
+let rotX=-20,rotY=30,zoom=1,panX=0,panY=0;
+let autoRot=false,clipOn=false,compareOn=false;
+let curVol=0,curTri=0,curBuf=null,originalBuf=null;
+let initialInnerD=0,currentInnerD=0,initialWallThick=0,currentWallThick=0;
+let innerDReliable=false;  // Fix 4: ishonchlilik belgisi
+let renderMode='shaded',matColor='#c9a84c';
+const clipPlane=new THREE.Plane(new THREE.Vector3(0,1,0),0);
+let clipVal=0;
+let needRender=true;      // faqat o'zgarganda render qilish (batareya tejash)
+
+/* ─── RENDERER ───────────────────────────────── */
+function mkRenderer(cid,idx){
+  const canvas=document.getElementById(cid);
+  const wrap=canvas.parentElement;
+  const r=new THREE.WebGLRenderer({canvas,antialias:true,preserveDrawingBuffer:true,powerPreference:'high-performance'});
+  r.setPixelRatio(Math.min(devicePixelRatio,2));
+  r.setClearColor(0x0d1117);
+  r.localClippingEnabled=true;
+  const s=new THREE.Scene();
+  const c=new THREE.PerspectiveCamera(45,1,.01,1e6);
+  c.position.z=100;
+  s.add(new THREE.AmbientLight(0xffffff,.4));
+  const d1=new THREE.DirectionalLight(0xfff5e0,.9);d1.position.set(1,2,3);s.add(d1);
+  const d2=new THREE.DirectionalLight(0xb0c8ff,.35);d2.position.set(-2,-1,-2);s.add(d2);
+  const d3=new THREE.DirectionalLight(0xffffff,.15);d3.position.set(0,-3,1);s.add(d3);
+  SC[idx]=s;CA[idx]=c;RE[idx]=r;
+  function rsz(){
+    const w=wrap.clientWidth,h=wrap.clientHeight;
+    if(w===0||h===0)return;
+    r.setSize(w,h,false);c.aspect=w/h;c.updateProjectionMatrix();
+    needRender=true;
+  }
+  rsz();new ResizeObserver(rsz).observe(wrap);
+}
+mkRenderer('c1',0);mkRenderer('c2',1);
+
+/* ─── RENDER LOOP ────────────────────────────────
+   needRender bayrog'i: faqat o'zgarish bo'lganda chizadi.
+   Auto-rotate yoki drag paytida doimo true bo'ladi.
+─────────────────────────────────────────────── */
+function loop(){
+  requestAnimationFrame(loop);
+  if(autoRot){rotY+=.35;needRender=true;}
+  if(!needRender)return;
+  needRender=false;
+  for(let i=0;i<2;i++){
+    if(!M[i]){if(RE[i])RE[i].render(SC[i],CA[i]);continue;}
+    M[i].rotation.x=THREE.MathUtils.degToRad(rotX);
+    M[i].rotation.y=THREE.MathUtils.degToRad(rotY);
+    CA[i].position.z=100*zoom;
+    M[i].position.x=panX;M[i].position.y=panY;
+    if(clipOn&&i===0&&geom[0]){
+      const b=geom[0].boundingBox;
+      clipPlane.constant=(clipVal/100)*(b.max.y-b.min.y)*.5;
+      RE[i].clippingPlanes=[clipPlane];
+    }else if(RE[i])RE[i].clippingPlanes=[];
+    RE[i].render(SC[i],CA[i]);
+  }
+}
+loop();
+
+/* ─── STL PARSER ─────────────────────────────────
+   Binary va ASCII STL ni qo'llab-quvvatlaydi.
+   Float32Array to'g'ridan-to'g'ri geometriyaga
+   uzatiladi (nusxa olmaydi) — tezroq.
+─────────────────────────────────────────────── */
+function isASCIISTL(buf){
+  // Birinchi 256 baytda "solid" kalit so'zi bor va printable ASCII
+  const bytes=new Uint8Array(buf,0,Math.min(256,buf.byteLength));
+  let txt='';
+  for(let i=0;i<bytes.length;i++)txt+=String.fromCharCode(bytes[i]);
+  return txt.trimStart().startsWith('solid') && /vertex\s/i.test(txt);
+}
+
+function parseASCIISTL(buf){
+  const text=new TextDecoder().decode(buf);
+  const pos=[],nor=[];
+  let vol=0;
+  const re_normal=/facet\s+normal\s+([\d.eE+\-]+)\s+([\d.eE+\-]+)\s+([\d.eE+\-]+)/g;
+  const re_vertex=/vertex\s+([\d.eE+\-]+)\s+([\d.eE+\-]+)\s+([\d.eE+\-]+)/g;
+  let nm,vm;
+  const normals=[],verts=[];
+  let t;
+  while((t=re_normal.exec(text))!==null){normals.push([parseFloat(t[1]),parseFloat(t[2]),parseFloat(t[3])]);}
+  while((t=re_vertex.exec(text))!==null){verts.push([parseFloat(t[1]),parseFloat(t[2]),parseFloat(t[3])]);}
+  const n=Math.min(normals.length,Math.floor(verts.length/3));
+  if(n===0)throw new Error('ASCII STL: triangle topilmadi');
+  const posA=new Float32Array(n*9),norA=new Float32Array(n*9);
+  for(let i=0;i<n;i++){
+    const [nx,ny,nz]=normals[i]||[0,1,0];
+    const [ax,ay,az]=verts[i*3],[bx,by,bz]=verts[i*3+1],[cx,cy,cz]=verts[i*3+2];
+    const base=i*9;
+    posA[base]=ax;posA[base+1]=ay;posA[base+2]=az;
+    posA[base+3]=bx;posA[base+4]=by;posA[base+5]=bz;
+    posA[base+6]=cx;posA[base+7]=cy;posA[base+8]=cz;
+    norA[base]=nx;norA[base+1]=ny;norA[base+2]=nz;
+    norA[base+3]=nx;norA[base+4]=ny;norA[base+5]=nz;
+    norA[base+6]=nx;norA[base+7]=ny;norA[base+8]=nz;
+    vol+=(ax*(by*cz-bz*cy)+ay*(bz*cx-bx*cz)+az*(bx*cy-by*cx))/6;
+  }
+  if(!isFinite(vol))throw new Error('Hajm hisoblanmadi');
+  return{pos:posA,nor:norA,n,vol:Math.abs(vol)};
+}
+
+function parseBinarySTL(buf){
+  if(buf.byteLength<84)throw new Error('Fayl juda kichik yoki buzilgan');
+  const v=new DataView(buf);
+  const n=v.getUint32(80,true);
+  const expected=84+n*50;
+  if(n<=0||buf.byteLength<expected)throw new Error('Binary STL formati noto\'g\'ri');
+  const pos=new Float32Array(n*9),nor=new Float32Array(n*9);
+  let vol=0,off=84;
+  for(let i=0;i<n;i++){
+    const nx=v.getFloat32(off,true),ny=v.getFloat32(off+4,true),nz=v.getFloat32(off+8,true);off+=12;
+    const ax=v.getFloat32(off,true),ay=v.getFloat32(off+4,true),az=v.getFloat32(off+8,true);
+    const bx=v.getFloat32(off+12,true),by=v.getFloat32(off+16,true),bz=v.getFloat32(off+20,true);
+    const cx=v.getFloat32(off+24,true),cy=v.getFloat32(off+28,true),cz=v.getFloat32(off+32,true);
+    const base=i*9;
+    pos[base]=ax;pos[base+1]=ay;pos[base+2]=az;
+    pos[base+3]=bx;pos[base+4]=by;pos[base+5]=bz;
+    pos[base+6]=cx;pos[base+7]=cy;pos[base+8]=cz;
+    nor[base]=nx;nor[base+1]=ny;nor[base+2]=nz;
+    nor[base+3]=nx;nor[base+4]=ny;nor[base+5]=nz;
+    nor[base+6]=nx;nor[base+7]=ny;nor[base+8]=nz;
+    vol+=(ax*(by*cz-bz*cy)+ay*(bz*cx-bx*cz)+az*(bx*cy-by*cx))/6;
+    off+=36+2;
+  }
+  if(!isFinite(vol))throw new Error('Hajm hisoblanmadi');
+  return{pos,nor,n,vol:Math.abs(vol)};
+}
+
+function parseSTL(buf){
+  if(isASCIISTL(buf)) return parseASCIISTL(buf);
+  return parseBinarySTL(buf);
+}
+
+/* ─── ICHKI DIAMETR (aniqlangan algoritm) ────────
+   Uzuk = shank halqasi + (prong/tosh/bezak).
+   Maqsad: faqat halqaning ichki teshigini topish, prongni emas.
+
+   Usul:
+   1. Z bo'ylab eng ko'p material to'plangan "halqa tekisligini" topamiz
+      (histogram orqali — eng zich qatlam = halqa).
+   2. Shu qatlamda markazdan radial masofalarni yig'amiz.
+   3. Radiuslarni kichikdan kattaga saralab, ichki devorni
+      (eng katta bo'sh doira) median yondashuv bilan aniqlaymiz.
+   4. Bu prong/spike kabi yagona chiqiqlarga chidamli.
+─────────────────────────────────────────────── */
+function calculateMetrics(positions,bbox){
+  const cx=(bbox.min.x+bbox.max.x)/2;
+  const cy=(bbox.min.y+bbox.max.y)/2;
+  const zMin=bbox.min.z,zMax=bbox.max.z;
+  const zRange=zMax-zMin||1;
+  const outerR=Math.max(bbox.max.x-cx,cx-bbox.min.x,bbox.max.y-cy,cy-bbox.min.y);
+
+  // 1) Z histogram — qaysi qatlamda eng ko'p nuqta bor (= halqa tekisligi)
+  const BINS=40;
+  const counts=new Int32Array(BINS);
+  for(let i=0;i<positions.length;i+=3){
+    let bi=Math.floor((positions[i+2]-zMin)/zRange*BINS);
+    if(bi<0)bi=0;if(bi>=BINS)bi=BINS-1;
+    counts[bi]++;
+  }
+  let bestBin=0,bestCnt=0;
+  for(let b=0;b<BINS;b++)if(counts[b]>bestCnt){bestCnt=counts[b];bestBin=b;}
+  const planeZ=zMin+(bestBin+0.5)/BINS*zRange;
+  const zTol=zRange/BINS*1.5;
+
+  // 2) Shu qatlamdagi radiuslarni yig'amiz
+  const radii=[];
+  for(let i=0;i<positions.length;i+=3){
+    if(Math.abs(positions[i+2]-planeZ)>zTol)continue;
+    const dx=positions[i]-cx,dy=positions[i+1]-cy;
+    const r=Math.sqrt(dx*dx+dy*dy);
+    if(r<=outerR*1.05)radii.push(r);
+  }
+
+  if(radii.length<20){
+    // zaxira: gabaritdan taxmin — ishonchsiz
+    const innerD=outerR*2*0.75;
+    return{innerD,wallThick:outerR*2*0.12,reliable:false};
+  }
+
+  radii.sort((a,b)=>a-b);
+
+  // 3) Ichki radius = eng kichik radiuslarning barqaror qismi.
+  const lo=Math.floor(radii.length*0.05);
+  const hi=Math.floor(radii.length*0.15);
+  let innerR;
+  if(hi>lo){
+    const slice=radii.slice(lo,hi);
+    innerR=slice[Math.floor(slice.length/2)];
+  }else{
+    innerR=radii[lo];
+  }
+
+  // Tashqi radius
+  const oLo=Math.floor(radii.length*0.85);
+  const oHi=Math.floor(radii.length*0.95);
+  let outR;
+  if(oHi>oLo){
+    const slice=radii.slice(oLo,oHi);
+    outR=slice[Math.floor(slice.length/2)];
+  }else{
+    outR=radii[radii.length-1];
+  }
+
+  const innerD=innerR*2;
+  const wallThick=Math.max(0.1,outR-innerR);
+
+  // Fix 4: model halqaga o'xshaydimi? (ichki/tashqi nisbati mantiqli bo'lsa)
+  const ratio=innerR/outR;
+  const reliable=(ratio>0.3&&ratio<0.95&&wallThick>0.3);
+  return{innerD,wallThick,reliable};
+}
+
+/* ─── XOTIRANI TOZALASH ──────────────────────────
+   Mesh/Points obyektidagi BARCHA material va
+   wireframe geometriyalarni dispose qiladi.
+   Asosiy geometriya (geom[idx]) saqlanadi — alohida boshqariladi.
+─────────────────────────────────────────────── */
+function disposeVisual(idx){
+  const o=M[idx];
+  if(!o)return;
+  // wireframe bolalar
+  for(let k=o.children.length-1;k>=0;k--){
+    const ch=o.children[k];
+    if(ch.geometry)ch.geometry.dispose();
+    if(ch.material)ch.material.dispose();
+    o.remove(ch);
+  }
+  // o'zining materiali
+  if(o.material){
+    if(Array.isArray(o.material))o.material.forEach(m=>m.dispose());
+    else o.material.dispose();
+  }
+  SC[idx].remove(o);
+  M[idx]=null;
+}
+
+/* Geometriyani ham butunlay yo'q qilish (yangi fayl yoki compare yopish) */
+function disposeFull(idx){
+  disposeVisual(idx);
+  if(geom[idx]){geom[idx].dispose();geom[idx]=null;}
+}
+
+/* ─── MATERIAL ───────────────────────────────── */
+function mkMat(col){
+  if(renderMode==='wireframe')return new THREE.MeshBasicMaterial({color:col,wireframe:true});
+  return new THREE.MeshPhongMaterial({color:new THREE.Color(col),specular:0xffffff,shininess:90,side:THREE.DoubleSide});
+}
+
+/* ─── VIZUALNI QURISH (geometriyadan) ───────────
+   geom[idx] mavjud deb hisoblaydi. Faqat ko'rinish
+   obyektini (mesh/points + material) yaratadi.
+─────────────────────────────────────────────── */
+function buildVisual(idx){
+  const g=geom[idx];
+  if(!g)return;
+  disposeVisual(idx);
+  const col=idx===0?matColor:'#58a6ff';
+  let obj;
+  if(renderMode==='points'){
+    obj=new THREE.Points(g,new THREE.PointsMaterial({color:col,size:.3}));
+  }else{
+    obj=new THREE.Mesh(g,mkMat(col));
+    if(renderMode==='combined'){
+      const wf=new THREE.LineSegments(
+        new THREE.WireframeGeometry(g),
+        new THREE.LineBasicMaterial({color:0x444444,opacity:.3,transparent:true})
+      );
+      obj.add(wf);
+    }
+  }
+  const b=g.boundingBox;
+  obj.position.set(-(b.min.x+b.max.x)/2,-(b.min.y+b.max.y)/2,-(b.min.z+b.max.z)/2);
+  M[idx]=obj;
+  SC[idx].add(obj);
+  needRender=true;
+}
+
+/* ─── FAYL YUKLASH ───────────────────────────── */
+function loadSTL(buf,name,idx){
+  const ld=document.getElementById('ld'+(idx+1));
+  ld.style.display='flex';
+  setTimeout(()=>{
+    try{
+      const{pos,nor,n,vol}=parseSTL(buf);
+      // eski geometriyani to'liq tozalaymiz
+      disposeFull(idx);
+      const g=new THREE.BufferGeometry();
+      g.setAttribute('position',new THREE.BufferAttribute(pos,3));
+      g.setAttribute('normal',new THREE.BufferAttribute(nor,3));
+      g.computeBoundingBox();
+      geom[idx]=g;
+      buildVisual(idx);
+
+      if(idx===0){
+        curBuf=buf;originalBuf=buf;curVol=vol;curTri=n;
+        const b=g.boundingBox;
+        const sz=Math.max(b.max.x-b.min.x,b.max.y-b.min.y,b.max.z-b.min.z);
+        zoom=Math.max(0.3,Math.min(5,sz/80));rotX=-20;rotY=30;panX=0;panY=0;
+        const met=calculateMetrics(pos,b);
+        initialInnerD=met.innerD;currentInnerD=met.innerD;
+        initialWallThick=met.wallThick;currentWallThick=met.wallThick;
+        innerDReliable=met.reliable;  // Fix 4
+        document.getElementById('cur-d').value=initialInnerD.toFixed(2);
+        document.getElementById('new-d').value=initialInnerD.toFixed(1);
+        updateInfo(n,vol,b);
+        document.getElementById('info-panel').style.display='block';
+        document.getElementById('toolsbar').style.display='block';
+        document.getElementById('ctrls').style.display='flex';
+        document.getElementById('hint1').style.display='none';
+        document.getElementById('vl1').style.display='block';
+        document.getElementById('btn-dl').style.display='block';
+      }else{
+        document.getElementById('hint2').style.display='none';
+      }
+    }catch(e){
+      alert('Xato: '+e.message);
+    }finally{
+      ld.style.display='none';
+    }
+  },50);
+}
+
+function updateInfo(n,vol,b){
+  // Fix 8: to'g'ri zichliklar (g/cm³): Ag=10.50, 585=13.07, 750=15.50
+  const DENS_AG=10.50,DENS_585=13.07,DENS_750=15.50;
+  document.getElementById('m-ag').textContent=(vol*DENS_AG/1000).toFixed(2)+' g';
+  document.getElementById('m-585').textContent=(vol*DENS_585/1000).toFixed(2)+' g';
+  document.getElementById('m-750').textContent=(vol*DENS_750/1000).toFixed(2)+' g';
+  document.getElementById('m-vol').textContent=Math.round(vol);
+  document.getElementById('m-tri').textContent=n.toLocaleString();
+  document.getElementById('m-dims').textContent=`${(b.max.x-b.min.x).toFixed(1)}×${(b.max.y-b.min.y).toFixed(1)}×${(b.max.z-b.min.z).toFixed(1)}`;
+  // Fix 4: ichki diametr ishonchsiz bo'lsa belgila
+  const idEl=document.getElementById('m-id');
+  const wlEl=document.getElementById('m-wall');
+  if(innerDReliable){
+    idEl.textContent=currentInnerD.toFixed(2)+' mm';
+    idEl.style.color='#c9a84c';
+    wlEl.textContent=currentWallThick.toFixed(2)+' mm';
+  }else{
+    idEl.textContent='~'+currentInnerD.toFixed(2)+' mm ⚠';
+    idEl.style.color='#f0a84c';
+    wlEl.textContent='~'+currentWallThick.toFixed(2)+' mm';
+  }
+}
+
+/* ─── MODE ALMASHTIRISH (xotira xavfsiz) ─────────
+   Geometriya saqlanadi — faqat material/visual qayta quriladi.
+─────────────────────────────────────────────── */
+function applyMode(){
+  for(let i=0;i<2;i++)if(geom[i])buildVisual(i);
+}
+
+/* ─── SAVE STL ───────────────────────────────── */
+function saveSTL(){
+  if(!curBuf){alert('Fayl ochilmagan');return;}
+  const blob=new Blob([curBuf],{type:'application/octet-stream'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=`model_R${currentInnerD.toFixed(1)}mm.stl`;a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+
+/* ─── SCALE (originaldan, xato to'planmaydi) ───── */
+function doScale(){
+  if(!geom[0]){alert('Avval fayl oching');return;}
+  const newD=parseFloat(document.getElementById('new-d').value);
+  if(!newD||newD<=0){alert("Yangi o'lchamni kiriting");return;}
+  if(!initialInnerD||initialInnerD<=0){alert('Asl diametr aniqlanmadi');return;}
+  const s=newD/initialInnerD;
+  try{
+    const{pos,nor,n,vol}=parseSTL(originalBuf);
+    // yangi geometriya — eski to'liq tozalanadi
+    disposeFull(0);
+    const g=new THREE.BufferGeometry();
+    g.setAttribute('position',new THREE.BufferAttribute(pos,3));
+    g.setAttribute('normal',new THREE.BufferAttribute(nor,3));
+    g.scale(s,s,s);
+    g.computeVertexNormals();
+    g.computeBoundingBox();
+    geom[0]=g;
+    buildVisual(0);
+
+    curVol=vol*(s*s*s);
+    currentInnerD=newD;
+    currentWallThick=initialWallThick*s;
+    document.getElementById('cur-d').value=newD.toFixed(2);
+
+    // scale qilingan binary STL bufferini qaytadan quramiz
+    // Fix: face normal = cross product (vertex normalidan emas — standart talabi)
+    const fp=g.attributes.position.array;
+    const outBuf=new ArrayBuffer(84+n*50);
+    const dv2=new DataView(outBuf);
+    new Uint8Array(outBuf,0,80).set(new TextEncoder().encode('Murad Jewellery Scaled'));
+    dv2.setUint32(80,n,true);
+    let off=84;
+    for(let i=0;i<n;i++){
+      const base=i*9;
+      // Uchburchak vertekslari
+      const ax=fp[base],ay=fp[base+1],az=fp[base+2];
+      const bx=fp[base+3],by=fp[base+4],bz=fp[base+5];
+      const cx=fp[base+6],cy=fp[base+7],cz=fp[base+8];
+      // Face normal = (B-A) × (C-A), keyin normalize
+      const ux=bx-ax,uy=by-ay,uz=bz-az;
+      const vx=cx-ax,vy=cy-ay,vz=cz-az;
+      let nx=uy*vz-uz*vy,ny=uz*vx-ux*vz,nz=ux*vy-uy*vx;
+      const len=Math.sqrt(nx*nx+ny*ny+nz*nz)||1;
+      nx/=len;ny/=len;nz/=len;
+      dv2.setFloat32(off,nx,true);dv2.setFloat32(off+4,ny,true);dv2.setFloat32(off+8,nz,true);off+=12;
+      for(let j=0;j<3;j++){
+        dv2.setFloat32(off,fp[base+j*3],true);
+        dv2.setFloat32(off+4,fp[base+j*3+1],true);
+        dv2.setFloat32(off+8,fp[base+j*3+2],true);
+        off+=12;
+      }
+      dv2.setUint16(off,0,true);off+=2;
+    }
+    curBuf=outBuf;
+    // Fix 5: zoom ni yangi o'lchamga qarab yangilash
+    const bNew=g.boundingBox;
+    const szNew=Math.max(bNew.max.x-bNew.min.x,bNew.max.y-bNew.min.y,bNew.max.z-bNew.min.z);
+    zoom=Math.max(0.3,Math.min(5,szNew/80));
+    panX=0;panY=0;
+    updateInfo(n,curVol,bNew);
+    alert(`✓ Hisoblandi!\nYangi Ø: ${newD.toFixed(2)} mm\nDevor: ${currentWallThick.toFixed(2)} mm\n\nEndi ⬇ STL yuklab oling.`);
+  }catch(e){alert('Scale xatosi: '+e.message);}
+}
+
+/* ─── SICHQONCHA / TOUCH ─────────────────────── */
+// Fix 7: pointer events ishlatamiz — drag tashqarida qolmaydi
+let drag=false,lx=0,ly=0;
+['c1','c2'].forEach(id=>{
+  const c=document.getElementById(id);
+  if(!c)return;
+  c.addEventListener('pointerdown',e=>{drag=true;lx=e.clientX;ly=e.clientY;c.setPointerCapture(e.pointerId);});
+  c.addEventListener('pointerup',()=>drag=false);
+  c.addEventListener('pointercancel',()=>drag=false);
+  c.addEventListener('wheel',e=>{zoom*=e.deltaY>0?1.1:.9;zoom=Math.max(.01,Math.min(500,zoom));needRender=true;},{passive:true});
+  c.addEventListener('contextmenu',e=>e.preventDefault());
+});
+window.addEventListener('pointermove',e=>{
+  if(!drag)return;
+  if(e.buttons===1){rotY+=(e.clientX-lx)*.5;rotX+=(e.clientY-ly)*.5;}
+  else if(e.buttons===2){panX+=(e.clientX-lx)*.05*zoom;panY-=(e.clientY-ly)*.05*zoom;}
+  lx=e.clientX;ly=e.clientY;needRender=true;
+});
+function addTouch(el){
+  if(!el)return;
+  let tx=0,ty=0,td=null;
+  el.addEventListener('touchstart',e=>{
+    if(e.touches.length===1){tx=e.touches[0].clientX;ty=e.touches[0].clientY;}
+    if(e.touches.length===2)td=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+  },{passive:true});
+  el.addEventListener('touchmove',e=>{
+    if(e.touches.length===1){
+      rotY+=(e.touches[0].clientX-tx)*.5;rotX+=(e.touches[0].clientY-ty)*.5;
+      tx=e.touches[0].clientX;ty=e.touches[0].clientY;
+    }
+    if(e.touches.length===2){
+      const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);
+      if(td){zoom*=td/d;zoom=Math.max(.01,Math.min(500,zoom));}
+      td=d;
+    }
+    needRender=true;
+  },{passive:true});
+}
+addTouch(document.getElementById('c1'));
+addTouch(document.getElementById('c2'));
+
+/* ─── KO'RINISH BURCHAGI ─────────────────────── */
+function setView(v){
+  switch(v){
+    case'top':rotX=-90;rotY=0;break;
+    case'bottom':rotX=90;rotY=0;break;
+    case'front':rotX=0;rotY=0;break;
+    case'back':rotX=0;rotY=180;break;
+    case'left':rotX=0;rotY=-90;break;
+    case'right':rotX=0;rotY=90;break;
+    case'side':rotX=0;rotY=90;break;
+    case'reset':
+      rotX=-20;rotY=30;panX=0;panY=0;
+      if(geom[0]){const b=geom[0].boundingBox;const sz=Math.max(b.max.x-b.min.x,b.max.y-b.min.y,b.max.z-b.min.z);zoom=Math.max(0.3,Math.min(5,sz/80));}
+      break;
+  }
+  needRender=true;closeMenus();
+}
+
+/* ─── MENYULAR ───────────────────────────────── */
+function closeMenus(){
+  document.querySelectorAll('.dropdown').forEach(d=>d.classList.remove('show'));
+  document.querySelectorAll('.menu-btn').forEach(b=>b.classList.remove('open'));
+  document.getElementById('overlay').style.display='none';
+}
+['file','view','mode','tools'].forEach(k=>{
+  document.getElementById('mb-'+k).addEventListener('click',function(e){
+    e.stopPropagation();
+    const dd=document.getElementById('dd-'+k);
+    const isOpen=dd.classList.contains('show');
+    closeMenus();
+    if(!isOpen){
+      dd.classList.add('show');this.classList.add('open');
+      dd.style.left=this.getBoundingClientRect().left+'px';
+      document.getElementById('overlay').style.display='block';
+    }
+  });
+});
+document.getElementById('overlay').addEventListener('click',closeMenus);
+
+/* File menu */
+document.getElementById('di-open').addEventListener('click',()=>{document.getElementById('fi1').click();closeMenus();});
+document.getElementById('di-open2').addEventListener('click',()=>{
+  // Fix: compareOn ni doimo true qilamiz, cwrap2 ni ko'rsatamiz
+  compareOn=true;
+  document.getElementById('cwrap2').style.display='block';
+  document.getElementById('di-compare').textContent='✕ Compare yopish';
+  document.getElementById('fi2').click();closeMenus();
+});
+document.getElementById('di-save').addEventListener('click',()=>{saveSTL();closeMenus();});
+document.getElementById('di-shot').addEventListener('click',()=>{
+  if(!M[0]){closeMenus();return;}
+  needRender=true;RE[0].render(SC[0],CA[0]);
+  const url=document.getElementById('c1').toDataURL('image/png');
+  const a=document.createElement('a');a.href=url;a.download='stl-render.png';a.click();
+  const fl=document.getElementById('flash');fl.style.opacity='.8';setTimeout(()=>fl.style.opacity='0',200);
+  closeMenus();
+});
+document.getElementById('btn-dl').addEventListener('click',saveSTL);
+
+/* View menu */
+document.querySelectorAll('[data-view]').forEach(el=>el.addEventListener('click',()=>setView(el.dataset.view)));
+document.getElementById('di-compare').addEventListener('click',()=>{
+  compareOn=!compareOn;
+  if(!compareOn){
+    // Model 2 ni TO'LIQ tozalaymiz — xotira to'planmaydi
+    disposeFull(1);
+    document.getElementById('hint2').style.display='flex';
+  }
+  document.getElementById('cwrap2').style.display=compareOn?'block':'none';
+  document.getElementById('di-compare').textContent=compareOn?'✕ Compare yopish':'⊞ Compare mode';
+  needRender=true;closeMenus();
+});
+document.getElementById('di-auto').addEventListener('click',function(){
+  autoRot=!autoRot;this.textContent=autoRot?'⏸ Auto-rotate':'▶ Auto-rotate';needRender=true;closeMenus();
+});
+
+/* Mode menu */
+document.querySelectorAll('[data-mode]').forEach(el=>{
+  el.addEventListener('click',()=>{
+    renderMode=el.dataset.mode;
+    document.querySelectorAll('[data-mode]').forEach(e=>e.classList.remove('active'));
+    el.classList.add('active');
+    applyMode();closeMenus();
+  });
+});
+
+/* Tools menu */
+document.getElementById('di-price').addEventListener('click',()=>{document.getElementById('modal-bg').classList.add('show');closeMenus();});
+document.getElementById('di-clip').addEventListener('click',function(){
+  clipOn=!clipOn;this.textContent=clipOn?'✂ Kesim (yopish)':'✂ Kesim (cross-section)';needRender=true;closeMenus();
+});
+['gold','silver','g18','dark'].forEach(k=>{
+  document.getElementById('di-'+k).addEventListener('click',()=>{
+    const cols={gold:'#c9a84c',silver:'#d8d8d8',g18:'#f0d070',dark:'#333333'};
+    matColor=cols[k];applyMode();closeMenus();
+  });
+});
+
+/* File inputs */
+document.getElementById('fi1').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>loadSTL(ev.target.result,f.name,0);r.readAsArrayBuffer(f);e.target.value='';});
+document.getElementById('fi2').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>loadSTL(ev.target.result,f.name,1);r.readAsArrayBuffer(f);e.target.value='';});
+
+/* Drag & drop */
+const w1=document.getElementById('cwrap1');
+w1.addEventListener('dragover',e=>e.preventDefault());
+w1.addEventListener('drop',e=>{e.preventDefault();const f=e.dataTransfer.files[0];if(!f||!f.name.toLowerCase().endsWith('.stl'))return;const r=new FileReader();r.onload=ev=>loadSTL(ev.target.result,f.name,0);r.readAsArrayBuffer(f);});
+
+/* Clip slider */
+document.getElementById('clip-sl').addEventListener('input',function(){clipVal=parseInt(this.value,10);document.getElementById('clip-val').textContent=clipVal+'%';needRender=true;});
+document.getElementById('btn-scale').addEventListener('click',doScale);
+
+/* Price */
+document.getElementById('calc-p').addEventListener('click',()=>{
+  if(!curVol){alert('Avval STL faylni oching');return;}
+  // Fix 8: to'g'ri zichliklar
+  const mAg=curVol*10.50/1000,m5=curVol*13.07/1000,m7=curVol*15.50/1000;
+  const pA=parseFloat(document.getElementById('p-ag').value)||0;
+  const p5=parseFloat(document.getElementById('p-585').value)||0;
+  const p7=parseFloat(document.getElementById('p-750').value)||0;
+  const f=x=>Math.round(x).toLocaleString();
+  document.getElementById('pr-ag').textContent=`Kumush: ${mAg.toFixed(2)}g × ${f(pA)} = ${f(mAg*pA)} so'm`;
+  document.getElementById('pr-585').textContent=`585: ${m5.toFixed(2)}g × ${f(p5)} = ${f(m5*p5)} so'm`;
+  document.getElementById('pr-750').textContent=`750: ${m7.toFixed(2)}g × ${f(p7)} = ${f(m7*p7)} so'm`;
+  document.getElementById('price-result').style.display='block';
+});
+document.getElementById('close-m').addEventListener('click',()=>document.getElementById('modal-bg').classList.remove('show'));
+
+/* Sahifa yopilganda WebGL kontekstini tozalash */
+window.addEventListener('beforeunload',()=>{
+  disposeFull(0);disposeFull(1);
+  RE.forEach(r=>{if(r)r.dispose();});
+});
+
+/* PWA service worker — faqat stl-sw.js mavjud bo'lsa ishlaydi */
+if('serviceWorker' in navigator)navigator.serviceWorker.register('stl-sw.js').catch(()=>{/* fayl yo'q — xato yashirildi */});
+</script>
+</body>
+</html>
