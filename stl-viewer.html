@@ -4,12 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#0d1117">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="STL Viewer">
-<link rel="manifest" href="stl-manifest.json">
-<title>STL Viewer — Murad Jewellery</title>
+<title>STL Viewer — Murad Jewellery Pro Expert</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{background:#0d1117;color:#e6edf3;font-family:'Segoe UI',system-ui,sans-serif;height:100dvh;display:flex;flex-direction:column;overflow:hidden;}
@@ -35,56 +30,32 @@ body{background:#0d1117;color:#e6edf3;font-family:'Segoe UI',system-ui,sans-seri
 .mc{background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:7px;text-align:center;}
 .mc .ml{font-size:9px;color:#484f58;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;}
 .mc .mv{font-size:14px;font-weight:700;color:#c9a84c;}
-.mc.ag .mv{color:#79c0ff;}.mc.g18 .mv{color:#f0d070;}
-.meta{display:flex;gap:10px;flex-wrap:wrap;}
-.meta span{font-size:10px;color:#484f58;}.meta b{color:#8b949e;}
+.meta{display:flex;gap:15px;flex-wrap:wrap;}
+.meta span{font-size:12px;color:#8b949e;}
+.meta b{color:#c9a84c; font-size:13px;}
 
-/* TOOLS BAR */
-#toolsbar{display:none;background:#161b22;border-bottom:1px solid #30363d;padding:6px 10px;flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch;}
-.trow{display:flex;gap:6px;align-items:center;min-width:max-content;}
-.tb{background:#21262d;border:1px solid #30363d;color:#8b949e;padding:6px 12px;border-radius:16px;font-size:11px;cursor:pointer;white-space:nowrap;}
-.tb:active,.tb.on{background:#c9a84c;color:#0d1117;border-color:#c9a84c;}
-.tsep{width:1px;height:18px;background:#30363d;flex-shrink:0;}
-.tin{background:#21262d;border:1px solid #30363d;color:#e0d0a0;padding:5px 8px;border-radius:6px;font-size:11px;width:65px;text-align:center;}
-.tlb{font-size:10px;color:#484f58;white-space:nowrap;}
-input[type=range]{width:75px;accent-color:#c9a84c;cursor:pointer;}
+/* TOOLS BAR (MUKAMMALLASHTIRILDI) */
+#toolsbar{display:none;background:#161b22;border-bottom:1px solid #30363d;padding:8px 12px;flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.trow{display:flex;gap:10px;align-items:center;min-width:max-content;flex-wrap:nowrap;}
+.tb{background:#21262d;border:1px solid #30363d;color:#8b949e;padding:6px 14px;border-radius:16px;font-size:11px;cursor:pointer;white-space:nowrap;}
+.tsep{width:1px;height:20px;background:#30363d;flex-shrink:0;}
+.tin{background:#0d1117;border:1px solid #30363d;color:#e0d0a0;padding:6px 10px;border-radius:6px;font-size:12px;width:65px;text-align:center;}
+.tlb{font-size:12px;color:#8b949e;white-space:nowrap;font-weight:500;}
+.val-lbl{color:#79c0ff; font-weight:bold; font-size:12px; min-width:45px;}
 
 /* CANVAS */
 #canvas-area{flex:1;display:flex;position:relative;overflow:hidden;}
 .cwrap{flex:1;position:relative;overflow:hidden;touch-action:none;}
-#cwrap2{display:none;border-left:2px solid #c9a84c;}
 canvas{display:block;width:100%;height:100%;}
 .dhint{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;pointer-events:none;}
-.dhint svg{opacity:.12;}
 .dhint p{font-size:13px;color:#484f58;text-align:center;line-height:1.6;}
 .ld{position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:10px;background:rgba(13,17,23,.9);font-size:12px;color:#c9a84c;z-index:10;}
 .sp{width:28px;height:28px;border:2px solid #30363d;border-top-color:#c9a84c;border-radius:50%;animation:spin .7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.vlabel{position:absolute;top:8px;left:8px;font-size:10px;color:#c9a84c;background:rgba(0,0,0,.6);padding:3px 9px;border-radius:10px;}
 
 /* BOTTOM CONTROLS */
-#ctrls{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:none;gap:5px;background:rgba(13,17,23,.8);padding:7px 12px;border-radius:28px;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:5;border:1px solid #21262d;}
+#ctrls{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:none;gap:5px;background:rgba(13,17,23,.8);padding:7px 12px;border-radius:28px;backdrop-filter:blur(12px);z-index:5;border:1px solid #21262d;}
 .cb{background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:7px 13px;border-radius:16px;font-size:11px;cursor:pointer;}
-.cb:active{background:#c9a84c;color:#0d1117;}
-
-/* FLASH */
-#flash{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;transition:opacity .1s;z-index:999;}
-
-/* OVERLAY to close menus */
-#overlay{display:none;position:fixed;inset:0;z-index:100;}
-
-/* MODAL */
-#modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;align-items:flex-end;justify-content:center;}
-#modal-bg.show{display:flex;}
-#modal{background:#1c2128;border:1px solid #30363d;border-radius:16px 16px 0 0;padding:20px;width:100%;max-width:480px;}
-#modal h3{color:#c9a84c;font-size:14px;margin-bottom:14px;text-align:center;}
-.mr{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
-.mr label{font-size:12px;color:#8b949e;width:130px;flex-shrink:0;}
-.mr input{flex:1;background:#0d1117;border:1px solid #30363d;color:#e0d0a0;padding:8px 10px;border-radius:6px;font-size:13px;}
-#price-result{background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:12px;margin:10px 0;display:none;}
-.pr-line{font-size:12px;margin-bottom:4px;}
-.mb{background:#c9a84c;color:#0d1117;border:none;padding:10px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;width:100%;margin-top:4px;}
-.mb.sec{background:#21262d;color:#8b949e;margin-top:6px;}
 </style>
 </head>
 <body>
@@ -92,191 +63,133 @@ canvas{display:block;width:100%;height:100%;}
 <div id="topbar">
   <div class="menu-btn" id="mb-file">File</div>
   <div class="menu-btn" id="mb-view">View</div>
-  <div class="menu-btn" id="mb-mode">Mode</div>
-  <div class="menu-btn" id="mb-tools">Tools</div>
-  <div id="title">⬡ STL VIEWER</div>
-  <button id="btn-dl">⬇ STL</button>
+  <div id="title">⬡ MURAD JEWELLERY PRO EXPERT</div>
+  <button id="btn-dl">⬇ STL YUKLAB OLISH</button>
 </div>
 
 <div class="dropdown" id="dd-file">
   <div class="dd-item" id="di-open">📂 Open STL</div>
-  <div class="dd-item" id="di-open2">📂 Open STL 2 (compare)</div>
   <div class="dd-sep"></div>
-  <div class="dd-item" id="di-save">⬇ Save scaled STL</div>
-  <div class="dd-item" id="di-shot">📷 Screenshot PNG</div>
+  <div class="dd-item" id="di-save">⬇ Save STL</div>
 </div>
 <div class="dropdown" id="dd-view">
-  <div class="dd-item" data-view="top">Top</div>
-  <div class="dd-item" data-view="bottom">Bottom</div>
-  <div class="dd-item" data-view="left">Left</div>
-  <div class="dd-item" data-view="right">Right</div>
-  <div class="dd-item" data-view="front">Front</div>
-  <div class="dd-item" data-view="back">Back</div>
-  <div class="dd-sep"></div>
+  <div class="dd-item" data-view="top">Top (Tepadan)</div>
+  <div class="dd-item" data-view="front">Front (Oldindan)</div>
   <div class="dd-item" data-view="reset">↺ Reset</div>
-  <div class="dd-item" id="di-compare">⊞ Compare mode</div>
-  <div class="dd-item" id="di-auto">▶ Auto-rotate</div>
-</div>
-<div class="dropdown" id="dd-mode">
-  <div class="dd-item active" data-mode="shaded">Shaded</div>
-  <div class="dd-item" data-mode="combined">Combined (Shaded+Wire)</div>
-  <div class="dd-item" data-mode="wireframe">Wireframe</div>
-  <div class="dd-item" data-mode="points">Points</div>
-</div>
-<div class="dropdown" id="dd-tools">
-  <div class="dd-item" id="di-price">💰 Narx hisoblash</div>
-  <div class="dd-item" id="di-clip">✂ Kesim (cross-section)</div>
-  <div class="dd-sep"></div>
-  <div class="dd-item" id="di-gold">🟡 Rang: 585 oltin</div>
-  <div class="dd-item" id="di-silver">⚪ Rang: Kumush</div>
-  <div class="dd-item" id="di-g18">🟡 Rang: 750 oltin</div>
-  <div class="dd-item" id="di-dark">⚫ Rang: Qora</div>
 </div>
 
 <div id="overlay"></div>
 <input type="file" id="fi1" accept=".stl" style="display:none">
-<input type="file" id="fi2" accept=".stl" style="display:none">
 
 <div id="info-panel">
   <div class="mass-grid">
-    <div class="mc ag"><div class="ml">Kumush</div><div class="mv" id="m-ag">—</div></div>
-    <div class="mc">   <div class="ml">585 Tillo</div><div class="mv" id="m-585">—</div></div>
-    <div class="mc g18"><div class="ml">750 Tillo</div><div class="mv" id="m-750">—</div></div>
+    <div class="mc" style="border-color:#388bfd;"><div class="ml" style="color:#79c0ff;">Kumush vazni</div><div class="mv" id="m-ag">—</div></div>
+    <div class="mc" style="border-color:#f0d070;"><div class="ml" style="color:#f0d070;">585 Tillo</div><div class="mv" id="m-585">—</div></div>
+    <div class="mc" style="border-color:#ff7b72;"><div class="ml" style="color:#ff7b72;">750 Tillo</div><div class="mv" id="m-750">—</div></div>
   </div>
   <div class="meta">
     <span>Hajm: <b id="m-vol">—</b> mm³</span>
-    <span>Razmer: <b id="m-dims">—</b> mm</span>
-    <span>Ichki Ø: <b id="m-id">—</b> mm</span>
-    <span>Tri: <b id="m-tri">—</b></span>
+    <span>Ichki Ø (Razmer): <b id="m-id">—</b> mm</span>
+    <span>Hozirgi Devor Qalinligi: <b id="m-wall" style="color:#58a6ff;">—</b> mm</span>
   </div>
 </div>
 
 <div id="toolsbar">
   <div class="trow">
-    <span class="tlb">Kesim:</span>
-    <input type="range" id="clip-sl" min="-100" max="100" value="0">
-    <div class="tsep"></div>
-    <span class="tlb">Joriy Ø:</span>
-    <input class="tin" type="number" id="cur-d" placeholder="auto" step="0.5">
+    <span class="tlb">Asl Ø:</span>
+    <input class="tin" type="number" id="cur-d" readonly style="background:#1f242c; color:#888;" title="Fayldan aniqlandi">
+    
     <span class="tlb">→ Yangi Ø:</span>
-    <input class="tin" type="number" id="new-d" placeholder="18.5" step="0.1">
-    <button class="tb on" id="btn-scale" style="font-weight:bold;">↔ Razmerni O'zgartirish</button>
+    <input class="tin" type="number" id="new-d" placeholder="17.5" step="0.1">
+    
+    <div class="tsep"></div>
+    
+    <span class="tlb" style="color:#79c0ff;">Yangi Devor (mm):</span>
+    <input class="tin" type="number" id="manual-wall" step="0.01" min="0.5" max="5.0" style="border-color:#79c0ff;" title="Devor qalinligini qo'lda raqamlar bilan aniq kiriting">
+    
+    <span class="tlb">Slayder (%):</span>
+    <input type="range" id="wall-slider" min="-40" max="40" value="0" step="1" style="accent-color:#79c0ff; width:100px;">
+    <span class="val-lbl" id="wall-val">0%</span>
+    
+    <button class="tb on" id="btn-scale" style="font-weight:bold; background:#c9a84c; color:#0d1117; border:none; border-radius:6px; padding:6px 12px;">↔ Modelni Qayta Hisoblash</button>
+    
+    <div class="tsep"></div>
+    <span class="tlb">Kesim:</span>
+    <input type="range" id="clip-sl" min="-100" max="100" value="0" style="width:50px;">
   </div>
 </div>
 
 <div id="canvas-area">
   <div class="cwrap" id="cwrap1">
     <div class="dhint" id="hint1">
-      <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1">
-        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-        <polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>
-      </svg>
-      <p>File → Open STL<br><span style="font-size:11px;color:#30363d">Aylantirish: bir barmoq<br>Zoom: ikki barmoq / g'ildirak</span></p>
+      <p>Fayl tanlang<br><span style="font-size:12px;color:#c9a84c;">File → Open STL</span></p>
     </div>
-    <div class="ld" id="ld1"><div class="sp"></div>Yuklanmoqda...</div>
+    <div class="ld" id="ld1"><div class="sp"></div>STL hisoblanmoqda...</div>
     <canvas id="c1"></canvas>
-    <div class="vlabel" id="vl1" style="display:none">Model 1</div>
     <div id="ctrls">
       <button class="cb" onclick="setView('top')">Top</button>
       <button class="cb" onclick="setView('front')">Front</button>
-      <button class="cb" onclick="setView('side')">Side</button>
       <button class="cb" onclick="setView('reset')">↺</button>
     </div>
-  </div>
-  <div class="cwrap" id="cwrap2">
-    <div class="dhint" id="hint2"><p style="color:#484f58">File → Open STL 2</p></div>
-    <div class="ld" id="ld2"><div class="sp"></div>Yuklanmoqda...</div>
-    <canvas id="c2"></canvas>
-    <div class="vlabel">Model 2</div>
-  </div>
-</div>
-
-<div id="flash"></div>
-
-<div id="modal-bg">
-  <div id="modal">
-    <h3>💰 Narx hisoblash</h3>
-    <div class="mr"><label>Kumush (so'm/g):</label><input type="number" id="p-ag" placeholder="12 000"></div>
-    <div class="mr"><label>585 tillo (so'm/g):</label><input type="number" id="p-585" placeholder="850 000"></div>
-    <div class="mr"><label>750 tillo (so'm/g):</label><input type="number" id="p-750" placeholder="1 100 000"></div>
-    <div id="price-result">
-      <div style="font-size:10px;color:#484f58;margin-bottom:6px">Hisoblangan (material narxi):</div>
-      <div class="pr-line" id="pr-ag" style="color:#79c0ff"></div>
-      <div class="pr-line" id="pr-585" style="color:#c9a84c"></div>
-      <div class="pr-line" id="pr-750" style="color:#f0d070"></div>
-    </div>
-    <button class="mb" id="calc-p">Hisobla</button>
-    <button class="mb sec" id="close-m">Yopish</button>
   </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-// ── STATE
-let M=[null,null], SC=[], CA=[], RE=[];
-let rotX=-20,rotY=30,zoom=1,panX=0,panY=0;
-let autoRot=false, clipOn=false, compareOn=false;
-let curVol=0, curTri=0, curBuf=null;
-let renderMode='shaded';
-let matColor='#c9a84c';
+let M=null, SC=null, CA=null, RE=null;
+let rotX=-20, rotY=30, zoom=1, panX=0, panY=0;
+let clipOn=false, curVol=0, curTri=0, curBuf=null, baseVol=0;
+let initialWallThick=0, currentWallThick=0, initialInnerD=0;
 const clipPlane=new THREE.Plane(new THREE.Vector3(0,1,0),0);
 let clipVal=0;
 
-// ── RENDERERS
-function mkRenderer(cid,idx){
-  const canvas=document.getElementById(cid);
+function initViewer(){
+  const canvas=document.getElementById('c1');
   const wrap=canvas.parentElement;
-  const r=new THREE.WebGLRenderer({canvas,antialias:true,preserveDrawingBuffer:true});
-  r.setPixelRatio(Math.min(devicePixelRatio,2));
-  r.setClearColor(0x0d1117);
-  r.localClippingEnabled=true;
-  const s=new THREE.Scene();
-  const c=new THREE.PerspectiveCamera(45,1,.01,1e6);
-  c.position.z=100;
-  s.add(new THREE.AmbientLight(0xffffff,.4));
-  const d1=new THREE.DirectionalLight(0xfff5e0,.9);d1.position.set(1,2,3);s.add(d1);
-  const d2=new THREE.DirectionalLight(0xb0c8ff,.35);d2.position.set(-2,-1,-2);s.add(d2);
-  const d3=new THREE.DirectionalLight(0xffffff,.15);d3.position.set(0,-3,1);s.add(d3);
-  SC[idx]=s; CA[idx]=c; RE[idx]=r;
-  function rsz(){const w=wrap.clientWidth,h=wrap.clientHeight;r.setSize(w,h,false);c.aspect=w/h;c.updateProjectionMatrix();}
+  RE=new THREE.WebGLRenderer({canvas,antialias:true,preserveDrawingBuffer:true});
+  RE.setPixelRatio(Math.min(devicePixelRatio,2));
+  RE.setClearColor(0x0d1117);
+  RE.localClippingEnabled=true;
+  SC=new THREE.Scene();
+  CA=new THREE.PerspectiveCamera(45,wrap.clientWidth/wrap.clientHeight,.01,1e6);
+  SC.add(new THREE.AmbientLight(0xffffff,.45));
+  const d1=new THREE.DirectionalLight(0xfff5e0,.85); d1.position.set(1,3,2); SC.add(d1);
+  const d2=new THREE.DirectionalLight(0xb0c8ff,.35); d2.position.set(-2,-2,-1); SC.add(d2);
+  
+  function rsz(){RE.setSize(wrap.clientWidth,wrap.clientHeight,false); CA.aspect=wrap.clientWidth/wrap.clientHeight; CA.updateProjectionMatrix();}
   rsz(); new ResizeObserver(rsz).observe(wrap);
 }
-mkRenderer('c1',0); mkRenderer('c2',1);
+initViewer();
 
-// ── LOOP
 function loop(){
   requestAnimationFrame(loop);
-  if(autoRot) rotY+=.35;
-  for(let i=0;i<2;i++){
-    if(!M[i]){RE[i].render(SC[i],CA[i]);continue;}
-    M[i].rotation.x=THREE.MathUtils.degToRad(rotX);
-    M[i].rotation.y=THREE.MathUtils.degToRad(rotY);
-    CA[i].position.z=100*zoom;
-    M[i].position.x=panX; M[i].position.y=panY;
-    if(clipOn&&i===0){
-      const b=M[i].geometry.boundingBox;
-      clipPlane.constant=(clipVal/100)*(b.max.y-b.min.y)*.5;
-      RE[i].clippingPlanes=[clipPlane];
-    } else RE[i].clippingPlanes=[];
-    RE[i].render(SC[i],CA[i]);
-  }
+  if(!M) return;
+  M.rotation.x=THREE.MathUtils.degToRad(rotX);
+  M.rotation.y=THREE.MathUtils.degToRad(rotY);
+  CA.position.z=100*zoom;
+  M.position.x=panX; M.position.y=panY;
+  if(clipOn){
+    const b=M.geometry.boundingBox;
+    clipPlane.constant=(clipVal/100)*(b.max.y-b.min.y)*.5;
+    RE.clippingPlanes=[clipPlane];
+  } else RE.clippingPlanes=[];
+  RE.render(SC,CA);
 }
 loop();
 
-// ── PARSE STL
 function parseSTL(buf){
   const v=new DataView(buf);
   const n=v.getUint32(80,true);
-  const pos=new Float32Array(n*9),nor=new Float32Array(n*9);
-  let vol=0,off=84;
+  const pos=new Float32Array(n*9), nor=new Float32Array(n*9);
+  let vol=0, off=84;
   for(let i=0;i<n;i++){
-    const nx=v.getFloat32(off,true),ny=v.getFloat32(off+4,true),nz=v.getFloat32(off+8,true);off+=12;
+    const nx=v.getFloat32(off,true), ny=v.getFloat32(off+4,true), nz=v.getFloat32(off+8,true); off+=12;
     const vt=[];
     for(let j=0;j<3;j++){
-      const x=v.getFloat32(off,true),y=v.getFloat32(off+4,true),z=v.getFloat32(off+8,true);
-      pos[i*9+j*3]=x;pos[i*9+j*3+1]=y;pos[i*9+j*3+2]=z;
-      nor[i*9+j*3]=nx;nor[i*9+j*3+1]=ny;nor[i*9+j*3+2]=nz;
-      vt.push([x,y,z]);off+=12;
+      const x=v.getFloat32(off,true), y=v.getFloat32(off+4,true), z=v.getFloat32(off+8,true);
+      pos[i*9+j*3]=x; pos[i*9+j*3+1]=y; pos[i*9+j*3+2]=z;
+      nor[i*9+j*3]=nx; nor[i*9+j*3+1]=ny; nor[i*9+j*3+2]=nz;
+      vt.push([x,y,z]); off+=12;
     }
     off+=2;
     vol+=(vt[0][0]*(vt[1][1]*vt[2][2]-vt[1][2]*vt[2][1])+vt[0][1]*(vt[1][2]*vt[2][0]-vt[1][0]*vt[2][2])+vt[0][2]*(vt[1][0]*vt[2][1]-vt[1][1]*vt[2][0]))/6;
@@ -284,33 +197,25 @@ function parseSTL(buf){
   return{pos,nor,n,vol:Math.abs(vol)};
 }
 
-// ── ESTIMATE INNER DIAMETER
-function estimateInnerDia(positions, bbox){
+function calculateMetrics(positions, bbox){
   const midZ=(bbox.min.z+bbox.max.z)/2;
-  const zTol=(bbox.max.z-bbox.min.z)*0.05;
-  let minR=Infinity;
+  const zTol=(bbox.max.z-bbox.min.z)*0.1;
+  let minR=Infinity, maxR=0;
   for(let i=0;i<positions.length;i+=3){
     const z=positions[i+2];
     if(Math.abs(z-midZ)>zTol) continue;
     const x=positions[i], y=positions[i+1];
     const r=Math.sqrt(x*x+y*y);
     if(r<minR) minR=r;
+    if(r>maxR && r < (bbox.max.x * 1.2)) maxR=r;
   }
-  return isFinite(minR)?minR*2:null;
+  const innerD = isFinite(minR) ? minR*2 : (bbox.max.x - bbox.min.x) * 0.75;
+  const wallThick = isFinite(maxR) && isFinite(minR) ? (maxR - minR) : 1.30;
+  return { innerD, wallThick };
 }
 
-// ── MAKE MATERIAL
-function mkMat(col, idx){
-  if(renderMode==='wireframe')
-    return new THREE.MeshBasicMaterial({color:col,wireframe:true});
-  if(renderMode==='points')
-    return new THREE.PointsMaterial({color:col,size:.3});
-  return new THREE.MeshPhongMaterial({color:new THREE.Color(col),specular:0xffffff,shininess:90,side:THREE.DoubleSide});
-}
-
-// ── LOAD STL
-function loadSTL(buf, name, idx){
-  document.getElementById('ld'+(idx+1)).style.display='flex';
+function loadSTL(buf, name){
+  document.getElementById('ld1').style.display='flex';
   setTimeout(()=>{
     try{
       const{pos,nor,n,vol}=parseSTL(buf);
@@ -320,305 +225,187 @@ function loadSTL(buf, name, idx){
       geo.computeBoundingBox();
       const b=geo.boundingBox;
 
-      const col=idx===0?matColor:'#58a6ff';
-      let obj;
-      if(renderMode==='points'){
-        obj=new THREE.Points(geo,new THREE.PointsMaterial({color:col,size:.3}));
-      } else {
-        obj=new THREE.Mesh(geo,mkMat(col,idx));
-        if(renderMode==='combined'){
-          const wf=new THREE.LineSegments(new THREE.WireframeGeometry(geo),new THREE.LineBasicMaterial({color:'#444',opacity:.3,transparent:true}));
-          obj.add(wf);
-        }
-      }
+      const mat=new THREE.MeshPhongMaterial({color:0xc9a84c,specular:0xffffff,shininess:80,side:THREE.DoubleSide});
+      if(M) SC.remove(M);
+      M=new THREE.Mesh(geo,mat);
+      M.position.set(-(b.min.x+b.max.x)/2,-(b.min.y+b.max.y)/2,-(b.min.z+b.max.z)/2);
+      SC.add(M);
 
-      if(M[idx]) SC[idx].remove(M[idx]);
-      M[idx]=obj;
-      obj.position.set(-(b.min.x+b.max.x)/2,-(b.min.y+b.max.y)/2,-(b.min.z+b.max.z)/2);
-      SC[idx].add(obj);
+      curBuf=buf; baseVol=vol; curVol=vol; curTri=n;
+      const sz=Math.max(b.max.x-b.min.x,b.max.y-b.min.y,b.max.z-b.min.z);
+      zoom=sz/75; rotX=-20; rotY=30;
 
-      if(idx===0){
-        curBuf=buf; curVol=vol; curTri=n;
-        const sz=Math.max(b.max.x-b.min.x,b.max.y-b.min.y,b.max.z-b.min.z);
-        zoom=sz/80; rotX=-20; rotY=30; panX=0; panY=0;
+      const met = calculateMetrics(pos, b);
+      initialInnerD = met.innerD;
+      initialWallThick = met.wallThick;
+      currentWallThick = met.wallThick;
 
-        // Estimate inner diameter
-        const innerD=estimateInnerDia(pos,b);
-        const innerTxt=innerD?(innerD.toFixed(1)+' mm'):'—';
-        if(innerD) document.getElementById('cur-d').value=innerD.toFixed(1);
+      document.getElementById('cur-d').value=initialInnerD.toFixed(2);
+      document.getElementById('new-d').value=initialInnerD.toFixed(1);
+      
+      // INPUT VA SLAYDERLARNI BOSHILANG'ICH QIYMATI
+      document.getElementById('manual-wall').value=initialWallThick.toFixed(2);
+      document.getElementById('wall-slider').value=0;
+      document.getElementById('wall-val').textContent="0%";
 
-        updateInfo(n,vol,b,name,innerTxt);
-        document.getElementById('info-panel').style.display='block';
-        document.getElementById('toolsbar').style.display='block';
-        document.getElementById('ctrls').style.display='flex';
-        document.getElementById('hint1').style.display='none';
-        document.getElementById('vl1').style.display='block';
-        document.getElementById('btn-dl').style.display='block';
-      } else {
-        document.getElementById('hint2').style.display='none';
-      }
+      updatePanel();
+      document.getElementById('info-panel').style.display='block';
+      document.getElementById('toolsbar').style.display='block';
+      document.getElementById('hint1').style.display='none';
+      document.getElementById('btn-dl').style.display='block';
     }catch(e){alert('Xato: '+e.message);}
-    document.getElementById('ld'+(idx+1)).style.display='none';
-  },60);
+    document.getElementById('ld1').style.display='none';
+  },50);
 }
 
-function updateInfo(n,vol,b,name,innerD){
-  document.getElementById('m-ag').textContent=(vol*10.5/1000).toFixed(2)+' g';
-  document.getElementById('m-585').textContent=(vol*13.0/1000).toFixed(2)+' g';
-  document.getElementById('m-750').textContent=(vol*15.5/1000).toFixed(2)+' g';
-  document.getElementById('m-vol').textContent=Math.round(vol);
-  document.getElementById('m-tri').textContent=n.toLocaleString();
-  const b2=M[0]?M[0].geometry.boundingBox:b;
-  document.getElementById('m-dims').textContent=`${(b2.max.x-b2.min.x).toFixed(1)}×${(b2.max.y-b2.min.y).toFixed(1)}×${(b2.max.z-b2.min.z).toFixed(1)}`;
-  document.getElementById('m-id').textContent=innerD||'—';
+function updatePanel(){
+  document.getElementById('m-ag').textContent=(curVol*10.5/1000).toFixed(2)+' g';
+  document.getElementById('m-585').textContent=(curVol*13.0/1000).toFixed(2)+' g';
+  document.getElementById('m-750').textContent=(curVol*15.5/1000).toFixed(2)+' g';
+  document.getElementById('m-vol').textContent=Math.round(curVol);
+  document.getElementById('m-id').textContent=parseFloat(document.getElementById('cur-d').value).toFixed(2);
+  document.getElementById('m-wall').textContent=currentWallThick.toFixed(2);
 }
 
-// ── APPLY RENDER MODE
-function applyMode(){
-  M.forEach((m,i)=>{
-    if(!m) return;
-    const col=i===0?matColor:'#58a6ff';
-    const geo=m.geometry||m.children[0]?.geometry;
-    if(!geo) return;
-    SC[i].remove(m);
-    let obj;
-    if(renderMode==='points'){
-      obj=new THREE.Points(geo,new THREE.PointsMaterial({color:col,size:.3}));
-    } else {
-      const mat=renderMode==='wireframe'
-        ?new THREE.MeshBasicMaterial({color:col,wireframe:true})
-        :new THREE.MeshPhongMaterial({color:new THREE.Color(col),specular:0xffffff,shininess:90,side:THREE.DoubleSide});
-      obj=new THREE.Mesh(geo,mat);
-      if(renderMode==='combined'){
-        const wf=new THREE.LineSegments(new THREE.WireframeGeometry(geo),new THREE.LineBasicMaterial({color:'#444',opacity:.3,transparent:true}));
-        obj.add(wf);
-      }
-    }
-    obj.position.copy(M[i].position);
-    M[i]=obj;
-    SC[i].add(obj);
-  });
-}
-
-// ── SAVE STL (binary)
-function saveSTL(){
-  if(!curBuf){alert('Fayl ochilmagan');return;}
-  const a=document.createElement('a');
-  const blob=new Blob([curBuf],{type:'application/octet-stream'});
-  a.href=URL.createObjectURL(blob);
-  a.download='model-scaled.stl';
-  a.click();
-}
-
-// ── PROPORCIONAL SCALE FUNKSIYASI (MUKAMMALLASHTIRILGAN)
-function doScale(){
-  if(!M[0]){alert('Avval fayl oching');return;}
-  const curD=parseFloat(document.getElementById('cur-d').value);
+// ── DINAMIK PROFESSIONAL TRANFORMASIYa
+function doAdvancedScale(){
+  if(!M){alert('Fayl ochilmagan!');return;}
+  const curD=initialInnerD;
   const newD=parseFloat(document.getElementById('new-d').value);
-  if(!curD||!newD||curD<=0||newD<=0){alert('Ikkala diametrni kiriting');return;}
+  if(!newD||newD<=0){alert('Yangi o\'lchamni kiriting');return;}
   
-  const s=newD/curD; // Kattalashish koeffitsiyenti
-  const geo=M[0].geometry;
+  // QO'LDA YoZILGAN VALUEni TEKSHIRISh
+  const mWall = parseFloat(document.getElementById('manual-wall').value);
+  let wallFactor = 1;
   
-  // Z o'qi bilan birga to'liq 3D proporsiyada masshtablash
-  geo.scale(s, s, s); 
+  if (mWall && mWall > 0 && Math.abs(mWall - currentWallThick) > 0.001) {
+    // Agar odam qo'lda mm yozgan bo'lsa, o'shanga qarab foiz hisoblanadi
+    wallFactor = mWall / initialWallThick;
+  } else {
+    // Slayder bo'yicha ketgan bo'lsa
+    const wPct=parseInt(document.getElementById('wall-slider').value);
+    wallFactor = 1 + (wPct/100);
+  }
+
+  const sizeFactor=newD/curD; 
+
+  const{pos,nor,n,vol}=parseSTL(curBuf);
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+  geo.setAttribute('normal',new THREE.BufferAttribute(nor,3));
+
+  const positionAttr = geo.attributes.position;
+  for (let i = 0; i < positionAttr.count; i++) {
+    let x = positionAttr.getX(i);
+    let y = positionAttr.getY(i);
+    let z = positionAttr.getZ(i);
+
+    let angle = Math.atan2(y, x);
+    let radius = Math.sqrt(x*x + y*y);
+    
+    let theoreticalInnerR = curD / 2;
+    if (radius > theoreticalInnerR) {
+      let delta = radius - theoreticalInnerR;
+      radius = theoreticalInnerR + (delta * wallFactor);
+    } else {
+      radius = radius * wallFactor;
+    }
+
+    radius *= sizeFactor;
+    z *= wallFactor; 
+
+    positionAttr.setXYZ(i, radius * Math.cos(angle), radius * Math.sin(angle), z);
+  }
+  
+  geo.computeVertexNormals();
   geo.computeBoundingBox();
+  const b=geo.boundingBox;
+
+  M.geometry.dispose();
+  M.geometry=geo;
+  M.position.set(-(b.min.x+b.max.x)/2,-(b.min.y+b.max.y)/2,-(b.min.z+b.max.z)/2);
+
+  curVol = vol * (sizeFactor * sizeFactor * wallFactor);
+  currentWallThick = initialWallThick * wallFactor;
+  document.getElementById('cur-d').value=newD.toFixed(2);
+  document.getElementById('manual-wall').value=currentWallThick.toFixed(2);
   
-  // Hajmni geometrik proporsiyada qayta hisoblash (Hajm s kubiga proporsional)
-  curVol=curVol*(s*s*s);
-  
-  // Yangi masshtablangan koordinatalar bilan STL buferini qaytadan yig'ish
-  const pos=geo.attributes.position.array;
-  const nor=geo.attributes.normal.array;
-  const n=pos.length/9;
-  const buf=new ArrayBuffer(84+n*50);
-  const view=new DataView(buf);
-  
-  // STL Header yaratish
+  // Yangi slayder foizini o'zgartirib qo'yamiz
+  const calculatedPct = Math.round((wallFactor - 1) * 100);
+  document.getElementById('wall-slider').value = calculatedPct;
+  document.getElementById('wall-val').textContent = (calculatedPct > 0 ? "+" : "") + calculatedPct + "%";
+
+  const finalPos=geo.attributes.position.array;
+  const finalNor=geo.attributes.normal.array;
+  const outBuf=new ArrayBuffer(84+n*50);
+  const view=new DataView(outBuf);
   const enc=new TextEncoder();
-  const hdr=enc.encode('Murad Jewellery STL - 3D Scaled');
-  new Uint8Array(buf,0,80).set(hdr);
+  new Uint8Array(outBuf,0,80).set(enc.encode('Murad Jewellery Precision Export'));
   view.setUint32(80,n,true);
   
   let off=84;
   for(let i=0;i<n;i++){
-    view.setFloat32(off,nor[i*9],true);view.setFloat32(off+4,nor[i*9+1],true);view.setFloat32(off+8,nor[i*9+2],true);off+=12;
-    for(let j=0;j<3;j++){view.setFloat32(off,pos[i*9+j*3],true);view.setFloat32(off+4,pos[i*9+j*3+1],true);view.setFloat32(off+8,pos[i*9+j*3+2],true);off+=12;}
+    view.setFloat32(off,finalNor[i*9],true);view.setFloat32(off+4,finalNor[i*9+1],true);view.setFloat32(off+8,finalNor[i*9+2],true);off+=12;
+    for(let j=0;j<3;j++){view.setFloat32(off,finalPos[i*9+j*3],true);view.setFloat32(off+4,finalPos[i*9+j*3+1],true);view.setFloat32(off+8,finalPos[i*9+j*3+2],true);off+=12;}
     view.setUint16(off,0,true);off+=2;
   }
+  updatePanel();
   
-  curBuf=buf;
-  const b=geo.boundingBox;
-  document.getElementById('m-id').textContent=newD.toFixed(1)+' mm';
-  document.getElementById('cur-d').value=newD.toFixed(1);
-  
-  // Ma'lumotlar panelini yangilash
-  updateInfo(curTri,curVol,b,'scaled →Ø'+newD,newD.toFixed(1)+' mm');
-  alert(`✓ Uzuk muvaffaqiyatli o'zgartirildi!\nEski razmer: ${curD}mm → Yangi razmer: ${newD}mm.\nVazn va hajm qayta hisoblandi. Yuklab olishingiz mumkin.`);
+  const saveAction = () => {
+    const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([outBuf],{type:'application/octet-stream'}));
+    a.download=`ring_R${newD.toFixed(1)}_W${currentWallThick.toFixed(2)}mm.stl`; a.click();
+  };
+  window.lastSaveFunc = saveAction;
+
+  alert(`✓ Qayta hisoblandi!\nYangi O'lcham: ${newD.toFixed(2)} mm\nDevor qalinligi: ${currentWallThick.toFixed(2)} mm\nKumush: ${(curVol*10.5/1000).toFixed(2)} g`);
 }
 
-// ── CONTROLS
-let drag=false,lx=0,ly=0;
-['c1','c2'].forEach(id=>{
-  const c=document.getElementById(id);
-  c.addEventListener('mousedown',e=>{drag=true;lx=e.clientX;ly=e.clientY;});
-  c.addEventListener('wheel',e=>{zoom*=e.deltaY>0?1.1:.9;zoom=Math.max(.001,Math.min(500,zoom));},{ passive:true });
-  c.addEventListener('contextmenu',e=>e.preventDefault());
+// SLAYDER SURLGANDA INPUT YANGILANISHI
+document.getElementById('wall-slider').addEventListener('input', function(){
+  let v = parseInt(this.value);
+  document.getElementById('wall-val').textContent = (v > 0 ? "+" : "") + v + "%";
+  
+  if(initialWallThick) {
+    let projectedWall = initialWallThick * (1 + v/100);
+    document.getElementById('manual-wall').value = projectedWall.toFixed(2);
+  }
 });
+
+// ── WINDOW EVENTS
+let drag=false, lx=0, ly=0;
+window.addEventListener('mousedown',e=>{if(e.target.id==='c1'){drag=true; lx=e.clientX; ly=e.clientY;}});
 window.addEventListener('mouseup',()=>drag=false);
 window.addEventListener('mousemove',e=>{
   if(!drag)return;
-  if(e.buttons===1){rotY+=(e.clientX-lx)*.5;rotX+=(e.clientY-ly)*.5;}
-  else if(e.buttons===2){panX+=(e.clientX-lx)*.05*zoom;panY-=(e.clientY-ly)*.05*zoom;}
-  lx=e.clientX;ly=e.clientY;
+  if(e.buttons===1){rotY+=(e.clientX-lx)*.5; rotX+=(e.clientY-ly)*.5;}
+  lx=e.clientX; ly=e.clientY;
 });
-let tx=0,ty=0,td=null;
-function addTouch(el){
-  el.addEventListener('touchstart',e=>{e.preventDefault();if(e.touches.length===1){tx=e.touches[0].clientX;ty=e.touches[0].clientY;}if(e.touches.length===2)td=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);},{passive:false});
-  el.addEventListener('touchmove',e=>{e.preventDefault();if(e.touches.length===1){rotY+=(e.touches[0].clientX-tx)*.5;rotX+=(e.touches[0].clientY-ty)*.5;tx=e.touches[0].clientX;ty=e.touches[0].clientY;}if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);if(td){zoom*=td/d;zoom=Math.max(.001,Math.min(500,zoom));}td=d;}},{passive:false});
-}
-addTouch(document.getElementById('c1'));
-addTouch(document.getElementById('c2'));
+document.getElementById('c1').addEventListener('wheel',e=>{zoom*=e.deltaY>0?1.1:.9; zoom=Math.max(.01,Math.min(100,zoom));},{passive:true});
 
-// ── VIEW
 function setView(v){
-  switch(v){
-    case'top':rotX=-90;rotY=0;break;
-    case'bottom':rotX=90;rotY=0;break;
-    case'front':rotX=0;rotY=0;break;
-    case'back':rotX=0;rotY=180;break;
-    case'left':rotX=0;rotY=-90;break;
-    case'right':rotX=0;rotY=90;break;
-    case'side':rotX=0;rotY=90;break;
-    case'reset':
-      rotX=-20;rotY=30;panX=0;panY=0;
-      if(M[0]){const b=M[0].geometry.boundingBox;const sz=Math.max(b.max.x-b.min.x,b.max.y-b.min.y,b.max.z-b.min.z);zoom=sz/80;}
-      break;
-  }
+  if(v==='top'){rotX=-90; rotY=0;}
+  if(v==='front'){rotX=0; rotY=0;}
+  if(v==='reset'){rotX=-20; rotY=30; zoom=1;}
   closeMenus();
 }
+function closeMenus(){ document.querySelectorAll('.dropdown').forEach(d=>d.classList.remove('show')); document.getElementById('overlay').style.display='none';}
 
-// ── MENUS
-function closeMenus(){
-  document.querySelectorAll('.dropdown').forEach(d=>d.classList.remove('show'));
-  document.querySelectorAll('.menu-btn').forEach(b=>b.classList.remove('open'));
-  document.getElementById('overlay').style.display='none';
-}
-['file','view','mode','tools'].forEach(k=>{
+['file','view'].forEach(k=>{
   document.getElementById('mb-'+k).addEventListener('click',function(e){
-    e.stopPropagation();
-    const dd=document.getElementById('dd-'+k);
-    const isOpen=dd.classList.contains('show');
-    closeMenus();
-    if(!isOpen){
-      dd.classList.add('show');
-      this.classList.add('open');
-      const r=this.getBoundingClientRect();
-      dd.style.left=r.left+'px';
-      document.getElementById('overlay').style.display='block';
-    }
+    e.stopPropagation(); const dd=document.getElementById('dd-'+k); const isOpen=dd.classList.contains('show'); closeMenus();
+    if(!isOpen){dd.classList.add('show'); dd.style.left=this.getBoundingClientRect().left+'px'; document.getElementById('overlay').style.display='block';}
   });
 });
 document.getElementById('overlay').addEventListener('click',closeMenus);
-
-// File menu
 document.getElementById('di-open').addEventListener('click',()=>{document.getElementById('fi1').click();closeMenus();});
-document.getElementById('di-open2').addEventListener('click',()=>{
-  if(!compareOn){compareOn=true;document.getElementById('cwrap2').style.display='block';}
-  document.getElementById('fi2').click();closeMenus();
-});
-document.getElementById('di-save').addEventListener('click',()=>{saveSTL();closeMenus();});
-document.getElementById('di-shot').addEventListener('click',()=>{
-  if(!M[0])return;
-  RE[0].render(SC[0],CA[0]);
-  const url=document.getElementById('c1').toDataURL('image/png');
-  const a=document.createElement('a');a.href=url;a.download='stl-render.png';a.click();
-  const fl=document.getElementById('flash');fl.style.opacity='.8';setTimeout(()=>fl.style.opacity='0',200);
-  closeMenus();
-});
-document.getElementById('btn-dl').addEventListener('click',saveSTL);
+document.getElementById('btn-dl').addEventListener('click',()=>{if(window.lastSaveFunc) window.lastSaveFunc(); else alert('Avval modelni qayta hisoblang!');});
+document.getElementById('di-save').addEventListener('click',()=>{if(window.lastSaveFunc) window.lastSaveFunc(); else alert('Avval modelni qayta hisoblang!'); closeMenus();});
 
-// View menu
-document.querySelectorAll('[data-view]').forEach(el=>{
-  el.addEventListener('click',()=>setView(el.dataset.view));
-});
-document.getElementById('di-compare').addEventListener('click',()=>{
-  compareOn=!compareOn;
-  document.getElementById('cwrap2').style.display=compareOn?'block':'none';
-  document.getElementById('di-compare').textContent=compareOn?'✕ Compare yopish':'⊞ Compare mode';
-  closeMenus();
-});
-document.getElementById('di-auto').addEventListener('click',function(){
-  autoRot=!autoRot;
-  this.textContent=autoRot?'⏸ Auto-rotate':'▶ Auto-rotate';
-});
-
-// Mode menu
-document.querySelectorAll('[data-mode]').forEach(el=>{
-  el.addEventListener('click',()=>{
-    renderMode=el.dataset.mode;
-    document.querySelectorAll('[data-mode]').forEach(e=>e.classList.remove('active'));
-    el.classList.add('active');
-    applyMode();
-    closeMenus();
-  });
-});
-
-// Tools menu
-document.getElementById('di-price').addEventListener('click',()=>{document.getElementById('modal-bg').classList.add('show');closeMenus();});
-document.getElementById('di-clip').addEventListener('click',function(){
-  clipOn=!clipOn;
-  this.textContent=clipOn?'✂ Kesim (yopish)':'✂ Kesim (cross-section)';
-  closeMenus();
-});
-['gold','silver','g18','dark'].forEach(k=>{
-  document.getElementById('di-'+k).addEventListener('click',()=>{
-    const cols={gold:'#c9a84c',silver:'#c0c0c0',g18:'#f0d070',dark:'#333'};
-    matColor=cols[k];
-    if(M[0])M[0].material.color?.set(matColor);
-    closeMenus();
-  });
-});
-
-// File inputs
 document.getElementById('fi1').addEventListener('change',e=>{
-  const f=e.target.files[0];if(!f)return;
-  const r=new FileReader();r.onload=ev=>loadSTL(ev.target.result,f.name,0);r.readAsArrayBuffer(f);
-  e.target.value='';
+  const f=e.target.files[0]; if(f){const r=new FileReader(); r.onload=ev=>loadSTL(ev.target.result,f.name); r.readAsArrayBuffer(f);}
 });
-document.getElementById('fi2').addEventListener('change',e=>{
-  const f=e.target.files[0];if(!f)return;
-  const r=new FileReader();r.onload=ev=>loadSTL(ev.target.result,f.name,1);r.readAsArrayBuffer(f);
-  e.target.value='';
-});
-
-// Drag & drop
-document.getElementById('cwrap1').addEventListener('dragover',e=>e.preventDefault());
-document.getElementById('cwrap1').addEventListener('drop',e=>{e.preventDefault();const f=e.dataTransfer.files[0];if(!f||!f.name.toLowerCase().endsWith('.stl'))return;const r=new FileReader();r.onload=ev=>loadSTL(ev.target.result,f.name,0);r.readAsArrayBuffer(f);});
-
-// Clip slider
-document.getElementById('clip-sl').addEventListener('input',function(){clipVal=parseInt(this.value);});
-
-// Scale trigger
-document.getElementById('btn-scale').addEventListener('click',doScale);
-
-// Price modal
-document.getElementById('calc-p').addEventListener('click',()=>{
-  if(!curVol){alert('Avval STL faylni oching');return;}
-  const mAg=curVol*10.5/1000,m5=curVol*13.0/1000,m7=curVol*15.5/1000;
-  const pA=parseFloat(document.getElementById('p-ag').value)||0;
-  const p5=parseFloat(document.getElementById('p-585').value)||0;
-  const p7=parseFloat(document.getElementById('p-750').value)||0;
-  const f=n=>Math.round(n).toLocaleString();
-  document.getElementById('pr-ag').textContent=`Kumush: ${mAg.toFixed(2)}g × ${f(pA)} = ${f(mAg*pA)} so'm`;
-  document.getElementById('pr-585').textContent=`585: ${m5.toFixed(2)}g × ${f(p5)} = ${f(m5*p5)} so'm`;
-  document.getElementById('pr-750').textContent=`750: ${m7.toFixed(2)}g × ${f(p7)} = ${f(m7*p7)} so'm`;
-  document.getElementById('price-result').style.display='block';
-});
-document.getElementById('close-m').addEventListener('click',()=>document.getElementById('modal-bg').classList.remove('show'));
-
-// PWA
-if('serviceWorker' in navigator)navigator.serviceWorker.register('stl-sw.js').catch(()=>{});
+document.getElementById('clip-sl').addEventListener('input',function(){clipVal=parseInt(this.value); clipOn=clipVal!==0;});
+document.getElementById('btn-scale').addEventListener('click', doAdvancedScale);
 </script>
 </body>
 </html>
