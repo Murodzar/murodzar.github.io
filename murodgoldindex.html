@@ -653,7 +653,7 @@ function proba(metal){const m=(metal||'').match(/\d{3}/);return m?m[0]:'';}
 const VIEWS=['katalog','xizmatlar','buyurtmam','haqimizda','aloqa'];
 let currentView='katalog';
 
-function go(id){
+function go(id, fromPop){
   if(currentView===id) return;
   currentView=id;
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
@@ -662,10 +662,15 @@ function go(id){
     b.classList.toggle('on', VIEWS[i]===id);
   });
   window.scrollTo({top:0,behavior:'smooth'});
-  // close mobile if open
   if(document.getElementById('mob-menu').classList.contains('open')) toggleMob();
   triggerReveal();
+  if(!fromPop) history.pushState({view:id},'','#'+id);
 }
+
+window.addEventListener('popstate',e=>{
+  const id=(e.state&&e.state.view)||'katalog';
+  go(id, true);
+});
 
 /* ===== MOBILE MENU ===== */
 function toggleMob(){
@@ -875,6 +880,11 @@ function triggerReveal(){
 }
 
 /* ===== INIT ===== */
+(function(){
+  const hash=location.hash.replace('#','');
+  if(VIEWS.includes(hash)) go(hash, true);
+  history.replaceState({view:currentView},'','#'+currentView);
+})();
 loadCatalog();
 triggerReveal();
 </script>
