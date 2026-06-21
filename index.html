@@ -200,94 +200,6 @@ textarea.form-input{resize:vertical;min-height:70px;}
 #img-viewer-nav button{background:rgba(201,168,76,0.12);border:1px solid var(--gold);color:var(--gold);padding:6px 16px;font-size:16px;cursor:pointer;}
 #img-viewer-counter{font-size:11px;color:var(--mid);font-family:'DM Mono',monospace;}
 
-/* CUSTOMER */
-#screen-customer{background:var(--dark);}
-#screen-customer.active{display:block;}
-/* ===== MIJOZLAR BO'LIMI — yangi premium dizayn ===== */
-.cust-header{background:linear-gradient(180deg,#221a12 0%,var(--dark2) 100%);border-bottom:1px solid transparent;border-image:linear-gradient(90deg,transparent,rgba(201,168,76,0.5),transparent) 1;padding:13px 18px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
-.cust-header-logo{display:flex;align-items:center;gap:11px;}
-.cust-header-logo img{width:38px;height:38px;object-fit:contain;border-radius:50%;border:1px solid rgba(201,168,76,0.4);}
-.cust-brand{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;color:var(--gold-light);letter-spacing:0.01em;line-height:1;}
-.cust-brand-sub{font-size:8px;color:var(--mid);letter-spacing:0.28em;text-transform:uppercase;margin-top:3px;}
-.cust-btn-back{background:transparent;color:var(--mid);border:1px solid rgba(107,90,62,0.35);padding:7px 13px;font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;transition:all 0.2s;border-radius:2px;}
-.cust-btn-back:hover{color:var(--gold-light);border-color:rgba(201,168,76,0.4);}
-.cust-tabs{display:flex;border-bottom:1px solid rgba(201,168,76,0.12);background:var(--dark2);position:sticky;top:65px;z-index:49;}
-.cust-tab{flex:1;padding:13px 6px;font-size:10px;letter-spacing:0.05em;text-transform:uppercase;color:var(--mid);cursor:pointer;border-bottom:2px solid transparent;text-align:center;transition:all 0.2s;background:none;border-top:none;border-left:none;border-right:none;font-family:'DM Mono',monospace;}
-.cust-tab:hover{color:var(--gold-light);}
-.cust-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
-.cust-main{padding:0 18px 40px;max-width:760px;margin:0 auto;}
-.cust-section{display:none;animation:custFade 0.4s ease;}
-.cust-section.active{display:block;}
-@keyframes custFade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
-
-/* Hero */
-.cust-hero{padding:30px 0 22px;border-bottom:1px solid rgba(201,168,76,0.1);margin-bottom:22px;}
-.cust-hero .eyebrow{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.32em;text-transform:uppercase;color:var(--gold);margin-bottom:11px;}
-.cust-hero h1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:38px;line-height:1.05;color:var(--cream);margin-bottom:10px;}
-.cust-hero p{font-size:12px;color:var(--mid);line-height:1.7;max-width:440px;}
-
-/* Hallmark (proba tamg'asi) — signature element */
-.hallmark{display:inline-flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold-light);border:1px solid rgba(201,168,76,0.35);padding:3px 9px;border-radius:20px;background:rgba(201,168,76,0.04);white-space:nowrap;}
-
-/* Filter */
-.filter-row{display:flex;gap:7px;margin-bottom:18px;flex-wrap:wrap;}
-#cust-catalog .filter-btn{padding:7px 15px;font-size:10px;letter-spacing:0.08em;background:transparent;border:1px solid rgba(201,168,76,0.18);color:var(--mid);cursor:pointer;font-family:'DM Mono',monospace;text-transform:uppercase;transition:all 0.2s;border-radius:20px;}
-#cust-catalog .filter-btn.active{background:var(--gold);border-color:var(--gold);color:var(--dark);}
-
-/* Catalog grid — image first */
-.cust-catalog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:16px;}
-.jcard{background:var(--dark2);border:1px solid rgba(201,168,76,0.12);overflow:hidden;border-radius:4px;transition:transform 0.25s ease,border-color 0.25s ease,box-shadow 0.25s ease;display:flex;flex-direction:column;}
-.jcard:hover{transform:translateY(-4px);border-color:rgba(201,168,76,0.45);box-shadow:0 12px 30px rgba(0,0,0,0.5);}
-.jcard-imgwrap{position:relative;aspect-ratio:1/1;overflow:hidden;background:radial-gradient(circle at 50% 40%,#241b12,var(--dark3));cursor:zoom-in;}
-.jcard-imgwrap img{width:100%;height:100%;object-fit:contain;transition:transform 0.4s ease;}
-.jcard:hover .jcard-imgwrap img{transform:scale(1.05);}
-.jcard-noimg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:38px;color:rgba(201,168,76,0.14);}
-.jcard-count{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);color:var(--gold-light);font-family:'DM Mono',monospace;font-size:9px;padding:3px 8px;border-radius:12px;}
-.jcard-thumbs{display:flex;gap:5px;padding:7px 9px 0;flex-wrap:wrap;}
-.jcard-thumbs img{width:34px;height:34px;object-fit:cover;cursor:pointer;border-radius:2px;transition:all 0.2s;}
-.jcard-body{padding:11px 13px 14px;display:flex;flex-direction:column;gap:8px;flex:1;}
-.jcard-name{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--cream);line-height:1.2;}
-.jcard-cat{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--mid);margin-top:-3px;}
-.jcard-desc{font-size:11px;color:var(--cream2);opacity:0.7;line-height:1.5;}
-.jcard-tags{display:flex;gap:6px;flex-wrap:wrap;}
-.btn-order-cta{margin-top:auto;width:100%;background:transparent;color:var(--gold);border:1px solid var(--gold);padding:9px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;border-radius:3px;transition:all 0.2s;}
-.btn-order-cta:hover{background:var(--gold);color:var(--dark);}
-
-/* Order tracking — sertifikat uslubi */
-.lookup-box{background:linear-gradient(160deg,var(--dark2),var(--dark3));border:1px solid rgba(201,168,76,0.2);padding:28px 22px;text-align:center;margin-bottom:18px;border-radius:4px;}
-.lookup-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-style:italic;color:var(--gold-light);margin-bottom:6px;}
-.lookup-sub{font-size:11px;color:var(--mid);margin-bottom:18px;letter-spacing:0.02em;}
-.lookup-input{width:100%;background:rgba(0,0,0,0.25);border:1px solid rgba(201,168,76,0.3);color:var(--cream);padding:14px;font-family:'DM Mono',monospace;font-size:18px;text-align:center;outline:none;letter-spacing:0.3em;margin-bottom:12px;text-transform:uppercase;border-radius:3px;}
-.lookup-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,0.1);}
-.order-result{background:var(--dark2);border:1px solid rgba(201,168,76,0.25);padding:0;margin-bottom:14px;border-radius:4px;overflow:hidden;}
-.cert-top{background:linear-gradient(135deg,#241b12,var(--dark3));padding:22px;text-align:center;border-bottom:1px dashed rgba(201,168,76,0.25);}
-.order-result-id{display:inline-block;font-family:'DM Mono',monospace;font-size:13px;color:var(--gold);letter-spacing:0.25em;border:1px solid rgba(201,168,76,0.4);border-radius:20px;padding:5px 16px;margin-bottom:12px;}
-.order-result-client{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px;color:var(--cream);margin-bottom:12px;}
-.order-result-status{display:inline-block;padding:7px 20px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;border:1px solid;border-radius:20px;}
-.cert-body{padding:22px;}
-.progress-steps{display:flex;justify-content:space-between;margin-bottom:14px;position:relative;}
-.prog-step{text-align:center;font-size:9px;letter-spacing:0.04em;text-transform:uppercase;flex:1;color:var(--mid);}
-.prog-step .dot{width:13px;height:13px;border-radius:50%;background:var(--dark3);border:2px solid rgba(201,168,76,0.2);margin:0 auto 6px;transition:all 0.3s;}
-.prog-step.done{color:var(--gold);}.prog-step.done .dot{background:var(--gold);border-color:var(--gold);}
-.prog-step.current{color:var(--gold-light);}.prog-step.current .dot{background:var(--gold-light);border-color:var(--gold-light);box-shadow:0 0 0 4px rgba(201,168,76,0.2);}
-.progress-bar-wrap{background:rgba(255,255,255,0.06);height:4px;margin-bottom:18px;border-radius:2px;overflow:hidden;}
-.progress-bar{height:4px;background:linear-gradient(90deg,var(--gold),var(--gold-light));transition:width 0.7s ease;}
-.order-result-metal{background:transparent;border:none;padding:0;margin-bottom:14px;font-size:12px;display:flex;gap:8px;flex-wrap:wrap;}
-.order-result-meta{font-size:12px;color:var(--mid);line-height:2.1;}
-.order-result-meta span{color:var(--cream2);}
-.order-result-desc{margin-top:12px;padding-top:12px;border-top:1px solid rgba(201,168,76,0.1);font-size:13px;color:var(--cream2);font-style:italic;line-height:1.6;}
-.order-result-images{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px;}
-.order-img-thumb{width:64px;height:64px;object-fit:cover;border-radius:3px;cursor:pointer;border:1px solid rgba(201,168,76,0.2);transition:all 0.2s;}
-.order-img-thumb:hover{border-color:var(--gold);}
-
-/* About & Contact */
-.contact-block{background:var(--dark2);border:1px solid rgba(201,168,76,0.15);padding:20px;margin-top:14px;border-radius:4px;}
-.contact-title{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
-.contact-item{display:flex;align-items:center;gap:11px;margin-bottom:10px;font-size:13px;}
-.contact-icon{font-size:17px;}
-.contact-link{color:var(--gold-light);text-decoration:none;transition:color 0.2s;}
-.contact-link:hover{color:var(--gold);}
-@media(prefers-reduced-motion:reduce){.cust-section,.jcard,.jcard-imgwrap img,.progress-bar{animation:none!important;transition:none!important;}}
 
 
 /* ===== YANGI LOGIN ===== */
@@ -486,7 +398,7 @@ textarea.form-input{resize:vertical;min-height:70px;}
 ::-webkit-scrollbar{width:4px;height:4px;}
 ::-webkit-scrollbar-track{background:var(--dark);}
 ::-webkit-scrollbar-thumb{background:var(--gold);}
-@media(max-width:600px){.form-row,.form-row3{grid-template-columns:1fr;}.header-stats{gap:10px;}main{padding:14px;}.cust-main{padding:14px;}}
+@media(max-width:600px){.form-row,.form-row3{grid-template-columns:1fr;}.header-stats{gap:10px;}main{padding:14px;}}
 </style>
 </head>
 <body>
@@ -503,11 +415,11 @@ textarea.form-input{resize:vertical;min-height:70px;}
 
     <!-- BUTTONS -->
     <div class="login-choices">
-      <button class="login-choice-btn login-choice-client" onclick="goCustomer()">
+      <a class="login-choice-btn login-choice-client" href="murodgoldindex.html" style="text-decoration:none;display:flex;flex-direction:column;align-items:center;">
         <div class="choice-icon">👤</div>
         <div class="choice-title">Mijoz</div>
         <div class="choice-sub">Katalog va buyurtma holati</div>
-      </button>
+      </a>
       <button class="login-choice-btn login-choice-admin" onclick="togglePin()">
         <div class="choice-icon">🔐</div>
         <div class="choice-title">Zargar paneli</div>
@@ -759,107 +671,6 @@ textarea.form-input{resize:vertical;min-height:70px;}
       <div class="notes-grid" id="notes-list"></div>
     </div>
   </main>
-</div>
-
-<!-- CUSTOMER -->
-<div class="screen" id="screen-customer">
-  <div class="cust-header">
-    <div class="cust-header-logo">
-      <img  alt="logo">
-      <div>
-        <div class="cust-brand">Murad Jewellery</div>
-        <div class="cust-brand-sub">Zargarlik markazi · Toshkent</div>
-      </div>
-    </div>
-    <button class="cust-btn-back" onclick="goLogin()">← Orqaga</button>
-  </div>
-  <div class="cust-tabs">
-    <button class="cust-tab active" onclick="switchCustTab('catalog',this)">🏺 Katalog</button>
-    <button class="cust-tab" onclick="switchCustTab('status',this)">📦 Buyurtmam</button>
-    <button class="cust-tab" onclick="switchCustTab('about',this)">ℹ️ Biz haqida</button>
-    <button class="cust-tab" onclick="switchCustTab('contact',this)">📞 Aloqa</button>
-  </div>
-  <div class="cust-main">
-    <div class="cust-section" id="cust-status">
-      <div class="cust-hero">
-        <div class="eyebrow">Buyurtma holati</div>
-        <h1>Buyurtmangizni<br>kuzating</h1>
-      </div>
-      <div class="lookup-box">
-        <div class="lookup-title">Kodni kiriting</div>
-        <div class="lookup-sub">Zargar bergan buyurtma kodini yozing</div>
-        <input class="lookup-input" id="lookup-input" placeholder="Masalan: AB123" maxlength="8" autocomplete="off" oninput="this.value=this.value.toUpperCase()" onkeydown="if(event.key==='Enter')lookupOrder()">
-        <button class="btn-gold" style="width:100%" onclick="lookupOrder()">Qidirish</button>
-      </div>
-      <div id="order-result-area"></div>
-    </div>
-    <div class="cust-section active" id="cust-catalog">
-      <div class="cust-hero">
-        <div class="eyebrow">Qo'lda yasalgan · 585 oltin</div>
-        <h1>Nafislik,<br>har bir detalda</h1>
-        <p>15 yillik tajriba bilan yaratilgan zargarlik buyumlari to'plami. Yoqqanini tanlang — qo'ng'iroq orqali buyurtma bering.</p>
-      </div>
-      <div class="filter-row">
-        <button class="filter-btn active" onclick="setCustCatalogFilter('hammasi',this)">Hammasi</button>
-        <button class="filter-btn" onclick="setCustCatalogFilter('oltin',this)">🥇 Oltin</button>
-        <button class="filter-btn" onclick="setCustCatalogFilter('kumush',this)">🥈 Kumush</button>
-      </div>
-      <div class="cust-catalog-grid" id="cust-catalog-grid"></div>
-    </div>
-    <div class="cust-section" id="cust-about">
-      <div class="cust-hero">
-        <div class="eyebrow">Murad Jewellery</div>
-        <h1>Biz haqimizda</h1>
-      </div>
-      <div class="contact-block" style="margin-bottom:12px;">
-        <div class="contact-title">💍 Murad Jewellery — 15+ yillik tajriba</div>
-        <div style="font-size:13px;color:var(--cream2);line-height:2;">
-          Zargarlik sohasida 15 yildan ortiq tajribaga ega bo'lgan professional ustalar jamoasi. Sifat va nafislik uyg'unligini ta'minlaymiz.
-        </div>
-      </div>
-
-      <div class="contact-block" style="margin-bottom:12px;">
-        <div class="contact-title">🔧 Bizning xizmatlar</div>
-        <div style="font-size:13px;color:var(--cream2);line-height:2.2;">
-          ♻️ <b style="color:var(--gold)">Qayta ishlash</b> — Eski zargarlik buyumlarini yangilash<br>
-          🔤 <b style="color:var(--gold)">Lazer orqali ism yozish</b> — Uzuk, bilakuzuk va boshqa buyumlarga<br>
-          💎 <b style="color:var(--gold)">Buyum yasash</b> — Xohlagan turdagi buyumlarni buyurtma asosida<br>
-          🔨 <b style="color:var(--gold)">Ta'mirlash</b> — Singan, eskirgan buyumlarni tiklash<br>
-          ✨ <b style="color:var(--gold)">Tozalash va pardozlash</b> — Professional tozalash xizmati<br>
-          📐 <b style="color:var(--gold)">O'lcham o'zgartirish</b> — Uzuk va bilakuzuklarni moslashtirish
-        </div>
-      </div>
-
-      <div class="contact-block" style="margin-bottom:12px;">
-        <div class="contact-title">🏅 Metallar</div>
-        <div style="font-size:13px;color:var(--cream2);line-height:2.2;">
-          🥇 <b style="color:var(--gold)">Oltin</b> — 375, 583, 750, 999 proba<br>
-          🥈 <b style="color:var(--gold)">Kumush</b> — 925, 999 proba<br>
-          🚚 <b style="color:var(--gold)">Yetkazib berish</b> — Respublika bo'ylab mavjud
-        </div>
-      </div>
-    </div>
-
-    <div class="cust-section" id="cust-contact">
-      <div class="cust-hero">
-        <div class="eyebrow">Aloqa</div>
-        <h1>Bog'lanish</h1>
-      </div>
-      <div class="contact-block">
-        <div class="contact-title">Murad Jewellery — Aloqa</div>
-        <div class="contact-item"><span class="contact-icon">📞</span><a class="contact-link" href="tel:+998974812010">+998 97 481-20-10 — Jahongir</a></div>
-        <div class="contact-item"><span class="contact-icon">📞</span><a class="contact-link" href="tel:+998956279999">+998 95 627-99-99 — Murod</a></div>
-        <div class="contact-item"><span class="contact-icon">✈️</span><a class="contact-link" href="https://t.me/zaruzb" target="_blank">Telegram: @zaruzb</a></div>
-        <div class="contact-item"><span class="contact-icon">📸</span><a class="contact-link" href="https://instagram.com/murod__artikov" target="_blank">Instagram: @murod__artikov</a></div>
-      </div>
-      <div class="contact-block" style="margin-top:10px;">
-        <div class="contact-title">Ish vaqti</div>
-        <div style="font-size:13px;color:var(--cream2);line-height:2.2;">
-          Dushanba — Yakshanba: <span style="color:var(--gold)">09:00 — 19:00</span>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
 
 <!-- ORDER MODAL -->
@@ -1402,30 +1213,6 @@ textarea.form-input{resize:vertical;min-height:70px;}
   </div>
 </div>
 
-<!-- QUICK ORDER MODAL -->
-<div class="modal-overlay" id="quick-order-modal">
-  <div class="modal">
-    <div class="modal-title" id="qo-title">Buyurtma berish</div>
-    <div style="font-size:12px;color:var(--mid);margin-bottom:14px;" id="qo-item-name"></div>
-    <div class="form-group">
-      <label class="form-label">Ismingiz *</label>
-      <input class="form-input" id="qo-name" placeholder="To'liq ismingiz" type="text">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Telefon *</label>
-      <input class="form-input" id="qo-phone" placeholder="+998 __ ___-__-__" type="tel" inputmode="tel">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Izoh</label>
-      <textarea class="form-input" id="qo-note" placeholder="O'lcham, rang, xohish..."></textarea>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-outline" onclick="closeModal('quick-order-modal')">Bekor</button>
-      <button class="btn-gold" onclick="submitQuickOrder()">📤 Yuborish</button>
-    </div>
-  </div>
-</div>
-
 <!-- IMAGE VIEWER -->
 <!-- DASH DETAIL MODAL -->
 <div class="modal-overlay" id="dash-detail-modal">
@@ -1596,9 +1383,6 @@ window.addEventListener('popstate', function(e) {
   if(state.screen === 'login') {
     currentRole = null;
     showScreen('login');
-  } else if(state.screen === 'customer') {
-    showScreen('customer');
-    if(!catalog.length) loadCatalogOnly(); else renderCustCatalog();
   } else if(state.screen === 'admin') {
     if(!currentRole) {
       // Login qilinmagan bo'lsa — login ga
@@ -1643,7 +1427,6 @@ let editingOrderId = null, editingCatalogId = null;
 let orderImgs = [], catalogImgs = [];
 let currentFilter = 'hammasi', currentNoteFilter = 'hammasi';
 let viewerImgs = [], viewerIdx = 0;
-let quickOrderItem = null;
 
 // ===== UTILS =====
 function uid() {
@@ -1712,27 +1495,6 @@ async function dbDelete(table, id) {
 }
 
 // ===== LOAD ALL =====
-async function loadCatalogOnly() {
-  // 1-bosqich: rasmsiz tez yuklash — matn darhol ko'rinadi
-  const {data} = await sb.from('catalog').select('id,name,category,metal,description,created_at').order('created_at',{ascending:false});
-  catalog = (data||[]).map(c=>({...c, images: c.images||[]}));
-  renderCustCatalog();
-  // 2-bosqich: rasmlarni fonda yuklash
-  try {
-    const ids = catalog.map(c=>c.id);
-    if(ids.length) {
-      for(let i=0;i<ids.length;i+=30) {
-        const {data:d2} = await sb.from('catalog').select('id,images').in('id',ids.slice(i,i+30));
-        if(d2) d2.forEach(row=>{
-          const idx=catalog.findIndex(c=>c.id===row.id);
-          if(idx>-1) catalog[idx].images=row.images||[];
-        });
-      }
-      renderCustCatalog();
-    }
-  } catch(e){console.error('loadCatalogOnly imgs:',e);}
-}
-
 async function loadAll() {
   try {
     // 1-bosqich: rasmsiz tez yuklash
@@ -1808,11 +1570,6 @@ function showScreen(id) {
   document.documentElement.scrollTop = 0;
 }
 function goLogin() { currentRole=null; showScreen('login'); history.pushState({screen:'login'}, '', ''); }
-function goCustomer() {
-  showScreen('customer');
-  history.pushState({screen:'customer'}, '', '');
-  if(!catalog.length) loadCatalogOnly(); else renderCustCatalog();
-}
 async function goAdmin() {
   showScreen('admin');
   history.pushState({screen:'admin'}, '', '');
@@ -1899,13 +1656,6 @@ function applyRoleTabs() {
     });
   }
 }
-function switchCustTab(name,el) {
-  document.querySelectorAll('.cust-section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.cust-tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('cust-'+name).classList.add('active');
-  el.classList.add('active');
-}
-
 // ===== STATS =====
 function updateStats() {
   document.getElementById('stat-total').textContent=orders.length;
@@ -2254,7 +2004,7 @@ async function saveCatalog() {
     await dbSave('catalog',data);
     catalog.unshift(data);
   }
-  renderCatalog(); renderCustCatalog(); updateStats(); closeModal('catalog-modal');
+  renderCatalog(); updateStats(); closeModal('catalog-modal');
 }
 
 // ===== KO'P RASM YUKLASH (BULK) =====
@@ -2419,7 +2169,7 @@ async function saveBulkCatalog() {
       ok++;
     } catch(e) { console.error('bulk save:', e); fail++; }
   }
-  renderCatalog(); renderCustCatalog(); updateStats();
+  renderCatalog(); updateStats();
   prog.textContent = `✅ ${ok} ta qo'shildi` + (fail ? `, ⚠️ ${fail} ta xato` : '');
   setTimeout(() => { closeModal('bulk-catalog-modal'); bulkState = []; }, 1500);
 }
@@ -2445,7 +2195,7 @@ async function deleteCatalog(id) {
   await deleteImagesFromStorage(item?.images||[]);
   await dbDelete('catalog',id);
   catalog=catalog.filter(x=>x.id!==id);
-  renderCatalog(); renderCustCatalog(); updateStats();
+  renderCatalog(); updateStats();
 }
 
 function renderArxiv() {
@@ -2504,16 +2254,6 @@ function renderCatalog() {
     </div>`).join('');
 }
 
-let custCatalogFilter = 'hammasi';
-function setCustCatalogFilter(f, el) {
-  custCatalogFilter = f;
-  document.querySelectorAll('#cust-catalog .filter-btn').forEach(b=>b.classList.remove('active'));
-  if(el) el.classList.add('active');
-  renderCustCatalog();
-}
-
-let custGalleryState = {};
-
 function setAdminGallery(itemId, idx, src) {
   const mainImg = document.getElementById('aimg-' + itemId);
   if(mainImg) mainImg.src = src;
@@ -2521,141 +2261,6 @@ function setAdminGallery(itemId, idx, src) {
     t.style.border = i === idx ? '2px solid #c9a84c' : '2px solid transparent';
     t.style.opacity = i === idx ? '1' : '0.6';
   });
-}
-
-function setCustGallery(itemId, idx, src) {
-  custGalleryState[itemId] = idx;
-  // Update main image
-  const mainImg = document.getElementById('cimg-' + itemId);
-  if(mainImg) mainImg.src = src;
-  // Update thumbnails borders
-  const thumbs = document.querySelectorAll('.cthumb-' + itemId);
-  thumbs.forEach((t, i) => {
-    t.style.border = i === idx ? '2px solid #c9a84c' : '2px solid transparent';
-    t.style.opacity = i === idx ? '1' : '0.6';
-  });
-}
-
-function renderCustCatalog() {
-  const c = document.getElementById('cust-catalog-grid');
-  let list = catalog;
-  if(custCatalogFilter === 'oltin') list = catalog.filter(x=>(x.metal||'').toLowerCase().includes('oltin'));
-  if(custCatalogFilter === 'kumush') list = catalog.filter(x=>(x.metal||'').toLowerCase().includes('kumush'));
-  if(!list.length) {
-    c.innerHTML = "<div class='empty-state' style='grid-column:1/-1'><div class='empty-icon'>🏺</div><div class='empty-text'>Bu turkumda buyum yoq</div></div>";
-    return;
-  }
-  c.innerHTML = list.map(item => {
-    const imgs = item.images || [];
-    const activeIdx = custGalleryState[item.id] || 0;
-    const mainImg = imgs[activeIdx] || imgs[0] || '';
-    const thumbs = imgs.length > 1 ? imgs.map((src, i) => `
-      <img src="${esc(src)}" loading="lazy" decoding="async"
-        class="cthumb-${item.id}"
-        onclick="event.stopPropagation();setCustGallery('${item.id}',${i},'${esc(src)}')"
-        style="border:2px solid ${i === activeIdx ? '#c9a84c' : 'transparent'};opacity:${i === activeIdx ? '1' : '0.6'};">`
-    ).join('') : '';
-
-    const tags = [];
-    if(item.item_type) tags.push(`<span class="hallmark">${esc(item.item_type)}</span>`);
-    if(item.metal) tags.push(`<span class="hallmark">${esc(item.metal)}</span>`);
-    if(item.category) tags.push(`<span class="hallmark" style="color:var(--mid);border-color:rgba(107,90,62,0.4);">${esc(item.category)}</span>`);
-
-    return `<div class="jcard">
-      <div class="jcard-imgwrap" onclick="openCustViewer('${item.id}', custGalleryState['${item.id}']||0)">
-        ${mainImg
-          ? `<img id="cimg-${item.id}" src="${esc(mainImg)}" loading="lazy" decoding="async">`
-          : '<div class="jcard-noimg">🏺</div>'
-        }
-        ${imgs.length > 1 ? `<div class="jcard-count">${imgs.length} rasm</div>` : ''}
-      </div>
-      ${imgs.length > 1 ? `<div class="jcard-thumbs">${thumbs}</div>` : ''}
-      <div class="jcard-body">
-        <div class="jcard-name">${esc(item.name)}</div>
-        ${tags.length ? `<div class="jcard-tags">${tags.join('')}</div>` : ''}
-        ${item.description ? `<div class="jcard-desc">${esc(item.description)}</div>` : ''}
-        <button class="btn-order-cta" onclick="openQuickOrder('${item.id}')">Buyurtma berish</button>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-// ===== QUICK ORDER =====
-function openQuickOrder(catalogId) {
-  quickOrderItem=catalog.find(x=>x.id===catalogId);
-  document.getElementById('qo-title').textContent='Buyurtma: '+(quickOrderItem?.name||'');
-  document.getElementById('qo-item-name').textContent=(quickOrderItem?.category||'')+(quickOrderItem?.metal?' · '+quickOrderItem.metal:'');
-  ['qo-name','qo-phone','qo-note'].forEach(id=>document.getElementById(id).value='');
-  openModal('quick-order-modal');
-}
-
-async function submitQuickOrder() {
-  const name=document.getElementById('qo-name').value.trim();
-  const phone=document.getElementById('qo-phone').value.trim();
-  if(!name||!phone){alert('Ism va telefon majburiy!');return;}
-  const digits=phone.replace(/\D/g,'');
-  if(digits.length<7){alert("Telefon raqamini to'liq kiriting!");return;}
-  const code=shortCode();
-  const data={
-    id:uid(), code,
-    client:name, phone, status:'yangi',
-    description:`Katalogdan: ${quickOrderItem?.name||''} (${quickOrderItem?.category||''})`,
-    note:document.getElementById('qo-note').value.trim(),
-    images:[], created_at:new Date().toISOString(), updated_at:new Date().toISOString()
-  };
-  await dbSave('orders',data);
-  orders.unshift(data);
-  updateStats();
-  // Telegram xabar
-  const tgMsg = `🔔 *Yangi Zakaz!*\n\n👤 *${name}*\n📞 ${phone}\n📦 ${quickOrderItem?.name||''}\n🔑 Kod: ${code}\n💬 ${document.getElementById('qo-note').value.trim()||'Izoh yoq'}\n\n🌐 murodzar.github.io`;
-  sendTelegram(tgMsg);
-  closeModal('quick-order-modal');
-  alert(`✅ Buyurtmangiz qabul qilindi!\n\nSizning buyurtma kodingiz:\n🔑 ${code}\n\nUshbu kodni eslab qoling!`);
-}
-
-// ===== ORDER LOOKUP =====
-async function lookupOrder() {
-  // Faqat harf va raqam qoldiramiz — filter injection oldini olish
-  const code=document.getElementById('lookup-input').value.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
-  const area=document.getElementById('order-result-area');
-  if(!code){area.innerHTML='';return;}
-  area.innerHTML='<div class="loading">🔍 Qidirilmoqda...</div>';
-  const {data}=await sb.from('orders').select('*').or(`code.eq.${code},id.eq.${code},id.ilike.%${code}`).limit(1);
-  const o=data?.[0];
-  if(!o){area.innerHTML=`<div class="order-result"><div style="text-align:center;padding:20px;"><div style="font-size:32px;margin-bottom:10px">🔍</div><div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--mid);font-style:italic;">Buyurtma topilmadi</div><div style="font-size:11px;color:rgba(107,90,62,0.6);margin-top:6px;">Kodni tekshiring yoki zargar bilan boghlaning</div></div></div>`;return;}
-  const steps=['yangi','jarayonda','tayyor','topshirildi'];
-  const stepNames=['Qabul qilindi','Jarayonda','Tayyor','Topshirildi'];
-  const stepIdx=steps.indexOf(o.status);
-  const pct=[10,40,80,100][stepIdx]||10;
-  const stepsHtml=steps.map((s,i)=>`<div class="prog-step ${i<stepIdx?'done':i===stepIdx?'current':''}"><div class="dot"></div>${stepNames[i]}</div>`).join('');
-  const imgs=o.images||[];
-  const imgsHtml=imgs.length?`<div class="order-result-images">${imgs.map((s,i)=>`<img class="order-img-thumb" src="${esc(s)}" loading="lazy" decoding="async" onclick="lookupView('${o.id}',${i})">`).join('')}</div>`:'';
-  const metalHtml=(o.metal_type)?`<div class="order-result-metal"><span class="hallmark">⚗️ ${esc(o.metal_type)}</span>${o.metal_gram?`<span class="hallmark">⚖️ ${esc(o.metal_gram)} g</span>`:''}</div>`:'';
-  area.innerHTML=`
-    <div class="order-result">
-      <div class="cert-top">
-        <div class="order-result-id">#${esc(o.code||o.id.slice(-5).toUpperCase())}</div>
-        <div class="order-result-client">${esc(o.client)}</div>
-        <span class="order-result-status status-${o.status}">${SL[o.status]}</span>
-      </div>
-      <div class="cert-body">
-        <div class="progress-steps">${stepsHtml}</div>
-        <div class="progress-bar-wrap"><div class="progress-bar" style="width:${pct}%"></div></div>
-        ${metalHtml}
-        <div class="order-result-meta">
-          ${o.due_date?`Topshirish sanasi: <span>${fdate(o.due_date)}</span><br>`:''}
-          Buyurtma sanasi: <span>${fdate(o.created_at)}</span>
-        </div>
-        ${o.description?`<div class="order-result-desc">${esc(o.description)}</div>`:''}
-        ${imgsHtml}
-      </div>
-    </div>
-    <div class="contact-block">
-      <div class="contact-title">Savollar bolsa boghlaning</div>
-      <div class="contact-item"><span class="contact-icon">📞</span><a class="contact-link" href="tel:+998974812010">+998 97 481-20-10 — Jahongir</a></div>
-      <div class="contact-item"><span class="contact-icon">📞</span><a class="contact-link" href="tel:+998956279999">+998 95 627-99-99 — Murod</a></div>
-      <div class="contact-item"><span class="contact-icon">✈️</span><a class="contact-link" href="https://t.me/zaruzb" target="_blank">@zaruzb</a></div>
-    </div>`;
 }
 
 // ===== NOTES =====
@@ -2940,11 +2545,6 @@ async function loadXaridImages() {
 function adminCatalogView(itemId, idx) {
   const item = catalog.find(x => x.id === itemId);
   if(item && item.images && item.images.length) openViewer(item.images, idx);
-}
-
-function lookupView(orderId, idx) {
-  const o = orders.find(x => x.id === orderId);
-  if(o && o.images && o.images.length) openViewer(o.images, idx);
 }
 
 function remontView(remontId, idx) {
@@ -3781,29 +3381,6 @@ function showDashDetail(type) {
 }
 
 
-
-function openCustViewer(itemId, idx) {
-  const item = catalog.find(x => x.id === itemId);
-  if(!item || !item.images || !item.images.length) return;
-  openViewer(item.images, idx || 0);
-}
-
-function custView(itemId) {
-  const item = catalog.find(x => x.id === itemId);
-  if(item && item.images && item.images.length) {
-    openViewer(item.images, custGalleryState[itemId] || 0);
-  }
-}
-
-function custSwitchImg(itemId, idx, src) {
-  custGalleryState[itemId] = idx;
-  const main = document.getElementById('main-' + itemId);
-  if(main) { main.src = src; }
-  document.querySelectorAll('.cthumb-' + itemId).forEach((t,i) => {
-    t.style.border = i===idx ? '2px solid #c9a84c' : '2px solid transparent';
-    t.style.opacity = i===idx ? '1' : '0.6';
-  });
-}
 
 function openViewer(imgs,idx) {
   viewerImgs=imgs; viewerIdx=idx;
