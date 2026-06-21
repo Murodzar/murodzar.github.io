@@ -1333,7 +1333,7 @@ function sendTelegramToClient(orderId) {
   const code = ((o.code || o.id).slice(-5)).toUpperCase();
   const metal = o.metal_type || '';
   const metalText = metal ? 'Buyum: ' + metal + '.\n' : '';
-  const text = 'Hurmatli ' + o.client + ',\n\nBuyurtmangiz tayyor! Olib kelishingiz mumkin.\n\n' + metalText + 'Buyurtma kodi: ' + code + '.\n\nMurad Jewellery\n+998 97 481-20-10\n+998 95 627-99-99\nmurodzar.github.io';
+  const text = 'Hurmatli ' + o.client + ',\n\nBuyurtmangiz tayyor! Olib kelishingiz mumkin.\n\n' + metalText + 'Buyurtma kodi: ' + code + '.\n\nMurad Jewellery\n+998 97 481-20-10\n+998 95 627-99-99\nmurodzar.github.io/murodgoldindex.html';
   const phone = normalizePhone(o.phone);
   if(phone) {
     window.open('sms:' + phone + '?body=' + encodeURIComponent(text));
@@ -2856,7 +2856,7 @@ function printXarid(id) {
   ${x.signature?`<div class="sig"><div class="sig-label">Sotuvchi imzosi:</div><img src="${x.signature}"></div>`:'<div style="margin-top:40px;border-top:1px solid #ccc;text-align:center;font-size:11px;color:#999;">Imzo</div>'}
   <div class="footer">
     📞 +998 97 481-20-10 | +998 95 627-99-99<br>
-    murodzar.github.io
+    murodzar.github.io/murodgoldindex.html
   </div>
   <br><button onclick="window.print()" style="width:100%;padding:10px;background:#c9a84c;border:none;cursor:pointer;font-size:14px;">🖨️ Chop etish</button>
   </body></html>`);
@@ -2901,7 +2901,7 @@ function printOrder(id) {
     + row('Qoldiq', o.remain ? Number(o.remain).toLocaleString()+' som' : '', '#c9a84c')
     + divider
     + '<div style="text-align:center;font-size:10px;color:#6b5a3e;margin-top:12px;line-height:2;">'
-    + 'murodzar.github.io<br>Kod: <b>' + code + '</b><br>+998 97 481-20-10 | +998 95 627-99-99'
+    + 'murodzar.github.io/murodgoldindex.html<br>Kod: <b>' + code + '</b><br>+998 97 481-20-10 | +998 95 627-99-99'
     + '</div></div>';
 
   let pm = document.getElementById('print-modal');
@@ -3133,7 +3133,7 @@ function printQarz(id){
     +'<div class="divider"></div>'
     +'<div class="shartnoma">Men, <b>'+q.name+'</b>, pasport <b>'+(q.passport||'')+'</b>, '+(q.date||'')+' sanada Murad Jewellery dan <b>'+q.gram+'g '+(q.metal||'tillo')+'</b> qarzga oldim. '+(q.total?'Qarz summasi <b>'+Number(q.total).toLocaleString()+' som</b>. ':'')+(q.return_date?q.return_date+' sanagacha toliq qaytarishga roziman. ':'')+'Shartnoma shartlari bilan tanishdim va roziman.</div>'
     +(q.signature?'<div style="margin-top:10px;"><div style="font-size:11px;color:#6b5a3e;margin-bottom:3px;">Imzo:</div><img src="'+q.signature+'" style="max-width:200px;height:55px;object-fit:contain;border:1px solid #c9a84c;background:#fff;"></div>':'<div style="margin-top:40px;border-top:1px solid #999;font-size:11px;color:#6b5a3e;">Imzo: ___________________</div>')
-    +'<div style="text-align:center;font-size:10px;color:#6b5a3e;margin-top:14px;">📞 +998 97 481-20-10 | murodzar.github.io</div>'
+    +'<div style="text-align:center;font-size:10px;color:#6b5a3e;margin-top:14px;">📞 +998 97 481-20-10 | murodzar.github.io/murodgoldindex.html</div>'
     +'<br><button onclick="window.print()" style="width:100%;padding:12px;background:#c9a84c;border:none;cursor:pointer;font-size:14px;">Chop etish</button>'
     +'</body></html>');
   win.document.close();
