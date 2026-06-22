@@ -286,6 +286,27 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:48px 0 28px;}
 .lb-counter{position:absolute;bottom:18px;color:rgba(255,255,255,.5);font-size:12px;letter-spacing:.1em;}
 .lb-wm{position:absolute;bottom:44px;left:50%;transform:translateX(-50%);font-size:9px;letter-spacing:.22em;text-transform:lowercase;color:rgba(255,255,255,.22);font-family:'Jost',sans-serif;pointer-events:none;white-space:nowrap;}
 
+/* ===== MAHSULOT DETAIL ===== */
+.mahsulot-wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;padding:44px 0;}
+.m-imgs{position:sticky;top:84px;}
+.m-back{background:none;border:none;color:var(--muted);font-size:11px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;padding:0;margin-bottom:28px;display:inline-flex;align-items:center;gap:6px;transition:color .2s;font-family:'Jost',sans-serif;}
+.m-back:hover{color:var(--gold-deep);}
+.m-main-img{aspect-ratio:1/1;background:radial-gradient(ellipse at 50% 32%,#fff 0%,#f0ede6 80%);border-radius:4px;overflow:hidden;cursor:zoom-in;position:relative;}
+.m-main-img::after{content:'murodgold.com';position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font-size:8px;letter-spacing:.18em;text-transform:lowercase;color:rgba(0,0,0,.18);font-family:'Jost',sans-serif;pointer-events:none;white-space:nowrap;}
+.m-main-img img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply;}
+.m-thumbs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.m-thumb{width:60px;height:60px;border-radius:3px;overflow:hidden;cursor:pointer;border:1.5px solid transparent;background:#f0ede6;transition:border-color .2s;flex-shrink:0;}
+.m-thumb.on,.m-thumb:hover{border-color:var(--gold);}
+.m-thumb img{width:100%;height:100%;object-fit:cover;}
+.m-info{padding-top:8px;display:flex;flex-direction:column;}
+.m-name{font-family:'Fraunces',serif;font-size:clamp(26px,4vw,36px);font-weight:500;line-height:1.1;margin:10px 0 18px;}
+.m-tags{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px;}
+.m-desc{font-size:14px;line-height:1.85;color:var(--muted);margin-bottom:28px;}
+@media(max-width:720px){
+  .mahsulot-wrap{grid-template-columns:1fr;gap:24px;padding:24px 0;}
+  .m-imgs{position:static;}
+}
+
 /* ===== RESPONSIVE ===== */
 @media(max-width:720px){
   .nav{display:none;}
@@ -627,6 +648,15 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:48px 0 28px;}
   </div>
 </footer>
 
+<!-- MAHSULOT DETAIL VIEW -->
+<div class="view" id="v-mahsulot">
+  <div class="wrap">
+    <div id="m-wrap" class="mahsulot-wrap">
+      <div class="skeleton" style="grid-column:1/-1;">Yuklanmoqda...</div>
+    </div>
+  </div>
+</div>
+
 <!-- ORDER MODAL -->
 <div class="overlay" id="ordModal">
   <div class="modal">
@@ -802,28 +832,35 @@ function fdate(d){if(!d)return '—';return new Date(d).toLocaleDateString('uz-U
 function proba(metal){const m=(metal||'').match(/\d{3}/);return m?m[0]:'';}
 
 /* ===== NAV ===== */
-const VIEWS=['katalog','xizmatlar','buyurtmam','haqimizda','aloqa'];
+const VIEWS=['katalog','xizmatlar','buyurtmam','haqimizda','aloqa','mahsulot'];
+const NAV_VIEWS=['katalog','xizmatlar','buyurtmam','haqimizda','aloqa'];
 let currentView='katalog';
+let pendingFilter='';
 
-function go(id,fromPop){
-  if(currentView===id)return;
+function go(id,fromPop,sub){
+  const viewEl=document.getElementById('v-'+id);if(!viewEl)return;
+  const changing=currentView!==id;
   currentView=id;
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
-  document.getElementById('v-'+id).classList.add('on');
+  if(changing){document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));viewEl.classList.add('on');}
   document.querySelectorAll('#nav button[data-i18n]').forEach((b,i)=>{
-    b.classList.toggle('on',VIEWS[i]===id);
+    b.classList.toggle('on',NAV_VIEWS[i]===id||(id==='mahsulot'&&i===0));
   });
-  window.scrollTo({top:0,behavior:'smooth'});
+  if(changing)window.scrollTo({top:0,behavior:'smooth'});
   if(document.getElementById('mob-menu').classList.contains('open'))toggleMob();
   triggerReveal();
-  if(!fromPop)history.pushState({view:id},'','#'+id);
+  if(!fromPop){const h=sub?id+'/'+encodeURIComponent(sub):id;history.pushState({view:id,sub:sub||''},'','#'+h);}
 }
 
 window.addEventListener('popstate',e=>{
   const lb=document.getElementById('lb');
   if(lb.classList.contains('on')){lbClose();return;}
-  const id=(e.state&&e.state.view)||'katalog';
-  go(id,true);
+  const hash=location.hash.replace('#','');
+  const parts=hash.split('/');
+  const id=parts[0]||'katalog';
+  const sub=decodeURIComponent(parts[1]||'');
+  if(id==='mahsulot'&&sub){goProduct(sub,true);}
+  else if(id==='katalog'&&sub){go('katalog',true);applyFilterSilent(sub);}
+  else{go(id,true);}
 });
 
 /* ===== MOBILE MENU ===== */
@@ -848,7 +885,10 @@ async function loadCatalog(){
   try{
     const {data}=await sb.from('catalog').select('id,name,category,metal,item_type,created_at').order('created_at',{ascending:false});
     catalog=(data||[]).map(c=>({...c,images:[]}));
-    buildFilters();render();
+    buildFilters();
+    if(pendingFilter){catFilter=pendingFilter;applyFilterSilent(pendingFilter);pendingFilter='';}
+    else render();
+    if(currentView==='mahsulot'&&currentProductId)goProduct(currentProductId,true);
     const ids=catalog.map(c=>c.id);
     for(let i=0;i<ids.length;i+=30){
       const {data:d2}=await sb.from('catalog').select('id,images').in('id',ids.slice(i,i+30));
@@ -873,7 +913,18 @@ function buildFilters(){
 function setFilter(t,el){
   catFilter=t;
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
-  el.classList.add('on');render();
+  if(el)el.classList.add('on');render();
+  const h=t==='hammasi'?'katalog':'katalog/'+encodeURIComponent(t);
+  history.replaceState({view:'katalog',sub:t==='hammasi'?'':t},'','#'+h);
+}
+
+function applyFilterSilent(t){
+  catFilter=t||'hammasi';
+  document.querySelectorAll('.chip').forEach(c=>{
+    const fn=c.getAttribute('onclick')||'';
+    c.classList.toggle('on',fn.includes("'"+t+"'")||(!t&&fn.includes('hammasi')));
+  });
+  render();
 }
 
 function render(){
@@ -887,18 +938,19 @@ function render(){
   g.innerHTML=list.map(it=>{
     const imgs=it.images||[];const main=imgs[0]||'';const pr=proba(it.metal);
     const imgsJson=JSON.stringify(imgs).replace(/"/g,'&quot;');
+    const safeId=esc(it.id);const safeName=esc(it.name).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     return '<div class="card">'+
       '<div class="niche" onclick="lbOpen('+imgsJson+',0)">'+
         (main?'<img src="'+esc(main)+'" loading="lazy" decoding="async" alt="'+esc(it.name)+'">':'<div class="none">◇</div>')+
         (imgs.length>1?'<div class="cnt">'+imgs.length+' rasm</div>':'')+
       '</div>'+
-      '<div class="cbody">'+
+      '<div class="cbody" style="cursor:pointer;" onclick="goProduct(\''+safeId+'\')">'+
         '<div class="cname">'+esc(it.name)+'</div>'+
         '<div class="crow">'+
           '<span class="tag">'+esc(it.item_type||it.category||'')+'</span>'+
           (pr?'<span class="punch">'+pr+'°</span>':(it.metal?'<span class="tag">'+esc(it.metal)+'</span>':''))+
         '</div>'+
-        '<button class="cbtn" onclick="openOrd(\''+esc(it.name).replace(/\\/g,'\\\\').replace(/'/g,"\\'")+'\')">'+btnTxt+'</button>'+
+        '<button class="cbtn" onclick="event.stopPropagation();openOrd(\''+safeName+'\')">'+btnTxt+'</button>'+
       '</div>'+
     '</div>';
   }).join('');
@@ -959,6 +1011,73 @@ async function lookup(){
   }
 }
 
+/* ===== MAHSULOT DETAIL ===== */
+let currentProductId=null,currentProductImgs=[];
+
+async function goProduct(id,fromPop){
+  currentProductId=id;
+  go('mahsulot',fromPop,id);
+  const wrap=document.getElementById('m-wrap');
+  const loadTxt=currentLang==='ru'?'Загрузка...':'Yuklanmoqda...';
+  wrap.innerHTML='<div class="skeleton" style="grid-column:1/-1;">'+loadTxt+'</div>';
+  try{
+    const loc=catalog.find(c=>String(c.id)===String(id));
+    if(loc&&loc.images&&loc.images.length){renderProduct(loc);return;}
+    const {data}=await sb.from('catalog').select('*').eq('id',id).single();
+    if(data)renderProduct(data);
+    else wrap.innerHTML='<div class="skeleton" style="grid-column:1/-1;">Topilmadi</div>';
+  }catch(e){
+    wrap.innerHTML='<div class="skeleton" style="grid-column:1/-1;">Xato</div>';
+    console.error(e);
+  }
+}
+
+function renderProduct(it){
+  const imgs=it.images||[];const main=imgs[0]||'';
+  currentProductImgs=imgs;
+  const pr=proba(it.metal);
+  const t=TRANS[currentLang];
+  const backLbl=currentLang==='ru'?'← Каталог':'← Katalog';
+  const tags=[];
+  if(it.item_type)tags.push('<span class="tag" style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;">'+esc(it.item_type)+'</span>');
+  if(pr)tags.push('<span class="punch">'+pr+'°</span>');
+  else if(it.metal)tags.push('<span class="tag">'+esc(it.metal)+'</span>');
+  const thumbs=imgs.length>1?'<div class="m-thumbs">'+imgs.map((s,i)=>
+    '<div class="m-thumb'+(i===0?' on':'')+'" onclick="mThumb(this,'+i+')"><img src="'+esc(s)+'" loading="lazy"></div>'
+  ).join('')+'</div>':'';
+  const descHtml=it.description?'<p class="m-desc">'+esc(it.description)+'</p>':'';
+  const safeName=esc(it.name).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  document.getElementById('m-wrap').innerHTML=
+    '<div class="m-imgs">'+
+      '<button class="m-back" onclick="goBackToKat()">'+backLbl+'</button>'+
+      '<div class="m-main-img" onclick="lbOpen(currentProductImgs,0)" id="m-main-wrap">'+
+        (main?'<img id="m-main" src="'+esc(main)+'" alt="'+esc(it.name)+'">':'<div class="none" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;">◇</div>')+
+      '</div>'+
+      thumbs+
+    '</div>'+
+    '<div class="m-info">'+
+      '<div class="eyebrow">'+esc(it.category||it.item_type||'')+'</div>'+
+      '<h1 class="m-name">'+esc(it.name)+'</h1>'+
+      (tags.length?'<div class="m-tags">'+tags.join('')+'</div>':'')+
+      descHtml+
+      '<button class="btn-dark m-cta" style="width:100%;justify-content:center;" onclick="openOrd(\''+safeName+'\')">'+t['cbtn-txt']+'</button>'+
+    '</div>';
+}
+
+function mThumb(el,i){
+  document.querySelectorAll('.m-thumb').forEach(t=>t.classList.remove('on'));
+  if(typeof el==='number'){el=document.querySelectorAll('.m-thumb')[el];}
+  if(el)el.classList.add('on');
+  const mi=document.getElementById('m-main');
+  if(mi&&currentProductImgs[i])mi.src=currentProductImgs[i];
+  const wrap=document.getElementById('m-main-wrap');
+  if(wrap)wrap.setAttribute('onclick','lbOpen(currentProductImgs,'+i+')');
+}
+
+function goBackToKat(){
+  if(history.length>1)history.back();else go('katalog');
+}
+
 /* ===== ORDER MODAL ===== */
 function openOrd(name){
   const t=TRANS[currentLang];
@@ -976,7 +1095,8 @@ function lbOpen(imgs,i){
   document.getElementById('lbImg').src=imgs[i];
   document.getElementById('lb').classList.add('on');
   updateLbCounter();
-  history.pushState({lb:true,view:currentView},'','#'+currentView);
+  const curHash=location.hash.replace('#','')||currentView;
+  history.pushState({lb:true,view:currentView},'','#'+curHash);
 }
 function lbClose(){document.getElementById('lb').classList.remove('on');}
 function lbNav(d){
@@ -1017,8 +1137,17 @@ function triggerReveal(){
 (function(){
   if(currentLang==='ru')setLang('ru');
   const hash=location.hash.replace('#','');
-  if(VIEWS.includes(hash))go(hash,true);
-  history.replaceState({view:currentView},'','#'+currentView);
+  const parts=hash.split('/');
+  const viewId=parts[0]||'katalog';
+  const sub=decodeURIComponent(parts[1]||'');
+  if(viewId==='mahsulot'&&sub){
+    go('mahsulot',true,sub);currentProductId=sub;
+  } else if(NAV_VIEWS.includes(viewId)){
+    go(viewId,true);
+    if(viewId==='katalog'&&sub)pendingFilter=sub;
+  } else {
+    history.replaceState({view:currentView},'','#'+currentView);
+  }
 })();
 loadCatalog();
 triggerReveal();
