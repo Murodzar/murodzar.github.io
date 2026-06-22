@@ -1415,6 +1415,7 @@ const TG_GROUP_CHAT_ID = '-1003998737387';
 const TG_BACKUP_CHAT_ID = '244117895';
 // AI katalog Edge Function manzili (deploy qilingach to'ldiring)
 const AI_FUNC_URL = 'https://rztbawzfeqqtpbifkgjd.supabase.co/functions/v1/ai-katalog';
+const AI_GROUP_URL = 'https://rztbawzfeqqtpbifkgjd.supabase.co/functions/v1/ai-group';
 
 async function hashPin(pin) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pin));
@@ -2099,26 +2100,60 @@ function bulkUngroup(i) { if(bulkState[i]) { delete bulkState[i].groupId; render
 function levenshtein(a,b){const m=a.length,n=b.length;const dp=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>i===0?j:j===0?i:0));for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);return dp[m][n];}
 function nameSim(a,b){if(!a||!b)return 0;a=a.toLowerCase().trim();b=b.toLowerCase().trim();if(a===b)return 1;const mx=Math.max(a.length,b.length);return mx?(mx-levenshtein(a,b))/mx:0;}
 
-function autoGroupBulk(){
+async function autoGroupBulk(){
   if(bulkState.length<=1)return;
+  const btn=document.getElementById('bulk-group-btn');
+  const prog=document.getElementById('bulk-progress');
+  btn.disabled=true;
+  prog.style.display='block';
+  prog.textContent='🔍 AI rasmlarni tahlil qilmoqda…';
   bulkState.forEach(it=>delete it.groupId);
-  let gc=0;
-  for(let i=0;i<bulkState.length;i++){
-    for(let j=i+1;j<bulkState.length;j++){
-      const a=bulkState[i],b=bulkState[j];
-      const typeOk=!a.item_type||!b.item_type||a.item_type===b.item_type;
-      if(typeOk&&nameSim(a.name,b.name)>=0.55){
-        if(!a.groupId){a.groupId='g'+(++gc);}
-        if(!b.groupId)b.groupId=a.groupId;
+  try{
+    // Compress and encode images
+    const imgs=[];
+    for(const it of bulkState){
+      const compressed=await compressImage(it.file,400,0.4);
+      const b64=await fileToBase64(compressed);
+      imgs.push({base64:b64,media_type:'image/webp'});
+    }
+    const res=await fetch(AI_GROUP_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({images:imgs})
+    });
+    const d=await res.json();
+    if(!d.groups)throw new Error(d.error||'Javob xato');
+    // Apply groups
+    let gc=0;
+    d.groups.forEach((g)=>{
+      if(g.length>1){
+        const gid='g'+(++gc);
+        g.forEach(idx=>{if(bulkState[idx])bulkState[idx].groupId=gid;});
+      }
+    });
+    const total=bulkState.filter(it=>it.groupId).length;
+    renderBulkItems();
+    prog.textContent=total?`🔗 ${total} ta rasm → ${gc} ta mahsulot birlashtirildi`:`ℹ️ Bir xil mahsulot topilmadi`;
+  }catch(e){
+    // Fallback: string similarity
+    let gc=0;
+    for(let i=0;i<bulkState.length;i++){
+      for(let j=i+1;j<bulkState.length;j++){
+        const a=bulkState[i],b=bulkState[j];
+        const typeOk=!a.item_type||!b.item_type||a.item_type===b.item_type;
+        if(typeOk&&nameSim(a.name,b.name)>=0.55){
+          if(!a.groupId){a.groupId='g'+(++gc);}
+          if(!b.groupId)b.groupId=a.groupId;
+        }
       }
     }
+    const total=bulkState.filter(it=>it.groupId).length;
+    const groups=new Set(bulkState.map(it=>it.groupId).filter(Boolean)).size;
+    renderBulkItems();
+    prog.textContent=total?`🔗 ${total} ta rasm → ${groups} ta mahsulot (nom asosida)`:`ℹ️ Bir xil mahsulot topilmadi`;
+    console.error('AI group fallback:',e);
   }
-  const total=bulkState.filter(it=>it.groupId).length;
-  const groups=new Set(bulkState.map(it=>it.groupId).filter(Boolean)).size;
-  renderBulkItems();
-  const prog=document.getElementById('bulk-progress');
-  prog.style.display='block';
-  prog.textContent=total?`🔗 ${total} ta rasm → ${groups} ta mahsulot birlashtirildi`:`ℹ️ Bir xil mahsulot topilmadi`;
+  btn.disabled=false;
   setTimeout(()=>{prog.style.display='none';},3500);
 }
 
