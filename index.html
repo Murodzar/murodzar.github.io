@@ -794,6 +794,7 @@ textarea.form-input{resize:vertical;min-height:70px;}
 
     <div id="bulk-batch-controls" style="display:none;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center;">
       <button class="btn-gold" style="padding:7px 12px;" onclick="aiAutofillBulk()" id="bulk-ai-btn">✨ AI bilan to'ldirish</button>
+      <button class="btn-outline" style="padding:7px 12px;" onclick="autoGroupBulk()" id="bulk-group-btn">🔗 Bir xillarni birlashtir</button>
       <span style="font-size:11px;color:var(--mid);">Hammaga:</span>
       <select class="form-input" id="bulk-all-cat" style="width:auto;padding:7px 10px;" onchange="bulkApplyAll('cat',this.value)">
         <option value="">Kategoriya…</option>
@@ -2055,10 +2056,16 @@ function renderBulkItems() {
   const wrap = document.getElementById('bulk-items');
   document.getElementById('bulk-batch-controls').style.display = bulkState.length ? 'flex' : 'none';
   document.getElementById('bulk-save-btn').disabled = !bulkState.length;
-  wrap.innerHTML = bulkState.map((it, i) => `
-    <div style="background:var(--dark3);border:1px solid rgba(201,168,76,0.15);border-radius:4px;overflow:hidden;">
+  wrap.innerHTML = bulkState.map((it, i) => {
+    const grpSize = it.groupId ? bulkState.filter(x=>x.groupId===it.groupId).length : 0;
+    const borderClr = it.groupId ? 'rgba(80,160,255,0.6)' : 'rgba(201,168,76,0.15)';
+    const grpBadge = it.groupId ? `<div style="position:absolute;top:4px;left:4px;background:rgba(40,100,220,0.88);color:#fff;font-size:9px;padding:2px 6px;border-radius:3px;font-family:'DM Mono',monospace;">🔗 ${grpSize} rasm</div>` : '';
+    const ungroupBtn = it.groupId ? `<button onclick="bulkUngroup(${i})" style="position:absolute;bottom:4px;left:4px;background:rgba(0,0,0,0.65);color:#aac;border:none;font-size:9px;padding:2px 5px;border-radius:3px;cursor:pointer;">ajrat</button>` : '';
+    return `
+    <div style="background:var(--dark3);border:1px solid ${borderClr};border-radius:4px;overflow:hidden;">
       <div style="position:relative;aspect-ratio:1/1;background:var(--dark);">
         <img src="${it.url}" style="width:100%;height:100%;object-fit:cover;">
+        ${grpBadge}${ungroupBtn}
         <button onclick="bulkRemove(${i})" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.7);color:#fff;border:none;width:24px;height:24px;border-radius:50%;cursor:pointer;font-size:13px;">✕</button>
       </div>
       <div style="padding:7px;display:flex;flex-direction:column;gap:5px;">
@@ -2083,9 +2090,37 @@ function renderBulkItems() {
         </select>
         <textarea oninput="bulkSet(${i},'desc',this.value)" placeholder="Tavsif (ixtiyoriy)" rows="2" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.2);color:var(--cream);padding:5px 7px;font-size:11px;resize:vertical;font-family:inherit;">${esc(it.desc||'')}</textarea>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 function bulkSet(i, field, val) { if(bulkState[i]) bulkState[i][field] = val; }
+function bulkUngroup(i) { if(bulkState[i]) { delete bulkState[i].groupId; renderBulkItems(); } }
+
+function levenshtein(a,b){const m=a.length,n=b.length;const dp=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>i===0?j:j===0?i:0));for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);return dp[m][n];}
+function nameSim(a,b){if(!a||!b)return 0;a=a.toLowerCase().trim();b=b.toLowerCase().trim();if(a===b)return 1;const mx=Math.max(a.length,b.length);return mx?(mx-levenshtein(a,b))/mx:0;}
+
+function autoGroupBulk(){
+  if(bulkState.length<=1)return;
+  bulkState.forEach(it=>delete it.groupId);
+  let gc=0;
+  for(let i=0;i<bulkState.length;i++){
+    for(let j=i+1;j<bulkState.length;j++){
+      const a=bulkState[i],b=bulkState[j];
+      const typeOk=!a.item_type||!b.item_type||a.item_type===b.item_type;
+      if(typeOk&&nameSim(a.name,b.name)>=0.55){
+        if(!a.groupId){a.groupId='g'+(++gc);}
+        if(!b.groupId)b.groupId=a.groupId;
+      }
+    }
+  }
+  const total=bulkState.filter(it=>it.groupId).length;
+  const groups=new Set(bulkState.map(it=>it.groupId).filter(Boolean)).size;
+  renderBulkItems();
+  const prog=document.getElementById('bulk-progress');
+  prog.style.display='block';
+  prog.textContent=total?`🔗 ${total} ta rasm → ${groups} ta mahsulot birlashtirildi`:`ℹ️ Bir xil mahsulot topilmadi`;
+  setTimeout(()=>{prog.style.display='none';},3500);
+}
 
 // Blob/File ni base64 ga o'tkazish (data: prefikssiz)
 function fileToBase64(blob) {
@@ -2147,31 +2182,42 @@ async function saveBulkCatalog() {
   btn.disabled = true;
   prog.style.display = 'block';
   let ok = 0, fail = 0;
-  for(let i = 0; i < bulkState.length; i++) {
-    const it = bulkState[i];
-    prog.textContent = `Yuklanmoqda… ${i+1} / ${bulkState.length}`;
-    const url = await uploadToStorage(it.file, 'catalog', 1200, 0.78, 800);
-    if(!url) { fail++; continue; }
-    const data = {
-      id: uid(),
-      name: it.name.trim() || ('Buyum ' + (i+1)),
-      item_type: it.item_type || '',
-      category: it.cat,
-      metal: it.metal,
-      description: (it.desc || '').trim(),
-      images: [url],
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    };
-    try {
-      await dbSave('catalog', data);
-      catalog.unshift(data);
-      ok++;
-    } catch(e) { console.error('bulk save:', e); fail++; }
+  // Build list: grouped items → one entry, singles → one entry each
+  const seenGroups = new Set();
+  const entries = [];
+  for(const it of bulkState) {
+    if(!it.groupId) { entries.push([it]); }
+    else if(!seenGroups.has(it.groupId)) {
+      seenGroups.add(it.groupId);
+      entries.push(bulkState.filter(x=>x.groupId===it.groupId));
+    }
   }
-  renderCatalog(); updateStats();
-  prog.textContent = `✅ ${ok} ta qo'shildi` + (fail ? `, ⚠️ ${fail} ta xato` : '');
-  setTimeout(() => { closeModal('bulk-catalog-modal'); bulkState = []; }, 1500);
+  for(let i=0;i<entries.length;i++) {
+    const group=entries[i], lead=group[0];
+    prog.textContent=`Yuklanmoqda… ${i+1} / ${entries.length}`;
+    const urls=[];
+    for(const it of group) {
+      const url=await uploadToStorage(it.file,'catalog',1200,0.78,800);
+      if(url) urls.push(url);
+    }
+    if(!urls.length){fail++;continue;}
+    const data={
+      id:uid(),
+      name:lead.name.trim()||('Buyum '+(i+1)),
+      item_type:lead.item_type||'',
+      category:lead.cat,
+      metal:lead.metal,
+      description:(lead.desc||'').trim(),
+      images:urls,
+      created_at:new Date().toISOString(),
+      updated_at:new Date().toISOString()
+    };
+    try{await dbSave('catalog',data);catalog.unshift(data);ok++;}
+    catch(e){console.error('bulk save:',e);fail++;}
+  }
+  renderCatalog();updateStats();
+  prog.textContent=`✅ ${ok} ta qo'shildi`+(fail?`, ⚠️ ${fail} ta xato`:'');
+  setTimeout(()=>{closeModal('bulk-catalog-modal');bulkState=[];},1500);
 }
 
 // ===== STORAGE RASM O'CHIRISH =====
