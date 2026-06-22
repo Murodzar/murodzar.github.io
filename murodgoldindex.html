@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Murad Jewellery — Qo'lda yasalgan zargarlik · G'allaorol</title>
-<meta name="description" content="Murad Jewellery — Jizzax viloyati G'allaorol tumani. 15 yillik tajriba. Oltin va kumush buyumlar, ta'mirlash, lazer yozish, qayta ishlash.">
+<title>Zargar G'allaorol — Tilla va Oltin Buyumlar | Murad Jewellery</title>
+<meta name="description" content="G'allaorol zargar ustasi — tilla uzuk, oltin sirg'a, kumush buyumlar buyurtma asosida. Ta'mirlash, lazer yozish, qayta ishlash. 15 yillik tajriba. Jizzax viloyati.">
+<meta name="keywords" content="zargar, zargar G'allaorol, zargar Jizzax, tilla, tilla uzuk, tilla sirg'a, tilla zanjir, tilla bilaguzuk, tilla kulon, oltin, oltin uzuk, oltin sirg'a, oltin buyum, kumush uzuk, kumush buyum, zargarlik, zargarlik atelyesi, buyum yasash, tilla ta'mirlash, oltin ta'mirlash, lazer yozish, qayta ishlash, 585 oltin, 750 oltin, 925 kumush, G'allaorol, Jizzax, zargar ustasi, tilla buyurtma, oltin buyurtma, ювелир, ювелир Галлаорол, ювелир Джизак, золото, золотые украшения, золотое кольцо, золотые серьги, золотой браслет, золотая цепочка, кулон золото, серебро, серебряные украшения, ювелирная мастерская, украшения на заказ, ремонт украшений, лазерная гравировка, переплавка золота, 585 золото, 750 золото, 925 серебро">
 <meta property="og:title" content="Murad Jewellery — Qo'lda yasalgan zargarlik">
 <meta property="og:description" content="G'allaorol zargarlik atelyesi. Buyurtma asosida yaratilgan oltin va kumush buyumlar. 15+ yillik tajriba.">
 <meta property="og:type" content="website">
@@ -19,7 +20,7 @@
   "@context":"https://schema.org",
   "@type":"LocalBusiness",
   "name":"Murad Jewellery",
-  "description":"Qo'lda yasalgan zargarlik buyumlari. 15+ yillik tajriba.",
+  "description":"G'allaorol zargar ustasi. Tilla uzuk, oltin sirg'a, kumush buyumlar buyurtma asosida yasash, ta'mirlash, lazer yozish. 15+ yillik tajriba. Jizzax viloyati.",
   "url":"https://murodzar.github.io/murodgoldindex.html",
   "telephone":["+998974812010","+998956279999"],
   "address":{"@type":"PostalAddress","addressLocality":"G'allaorol","addressRegion":"Jizzax viloyati","addressCountry":"UZ"},
@@ -70,6 +71,8 @@ header.scrolled{box-shadow:0 2px 24px rgba(27,26,22,0.09);}
 .nav button:hover{color:var(--ink);}
 .nav button.on{color:var(--gold-deep);}
 .nav button.on::after{content:'';position:absolute;bottom:-2px;left:12px;right:12px;height:1.5px;background:var(--gold);}
+.lang-btn{background:none;border:1px solid var(--line);color:var(--muted);font-size:11px;letter-spacing:.06em;padding:5px 10px;border-radius:3px;transition:all .2s;font-family:'Jost',sans-serif;cursor:pointer;margin-left:8px;white-space:nowrap;}
+.lang-btn:hover{border-color:var(--gold);color:var(--gold-deep);}
 
 /* Hamburger */
 .hbg{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:6px;cursor:pointer;z-index:50;}
@@ -82,6 +85,7 @@ header.scrolled{box-shadow:0 2px 24px rgba(27,26,22,0.09);}
 .mob-menu{position:fixed;inset:0;background:rgba(244,243,239,0.97);backdrop-filter:blur(16px);z-index:38;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;opacity:0;pointer-events:none;transition:opacity .3s;}
 .mob-menu.open{opacity:1;pointer-events:all;}
 .mob-menu button{background:none;border:none;font-family:'Fraunces',serif;font-size:30px;font-weight:500;color:var(--muted);padding:11px 28px;transition:color .2s;}
+.mob-menu button.lang-mob{font-family:'Jost',sans-serif;font-size:14px;letter-spacing:.1em;margin-top:8px;border:1px solid var(--line);border-radius:3px;padding:8px 20px;}
 .mob-menu button:hover,.mob-menu button.on{color:var(--gold-deep);}
 .mob-social{display:flex;gap:22px;margin-top:28px;}
 .mob-social a{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:8px 0;transition:color .2s;}
@@ -283,6 +287,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:48px 0 28px;}
 @media(max-width:720px){
   .nav{display:none;}
   .hbg{display:flex;}
+  .lang-btn{display:none;}
   .about-grid{grid-template-columns:1fr;}
   .footer-grid{grid-template-columns:1fr;gap:26px;}
   .hero{padding:44px 0 36px;}
@@ -310,12 +315,13 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:48px 0 28px;}
       Murad Jewellery<small>G'allaorol</small>
     </div>
     <nav class="nav" id="nav">
-      <button onclick="go('katalog')" class="on">Katalog</button>
-      <button onclick="go('xizmatlar')">Xizmatlar</button>
-      <button onclick="go('buyurtmam')">Buyurtmam</button>
-      <button onclick="go('haqimizda')">Biz haqimizda</button>
-      <button onclick="go('aloqa')">Aloqa</button>
+      <button onclick="go('katalog')" class="on" data-i18n="nav-katalog">Katalog</button>
+      <button onclick="go('xizmatlar')" data-i18n="nav-xizmatlar">Xizmatlar</button>
+      <button onclick="go('buyurtmam')" data-i18n="nav-buyurtmam">Buyurtmam</button>
+      <button onclick="go('haqimizda')" data-i18n="nav-haqimizda">Biz haqimizda</button>
+      <button onclick="go('aloqa')" data-i18n="nav-aloqa">Aloqa</button>
     </nav>
+    <button class="lang-btn" id="lang-btn" onclick="toggleLang()">🇷🇺 RU</button>
     <button class="hbg" id="hbg" onclick="toggleMob()" aria-label="Menyu">
       <span></span><span></span><span></span>
     </button>
@@ -324,11 +330,12 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:48px 0 28px;}
 
 <!-- MOBILE MENU -->
 <div class="mob-menu" id="mob-menu">
-  <button onclick="goMob('katalog')">Katalog</button>
-  <button onclick="goMob('xizmatlar')">Xizmatlar</button>
-  <button onclick="goMob('buyurtmam')">Buyurtmam</button>
-  <button onclick="goMob('haqimizda')">Biz haqimizda</button>
-  <button onclick="goMob('aloqa')">Aloqa</button>
+  <button onclick="goMob('katalog')" data-i18n="nav-katalog">Katalog</button>
+  <button onclick="goMob('xizmatlar')" data-i18n="nav-xizmatlar">Xizmatlar</button>
+  <button onclick="goMob('buyurtmam')" data-i18n="nav-buyurtmam">Buyurtmam</button>
+  <button onclick="goMob('haqimizda')" data-i18n="nav-haqimizda">Biz haqimizda</button>
+  <button onclick="goMob('aloqa')" data-i18n="nav-aloqa">Aloqa</button>
+  <button class="lang-mob" onclick="toggleLang();toggleMob();" id="lang-mob">🇷🇺 RU</button>
   <div class="mob-social">
     <a href="https://t.me/zaruzb" target="_blank" rel="noopener">Telegram</a>
     <a href="https://instagram.com/murod__artikov" target="_blank" rel="noopener">Instagram</a>
@@ -337,7 +344,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:48px 0 28px;}
 
 <!-- FLOATING CONTACT -->
 <div class="float-wrap">
-  <div class="float-lbl">Bog'laning</div>
+  <div class="float-lbl" data-i18n="float-lbl">Bog'laning</div>
   <a class="float-btn fb-tg" href="https://t.me/zaruzb" target="_blank" rel="noopener" title="Telegram">✈️</a>
   <a class="float-btn fb-call" href="tel:+998974812010" title="Qo'ng'iroq">📞</a>
 </div>
@@ -349,17 +356,17 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:48px 0 28px;}
       <div class="hero-row">
         <div class="hero-rule"></div>
         <div>
-          <div class="eyebrow">Qo'lda yasalgan · 585 oltin</div>
-          <h1 style="margin-top:14px;">Har bir buyum —<br><em>bitta hikoya</em></h1>
-          <p>O'n besh yillik tajriba bilan quyilgan, qotirilgan va sayqallangan zargarlik buyumlari. Yoqqanini tanlang — qolganini biz qo'lda yaratamiz.</p>
+          <div class="eyebrow" data-i18n="hero-eyebrow">Qo'lda yasalgan · 585 oltin</div>
+          <h1 style="margin-top:14px;" data-i18n="hero-h1">Har bir buyum —<br><em>bitta hikoya</em></h1>
+          <p data-i18n="hero-p">G'allaorol zargar ustasi. Tilla uzuk, oltin sirg'a, kumush bilaguzuk va zanjirlar buyurtma asosida yasaladi. O'n besh yillik tajriba — qolganini biz qo'lda yaratamiz.</p>
           <div class="hero-meta">
-            <div><b>15+</b>yillik tajriba</div>
-            <div><b>583–999</b>oltin va kumush</div>
-            <div><b>Respublika</b>bo'ylab yetkazib berish</div>
+            <div><b>15+</b><span data-i18n="hero-stat1">yillik tajriba</span></div>
+            <div><b>583–999</b><span data-i18n="hero-stat2">oltin va kumush</span></div>
+            <div><b>Respublika</b><span data-i18n="hero-stat3">bo'ylab yetkazib berish</span></div>
           </div>
           <div class="hero-cta">
-            <button class="btn-dark" onclick="go('xizmatlar')">Xizmatlarni ko'ring</button>
-            <button class="btn-ghost" onclick="go('buyurtmam')">📦 Buyurtmamni kuzatish</button>
+            <button class="btn-dark" onclick="go('xizmatlar')" data-i18n="btn-services">Xizmatlarni ko'ring</button>
+            <button class="btn-ghost" onclick="go('buyurtmam')" data-i18n="btn-track">📦 Buyurtmamni kuzatish</button>
           </div>
         </div>
       </div>
@@ -378,50 +385,50 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:48px 0 28px;}
   <div class="wrap">
     <div class="sec">
       <div class="sec-head reveal">
-        <div class="eyebrow">Bizning xizmatlar</div>
-        <h2>Qo'limizdan <em>keladi</em></h2>
-        <p>Zargarlik sohasining barcha yo'nalishlarida professional xizmat ko'rsatamiz — yangi buyum yasashdan tortib, eskisini tiklashgacha.</p>
+        <div class="eyebrow" data-i18n="svc-eyebrow">Bizning xizmatlar</div>
+        <h2 data-i18n="svc-h2">Qo'limizdan <em>keladi</em></h2>
+        <p data-i18n="svc-p">Zargarlik sohasining barcha yo'nalishlarida professional xizmat ko'rsatamiz — yangi buyum yasashdan tortib, eskisini tiklashgacha.</p>
       </div>
 
       <div class="svc-grid">
         <div class="svc-card reveal rd1">
           <div class="svc-icon">💎</div>
-          <div class="svc-title">Buyum yasash</div>
-          <div class="svc-desc">Xohlagan dizayndagi oltin va kumush buyumlarni buyurtma asosida qo'lda yaratamiz. Uzuk, sirg'a, bilaguzuk, zanjir, kulon va boshqalar.</div>
+          <div class="svc-title" data-i18n="svc1-title">Buyum yasash</div>
+          <div class="svc-desc" data-i18n="svc1-desc">Xohlagan dizayndagi oltin va kumush buyumlarni buyurtma asosida qo'lda yaratamiz. Uzuk, sirg'a, bilaguzuk, zanjir, kulon va boshqalar.</div>
         </div>
         <div class="svc-card reveal rd2">
           <div class="svc-icon">🔨</div>
-          <div class="svc-title">Ta'mirlash</div>
-          <div class="svc-desc">Singan, eskirgan yoki buzilgan buyumlarni professional tarzda tiklash. Tosh tushib ketganlari, uzilgan zanjirlar, qisman ezilib ketganlar.</div>
+          <div class="svc-title" data-i18n="svc2-title">Ta'mirlash</div>
+          <div class="svc-desc" data-i18n="svc2-desc">Singan, eskirgan yoki buzilgan buyumlarni professional tarzda tiklash. Tosh tushib ketganlari, uzilgan zanjirlar, qisman ezilib ketganlar.</div>
         </div>
         <div class="svc-card reveal rd3">
           <div class="svc-icon">🔤</div>
-          <div class="svc-title">Lazer bilan yozish</div>
-          <div class="svc-desc">Uzuk, bilaguzuk va boshqa buyumlarga ism, sana yoki istalgan matnni lazer yordamida aniq va chiroyli yozib beramiz.</div>
+          <div class="svc-title" data-i18n="svc3-title">Lazer bilan yozish</div>
+          <div class="svc-desc" data-i18n="svc3-desc">Uzuk, bilaguzuk va boshqa buyumlarga ism, sana yoki istalgan matnni lazer yordamida aniq va chiroyli yozib beramiz.</div>
         </div>
         <div class="svc-card reveal rd1">
           <div class="svc-icon">♻️</div>
-          <div class="svc-title">Qayta ishlash</div>
-          <div class="svc-desc">Eski yoki moda o'tib ketgan zargarlik buyumlaringizni zamonaviy dizayndagi yangi buyumga aylantirib beramiz.</div>
+          <div class="svc-title" data-i18n="svc4-title">Qayta ishlash</div>
+          <div class="svc-desc" data-i18n="svc4-desc">Eski yoki moda o'tib ketgan zargarlik buyumlaringizni zamonaviy dizayndagi yangi buyumga aylantirib beramiz.</div>
         </div>
         <div class="svc-card reveal rd2">
           <div class="svc-icon">📐</div>
-          <div class="svc-title">O'lcham o'zgartirish</div>
-          <div class="svc-desc">Uzuk va bilaguzuklarni sizning o'lchamingizga moslab sozlaymiz — to'g'ri va qulay kiyilishi uchun.</div>
+          <div class="svc-title" data-i18n="svc5-title">O'lcham o'zgartirish</div>
+          <div class="svc-desc" data-i18n="svc5-desc">Uzuk va bilaguzuklarni sizning o'lchamingizga moslab sozlaymiz — to'g'ri va qulay kiyilishi uchun.</div>
         </div>
         <div class="svc-card reveal rd3">
           <div class="svc-icon">✨</div>
-          <div class="svc-title">Tozalash va pardozlash</div>
-          <div class="svc-desc">Professional uskunalar yordamida zargarlik buyumlaringizni yangiday yarqiratib beramiz. Sayqlash va qoplama xizmati.</div>
+          <div class="svc-title" data-i18n="svc6-title">Tozalash va pardozlash</div>
+          <div class="svc-desc" data-i18n="svc6-desc">Professional uskunalar yordamida zargarlik buyumlaringizni yangiday yarqiratib beramiz. Sayqlash va qoplama xizmati.</div>
         </div>
       </div>
 
       <div class="svc-cta reveal" style="margin-top:44px;">
-        <h3>Buyurtma berishga tayyormisiz?</h3>
-        <p>Narx va muddatni bilib olish uchun hoziroq murojaat qiling</p>
+        <h3 data-i18n="svc-cta-h3">Buyurtma berishga tayyormisiz?</h3>
+        <p data-i18n="svc-cta-p">Narx va muddatni bilib olish uchun hoziroq murojaat qiling</p>
         <div class="svc-cta-btns">
-          <a href="https://t.me/zaruzb" target="_blank" rel="noopener" class="btn-dark" style="text-decoration:none;">✈️ Telegram</a>
-          <a href="tel:+998974812010" class="btn-ghost" style="text-decoration:none;">📞 Qo'ng'iroq</a>
+          <a href="https://t.me/zaruzb" target="_blank" rel="noopener" class="btn-dark" style="text-decoration:none;" data-i18n="btn-tg">✈️ Telegram</a>
+          <a href="tel:+998974812010" class="btn-ghost" style="text-decoration:none;" data-i18n="btn-call">📞 Qo'ng'iroq</a>
         </div>
       </div>
     </div>
@@ -432,14 +439,14 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:48px 0 28px;}
 <section class="view" id="v-buyurtmam">
   <div class="wrap">
     <div class="lookwrap">
-      <div class="eyebrow" style="text-align:center;margin-bottom:10px;">Buyurtma holati</div>
-      <h2>Buyurtmangizni kuzating</h2>
-      <div class="sub">Zargar bergan kodni kiriting</div>
+      <div class="eyebrow" style="text-align:center;margin-bottom:10px;" data-i18n="look-eyebrow">Buyurtma holati</div>
+      <h2 data-i18n="look-h2">Buyurtmangizni kuzating</h2>
+      <div class="sub" data-i18n="look-sub">Zargar bergan kodni kiriting</div>
       <div class="lookbox">
         <input id="code" placeholder="AB123" maxlength="8" autocomplete="off"
           oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')"
           onkeydown="if(event.key==='Enter')lookup()">
-        <button class="lookbtn" onclick="lookup()">Qidirish</button>
+        <button class="lookbtn" onclick="lookup()" data-i18n="look-btn">Qidirish</button>
       </div>
       <div id="result"></div>
     </div>
@@ -452,44 +459,44 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:48px 0 28px;}
     <div class="sec">
       <div class="about-grid">
         <div>
-          <div class="eyebrow reveal">Biz haqimizda</div>
-          <h2 class="reveal" style="font-family:'Fraunces',serif;font-weight:500;font-size:clamp(28px,6vw,44px);margin-top:10px;line-height:1.04;">
+          <div class="eyebrow reveal" data-i18n="about-eyebrow">Biz haqimizda</div>
+          <h2 class="reveal" style="font-family:'Fraunces',serif;font-weight:500;font-size:clamp(28px,6vw,44px);margin-top:10px;line-height:1.04;" data-i18n="about-h2">
             Metalldan <em style="font-style:italic;color:var(--gold-deep);">nafislik</em> tug'iladi
           </h2>
-          <p class="lead reveal" style="margin-top:22px;">
+          <p class="lead reveal" style="margin-top:22px;" data-i18n="about-p1">
             Murad Jewellery — Jizzax viloyati, G'allaorol tumanidagi xususiy zargarlik atelyesi. Bu yerda har bir uzuk, sirg'a va zanjir qo'lda yasaladi: model tayyorlanadi, oltin quyiladi, tosh o'rnatiladi va sayqal beriladi.
           </p>
-          <p class="lead reveal" style="margin-top:14px;color:var(--muted);">
+          <p class="lead reveal" style="margin-top:14px;color:var(--muted);" data-i18n="about-p2">
             Biz tayyor mahsulot sotmaymiz — biz buyurtmangizni yaratamiz. Shu sababli har bir buyum sizning o'lchamingiz va didingizga moslab tugallanadi.
           </p>
           <div class="statline reveal">
-            <div><b>15+</b><span>Yil tajriba</span></div>
-            <div><b>Qo'lda</b><span>Har bir buyum</span></div>
-            <div><b>585°</b><span>Asosiy proba</span></div>
+            <div><b>15+</b><span data-i18n="stat1-label">Yil tajriba</span></div>
+            <div><b>Qo'lda</b><span data-i18n="stat2-label">Har bir buyum</span></div>
+            <div><b>585°</b><span data-i18n="stat3-label">Asosiy proba</span></div>
           </div>
         </div>
         <div>
           <div class="metals-box reveal">
-            <h4>Ishlatiladigan metallar</h4>
+            <h4 data-i18n="metals-h4">Ishlatiladigan metallar</h4>
             <div class="metal-row">
               <span class="mr-ico">🥇</span>
-              <span class="mr-name">Oltin</span>
-              <span class="mr-proba">375 · 583 · 750 · 999 proba</span>
+              <span class="mr-name" data-i18n="metal1-name">Oltin</span>
+              <span class="mr-proba" data-i18n="metal1-proba">375 · 583 · 750 · 999 proba</span>
             </div>
             <div class="metal-row">
               <span class="mr-ico">🥈</span>
-              <span class="mr-name">Kumush</span>
-              <span class="mr-proba">925 · 999 proba</span>
+              <span class="mr-name" data-i18n="metal2-name">Kumush</span>
+              <span class="mr-proba" data-i18n="metal2-proba">925 · 999 proba</span>
             </div>
             <div class="metal-row">
               <span class="mr-ico">💎</span>
-              <span class="mr-name">Toshlar</span>
-              <span class="mr-proba">Zirkon, fianit, kubik</span>
+              <span class="mr-name" data-i18n="metal3-name">Toshlar</span>
+              <span class="mr-proba" data-i18n="metal3-proba">Zirkon, fianit, kubik</span>
             </div>
             <div class="metal-row">
               <span class="mr-ico">🚚</span>
-              <span class="mr-name">Yetkazib berish</span>
-              <span class="mr-proba">Respublika bo'ylab</span>
+              <span class="mr-name" data-i18n="metal4-name">Yetkazib berish</span>
+              <span class="mr-proba" data-i18n="metal4-proba">Respublika bo'ylab</span>
             </div>
           </div>
         </div>
@@ -501,33 +508,32 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:48px 0 28px;}
   <div class="insta-sec">
     <div class="wrap">
       <div class="sec-head reveal">
-        <div class="eyebrow">Jarayon</div>
-        <h2 style="font-family:'Fraunces',serif;font-weight:500;font-size:clamp(24px,5vw,38px);margin-top:10px;line-height:1.1;">
+        <div class="eyebrow" data-i18n="insta-eyebrow">Jarayon</div>
+        <h2 style="font-family:'Fraunces',serif;font-weight:500;font-size:clamp(24px,5vw,38px);margin-top:10px;line-height:1.1;" data-i18n="insta-h2">
           Qo'l ishlari <em style="font-style:italic;color:var(--gold-deep);">ko'rinadi</em>
         </h2>
-        <p style="margin-top:12px;color:var(--muted);font-size:14px;line-height:1.7;">
+        <p style="margin-top:12px;color:var(--muted);font-size:14px;line-height:1.7;" data-i18n="insta-p">
           Yangi buyumlar, ishlab chiqarish jarayoni va ilhomlantiruvchi ko'rinishlar — har kuni Instagramda.
         </p>
       </div>
 
-      <!-- Video/Instagram placeholder cards -->
       <div class="insta-grid reveal">
         <div class="insta-card" onclick="window.open('https://instagram.com/murod__artikov','_blank')">
           <div class="insta-card-inner">
             <div class="ic-icon">🎬</div>
-            <div class="ic-text">Reels ko'ring</div>
+            <div class="ic-text" data-i18n="ic1-text">Reels ko'ring</div>
           </div>
         </div>
         <div class="insta-card" onclick="window.open('https://instagram.com/murod__artikov','_blank')">
           <div class="insta-card-inner">
             <div class="ic-icon">📸</div>
-            <div class="ic-text">Yangi buyumlar</div>
+            <div class="ic-text" data-i18n="ic2-text">Yangi buyumlar</div>
           </div>
         </div>
         <div class="insta-card" onclick="window.open('https://instagram.com/murod__artikov','_blank')">
           <div class="insta-card-inner">
             <div class="ic-icon">✨</div>
-            <div class="ic-text">Jarayon videolari</div>
+            <div class="ic-text" data-i18n="ic3-text">Jarayon videolari</div>
           </div>
         </div>
       </div>
@@ -535,8 +541,8 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:48px 0 28px;}
       <div class="insta-banner reveal" style="margin-top:0;">
         <div class="ib-icon">📸</div>
         <h3>@murod__artikov</h3>
-        <p>Har bir buyumning tug'ilish jarayonini kuzating — oltin quyilishidan, sayqal berilishigacha.</p>
-        <a href="https://instagram.com/murod__artikov" target="_blank" rel="noopener">Instagram'da kuzating →</a>
+        <p data-i18n="insta-banner-p">Har bir buyumning tug'ilish jarayonini kuzating — oltin quyilishidan, sayqal berilishigacha.</p>
+        <a href="https://instagram.com/murod__artikov" target="_blank" rel="noopener" data-i18n="insta-banner-a">Instagram'da kuzating →</a>
       </div>
     </div>
   </div>
@@ -546,36 +552,36 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:48px 0 28px;}
 <section class="view" id="v-aloqa">
   <div class="wrap">
     <div class="sec">
-      <div class="eyebrow reveal">Aloqa</div>
-      <h2 class="reveal" style="font-family:'Fraunces',serif;font-weight:500;font-size:clamp(28px,6vw,44px);margin-top:10px;line-height:1.04;">
+      <div class="eyebrow reveal" data-i18n="contact-eyebrow">Aloqa</div>
+      <h2 class="reveal" style="font-family:'Fraunces',serif;font-weight:500;font-size:clamp(28px,6vw,44px);margin-top:10px;line-height:1.04;" data-i18n="contact-h2">
         Bizga <em style="font-style:italic;color:var(--gold-deep);">yozing</em>
       </h2>
 
       <div class="crd-grid">
         <div class="crd reveal">
-          <span class="lbl">📞 Telefon</span>
+          <span class="lbl" data-i18n="phone-lbl">📞 Telefon</span>
           <a href="tel:+998974812010"><span class="ic">📞</span>+998 97 481-20-10 — Jahongir</a>
           <a href="tel:+998956279999"><span class="ic">📞</span>+998 95 627-99-99 — Murod</a>
         </div>
         <div class="crd reveal rd1">
-          <span class="lbl">🌐 Ijtimoiy tarmoqlar</span>
+          <span class="lbl" data-i18n="social-lbl">🌐 Ijtimoiy tarmoqlar</span>
           <a href="https://t.me/zaruzb" target="_blank" rel="noopener"><span class="ic">✈️</span>Telegram: @zaruzb</a>
           <a href="https://instagram.com/murod__artikov" target="_blank" rel="noopener"><span class="ic">📸</span>Instagram: @murod__artikov</a>
         </div>
         <div class="crd reveal rd2">
-          <span class="lbl">📍 Manzil va vaqt</span>
-          <p><span class="ic">📍</span>Jizzax viloyati, G'allaorol tumani</p>
-          <p><span class="ic">🕒</span>Har kuni 10:00 – 19:00</p>
-          <p><span class="ic">🚚</span>Respublika bo'ylab yetkazib berish</p>
+          <span class="lbl" data-i18n="addr-lbl">📍 Manzil va vaqt</span>
+          <p data-i18n="addr1"><span class="ic">📍</span>Jizzax viloyati, G'allaorol tumani</p>
+          <p data-i18n="addr2"><span class="ic">🕒</span>Har kuni 10:00 – 19:00</p>
+          <p data-i18n="addr3"><span class="ic">🚚</span>Respublika bo'ylab yetkazib berish</p>
         </div>
       </div>
 
       <div class="contact-cta reveal" style="margin-top:14px;">
-        <h3>Buyurtma berishga tayyormisiz?</h3>
-        <p>Muddatni va narxni bilib olish uchun hozir bog'laning — javob berishdan xursandmiz.</p>
+        <h3 data-i18n="cta-h3">Buyurtma berishga tayyormisiz?</h3>
+        <p data-i18n="cta-p">Muddatni va narxni bilib olish uchun hozir bog'laning — javob berishdan xursandmiz.</p>
         <div class="cc-btns">
-          <a href="https://t.me/zaruzb" target="_blank" rel="noopener" class="cc-btn cc-tg">✈️ Telegram orqali yozing</a>
-          <a href="tel:+998974812010" class="cc-btn cc-call">📞 Qo'ng'iroq qiling</a>
+          <a href="https://t.me/zaruzb" target="_blank" rel="noopener" class="cc-btn cc-tg" data-i18n="cta-tg">✈️ Telegram orqali yozing</a>
+          <a href="tel:+998974812010" class="cc-btn cc-call" data-i18n="cta-call">📞 Qo'ng'iroq qiling</a>
         </div>
       </div>
     </div>
@@ -588,27 +594,28 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:48px 0 28px;}
     <div class="footer-grid">
       <div>
         <div class="footer-brand">Murad Jewellery<small>G'allaorol · Jizzax viloyati</small></div>
-        <p class="footer-tagline">Qo'lda yasalgan zargarlik buyumlari. 15 yildan ortiq tajriba, har bir buyum buyurtma asosida yaratiladi.</p>
+        <p class="footer-tagline" data-i18n="footer-tagline">Qo'lda yasalgan zargarlik buyumlari. 15 yildan ortiq tajriba, har bir buyum buyurtma asosida yaratiladi.</p>
       </div>
       <div class="footer-col">
-        <h5>Xizmatlar</h5>
-        <p>💎 Buyum yasash</p>
-        <p>🔨 Ta'mirlash</p>
-        <p>🔤 Lazer yozish</p>
-        <p>♻️ Qayta ishlash</p>
-        <p>📐 O'lcham o'zgartirish</p>
+        <h5 data-i18n="footer-svc">Xizmatlar</h5>
+        <p data-i18n="fsvc1">💎 Buyum yasash</p>
+        <p data-i18n="fsvc2">🔨 Ta'mirlash</p>
+        <p data-i18n="fsvc3">🔤 Lazer yozish</p>
+        <p data-i18n="fsvc4">♻️ Qayta ishlash</p>
+        <p data-i18n="fsvc5">📐 O'lcham o'zgartirish</p>
       </div>
       <div class="footer-col">
-        <h5>Bog'laning</h5>
+        <h5 data-i18n="footer-contact">Bog'laning</h5>
         <a href="tel:+998974812010">📞 +998 97 481-20-10</a>
         <a href="tel:+998956279999">📞 +998 95 627-99-99</a>
         <a href="https://t.me/zaruzb" target="_blank" rel="noopener">✈️ @zaruzb</a>
         <a href="https://instagram.com/murod__artikov" target="_blank" rel="noopener">📸 @murod__artikov</a>
-        <p>🕒 Har kuni 10:00–19:00</p>
+        <p data-i18n="footer-addr">🕒 Har kuni 10:00–19:00</p>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2025 Murad Jewellery · G'allaorol · Jizzax</p>
+      <p>© 2025 Murad Jewellery · Zargar G'allaorol · Jizzax · Tilla va oltin buyumlar</p>
+      <p style="font-size:10px;color:rgba(255,255,255,.25);margin-top:6px;">Ювелир Галлаорол · Золотые украшения на заказ · Ювелирная мастерская Джизак</p>
       <div class="f-social">
         <a href="https://t.me/zaruzb" target="_blank" rel="noopener" title="Telegram">✈️</a>
         <a href="https://instagram.com/murod__artikov" target="_blank" rel="noopener" title="Instagram">📸</a>
@@ -620,12 +627,12 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:48px 0 28px;}
 <!-- ORDER MODAL -->
 <div class="overlay" id="ordModal">
   <div class="modal">
-    <h3>Buyurtma berish</h3>
+    <h3 data-i18n="ord-h3">Buyurtma berish</h3>
     <p id="ordItem">Qiziqyapsizmi? Murojaat qiling:</p>
-    <a href="https://t.me/zaruzb" target="_blank" rel="noopener">✈️ Telegram orqali yozing</a>
-    <a href="tel:+998974812010">📞 +998 97 481-20-10</a>
-    <a class="alt" href="tel:+998956279999">📞 +998 95 627-99-99</a>
-    <button class="x" onclick="closeOrd()">Yopish</button>
+    <a href="https://t.me/zaruzb" target="_blank" rel="noopener" data-i18n="ord-tg">✈️ Telegram orqali yozing</a>
+    <a href="tel:+998974812010" data-i18n="ord-call1">📞 +998 97 481-20-10</a>
+    <a class="alt" href="tel:+998956279999" data-i18n="ord-call2">📞 +998 95 627-99-99</a>
+    <button class="x" onclick="closeOrd()" data-i18n="ord-close">Yopish</button>
   </div>
 </div>
 
@@ -644,6 +651,147 @@ const SB_URL='https://rztbawzfeqqtpbifkgjd.supabase.co';
 const SB_KEY='sb_publishable_mF63LJOpb_lzR_P_WmmZEA_W5oc8JPD';
 const sb=supabase.createClient(SB_URL,SB_KEY);
 
+/* ===== TRANSLATIONS ===== */
+const TRANS={
+  uz:{
+    'nav-katalog':'Katalog','nav-xizmatlar':'Xizmatlar','nav-buyurtmam':'Buyurtmam',
+    'nav-haqimizda':'Biz haqimizda','nav-aloqa':'Aloqa',
+    'hero-eyebrow':"Qo'lda yasalgan · 585 oltin",
+    'hero-h1':"Har bir buyum —<br><em>bitta hikoya</em>",
+    'hero-p':"G'allaorol zargar ustasi. Tilla uzuk, oltin sirg'a, kumush bilaguzuk va zanjirlar buyurtma asosida yasaladi. O'n besh yillik tajriba — qolganini biz qo'lda yaratamiz.",
+    'hero-stat1':'yillik tajriba','hero-stat2':'oltin va kumush',"hero-stat3":"bo'ylab yetkazib berish",
+    'btn-services':"Xizmatlarni ko'ring",'btn-track':'📦 Buyurtmamni kuzatish',
+    'svc-eyebrow':'Bizning xizmatlar','svc-h2':"Qo'limizdan <em>keladi</em>",
+    'svc-p':"Zargarlik sohasining barcha yo'nalishlarida professional xizmat ko'rsatamiz — yangi buyum yasashdan tortib, eskisini tiklashgacha.",
+    'svc1-title':'Buyum yasash','svc1-desc':"Xohlagan dizayndagi oltin va kumush buyumlarni buyurtma asosida qo'lda yaratamiz. Uzuk, sirg'a, bilaguzuk, zanjir, kulon va boshqalar.",
+    'svc2-title':"Ta'mirlash",'svc2-desc':"Singan, eskirgan yoki buzilgan buyumlarni professional tarzda tiklash. Tosh tushib ketganlari, uzilgan zanjirlar, qisman ezilib ketganlar.",
+    'svc3-title':'Lazer bilan yozish','svc3-desc':"Uzuk, bilaguzuk va boshqa buyumlarga ism, sana yoki istalgan matnni lazer yordamida aniq va chiroyli yozib beramiz.",
+    'svc4-title':'Qayta ishlash','svc4-desc':"Eski yoki moda o'tib ketgan zargarlik buyumlaringizni zamonaviy dizayndagi yangi buyumga aylantirib beramiz.",
+    "svc5-title":"O'lcham o'zgartirish","svc5-desc":"Uzuk va bilaguzuklarni sizning o'lchamingizga moslab sozlaymiz — to'g'ri va qulay kiyilishi uchun.",
+    'svc6-title':'Tozalash va pardozlash','svc6-desc':"Professional uskunalar yordamida zargarlik buyumlaringizni yangiday yarqiratib beramiz. Sayqlash va qoplama xizmati.",
+    'svc-cta-h3':'Buyurtma berishga tayyormisiz?','svc-cta-p':'Narx va muddatni bilib olish uchun hoziroq murojaat qiling',
+    'btn-tg':'✈️ Telegram','btn-call':"📞 Qo'ng'iroq",
+    'look-eyebrow':'Buyurtma holati','look-h2':'Buyurtmangizni kuzating','look-sub':'Zargar bergan kodni kiriting','look-btn':'Qidirish',
+    'about-eyebrow':'Biz haqimizda',
+    'about-h2':"Metalldan <em style=\"font-style:italic;color:var(--gold-deep);\">nafislik</em> tug'iladi",
+    'about-p1':"Murad Jewellery — Jizzax viloyati, G'allaorol tumanidagi xususiy zargarlik atelyesi. Bu yerda har bir uzuk, sirg'a va zanjir qo'lda yasaladi: model tayyorlanadi, oltin quyiladi, tosh o'rnatiladi va sayqal beriladi.",
+    'about-p2':"Biz tayyor mahsulot sotmaymiz — biz buyurtmangizni yaratamiz. Shu sababli har bir buyum sizning o'lchamingiz va didingizga moslab tugallanadi.",
+    'stat1-label':'Yil tajriba','stat2-label':'Har bir buyum','stat3-label':'Asosiy proba',
+    'metals-h4':'Ishlatiladigan metallar',
+    'metal1-name':'Oltin','metal1-proba':'375 · 583 · 750 · 999 proba',
+    'metal2-name':'Kumush','metal2-proba':'925 · 999 proba',
+    'metal3-name':'Toshlar','metal3-proba':'Zirkon, fianit, kubik',
+    'metal4-name':'Yetkazib berish','metal4-proba':"Respublika bo'ylab",
+    'insta-eyebrow':'Jarayon','insta-h2':"Qo'l ishlari <em style=\"font-style:italic;color:var(--gold-deep);\">ko'rinadi</em>",
+    'insta-p':"Yangi buyumlar, ishlab chiqarish jarayoni va ilhomlantiruvchi ko'rinishlar — har kuni Instagramda.",
+    'ic1-text':"Reels ko'ring",'ic2-text':'Yangi buyumlar','ic3-text':'Jarayon videolari',
+    'insta-banner-p':"Har bir buyumning tug'ilish jarayonini kuzating — oltin quyilishidan, sayqal berilishigacha.",
+    'insta-banner-a':"Instagram'da kuzating →",
+    'contact-eyebrow':'Aloqa','contact-h2':"Bizga <em style=\"font-style:italic;color:var(--gold-deep);\">yozing</em>",
+    'phone-lbl':'📞 Telefon','social-lbl':'🌐 Ijtimoiy tarmoqlar','addr-lbl':'📍 Manzil va vaqt',
+    'addr1':'<span class="ic">📍</span>Jizzax viloyati, G\'allaorol tumani',
+    'addr2':'<span class="ic">🕒</span>Har kuni 10:00 – 19:00',
+    'addr3':'<span class="ic">🚚</span>Respublika bo\'ylab yetkazib berish',
+    'cta-h3':'Buyurtma berishga tayyormisiz?',
+    'cta-p':"Muddatni va narxni bilib olish uchun hozir bog'laning — javob berishdan xursandmiz.",
+    'cta-tg':'✈️ Telegram orqali yozing','cta-call':"📞 Qo'ng'iroq qiling",
+    'footer-tagline':"Qo'lda yasalgan zargarlik buyumlari. 15 yildan ortiq tajriba, har bir buyum buyurtma asosida yaratiladi.",
+    'footer-svc':'Xizmatlar','footer-contact':"Bog'laning",'footer-addr':'🕒 Har kuni 10:00–19:00',
+    'fsvc1':'💎 Buyum yasash','fsvc2':"🔨 Ta'mirlash",'fsvc3':'🔤 Lazer yozish','fsvc4':'♻️ Qayta ishlash','fsvc5':"📐 O'lcham o'zgartirish",
+    'float-lbl':"Bog'laning",
+    'ord-h3':'Buyurtma berish','ord-tg':'✈️ Telegram orqali yozing',
+    'ord-call1':'📞 +998 97 481-20-10','ord-call2':'📞 +998 95 627-99-99','ord-close':'Yopish',
+    'filter-all':'Hammasi','search-ph':'Qidirish…',
+    'loading':"Yuklanmoqda…",'empty':"Bu turdagi buyum hozircha yo'q.",'no-items':"Hozircha buyumlar yo'q.",
+    'searching':"Qidirilmoqda…",'notfound':"Bu kod bo'yicha buyurtma topilmadi.<br>Kodni tekshiring yoki biz bilan bog'laning.",
+    'error':"Xatolik yuz berdi. Keyinroq urinib ko'ring.",
+    'due-label':'Topshirish sanasi:','recv-label':'Qabul qilindi:',
+    'lang-btn':'🇷🇺 RU',
+    'sl-yangi':'Qabul qilindi','sl-jarayonda':'Jarayonda','sl-tayyor':'Tayyor','sl-topshirildi':'Topshirildi',
+    'cbtn-txt':"So'rov yuborish",'ord-item-suffix':'— qiziqyapsizmi? Murojaat qiling:',
+  },
+  ru:{
+    'nav-katalog':'Каталог','nav-xizmatlar':'Услуги','nav-buyurtmam':'Мой заказ',
+    'nav-haqimizda':'О нас','nav-aloqa':'Контакты',
+    'hero-eyebrow':'Ручная работа · 585 золото',
+    'hero-h1':'Каждое украшение —<br><em>своя история</em>',
+    'hero-p':'Ювелир Галлаорол. Золотые кольца, серьги, серебряные браслеты и цепочки изготавливаются на заказ. Пятнадцать лет опыта — остальное создадим своими руками.',
+    'hero-stat1':'лет опыта','hero-stat2':'золото и серебро','hero-stat3':'доставка по стране',
+    'btn-services':'Наши услуги','btn-track':'📦 Отследить заказ',
+    'svc-eyebrow':'Наши услуги','svc-h2':'Что мы <em>умеем</em>',
+    'svc-p':'Оказываем профессиональные услуги во всех направлениях ювелирного дела — от изготовления новых украшений до реставрации старых.',
+    'svc1-title':'Изготовление украшений','svc1-desc':'Золотые и серебряные украшения любого дизайна изготавливаем на заказ вручную. Кольца, серьги, браслеты, цепочки, кулоны и другие.',
+    'svc2-title':'Ремонт','svc2-desc':'Профессиональная реставрация сломанных, изношенных или повреждённых украшений. Выпавшие камни, порванные цепочки, деформированные изделия.',
+    'svc3-title':'Лазерная гравировка','svc3-desc':'Наносим имена, даты или любые надписи на кольца, браслеты и другие украшения лазером — точно и красиво.',
+    'svc4-title':'Переплавка','svc4-desc':'Превращаем старые или устаревшие украшения в современные изделия нового дизайна.',
+    'svc5-title':'Изменение размера','svc5-desc':'Подгоняем кольца и браслеты под ваш размер — чтобы украшение сидело правильно и удобно.',
+    'svc6-title':'Чистка и полировка','svc6-desc':'С помощью профессионального оборудования возвращаем украшениям первоначальный блеск. Полировка и покрытие.',
+    'svc-cta-h3':'Готовы сделать заказ?','svc-cta-p':'Свяжитесь с нами прямо сейчас, чтобы узнать цену и сроки',
+    'btn-tg':'✈️ Telegram','btn-call':'📞 Позвонить',
+    'look-eyebrow':'Статус заказа','look-h2':'Отследите ваш заказ','look-sub':'Введите код, выданный ювелиром','look-btn':'Найти',
+    'about-eyebrow':'О нас',
+    'about-h2':'Из металла рождается <em style="font-style:italic;color:var(--gold-deep);">красота</em>',
+    'about-p1':'Murad Jewellery — частная ювелирная мастерская в Галлаороле, Джизакская область. Здесь каждое кольцо, серьга и цепочка делается вручную: создаётся модель, заливается золото, устанавливается камень и наносится полировка.',
+    'about-p2':'Мы не продаём готовые украшения — мы создаём ваш заказ. Поэтому каждое изделие завершается с учётом вашего размера и вкуса.',
+    'stat1-label':'Лет опыта','stat2-label':'Каждое изделие','stat3-label':'Основная проба',
+    'metals-h4':'Используемые металлы',
+    'metal1-name':'Золото','metal1-proba':'375 · 583 · 750 · 999 проба',
+    'metal2-name':'Серебро','metal2-proba':'925 · 999 проба',
+    'metal3-name':'Камни','metal3-proba':'Цирконий, фианит, кубик',
+    'metal4-name':'Доставка','metal4-proba':'По всей стране',
+    'insta-eyebrow':'Процесс','insta-h2':'Ручная работа <em style="font-style:italic;color:var(--gold-deep);">видна</em>',
+    'insta-p':'Новые украшения, производственный процесс и вдохновляющие кадры — каждый день в Instagram.',
+    'ic1-text':'Смотреть Reels','ic2-text':'Новые изделия','ic3-text':'Видео процесса',
+    'insta-banner-p':'Следите за рождением каждого украшения — от заливки золота до финальной полировки.',
+    'insta-banner-a':'Подписаться в Instagram →',
+    'contact-eyebrow':'Контакты','contact-h2':'Напишите <em style="font-style:italic;color:var(--gold-deep);">нам</em>',
+    'phone-lbl':'📞 Телефон','social-lbl':'🌐 Социальные сети','addr-lbl':'📍 Адрес и время',
+    'addr1':'<span class="ic">📍</span>Джизакская область, Галлаорол',
+    'addr2':'<span class="ic">🕒</span>Ежедневно 10:00 – 19:00',
+    'addr3':'<span class="ic">🚚</span>Доставка по всей стране',
+    'cta-h3':'Готовы сделать заказ?',
+    'cta-p':'Свяжитесь с нами сейчас, чтобы узнать сроки и цену — рады ответить.',
+    'cta-tg':'✈️ Написать в Telegram','cta-call':'📞 Позвонить',
+    'footer-tagline':'Ювелирные украшения ручной работы. Более 15 лет опыта, каждое изделие создаётся на заказ.',
+    'footer-svc':'Услуги','footer-contact':'Контакты','footer-addr':'🕒 Ежедневно 10:00–19:00',
+    'fsvc1':'💎 Изготовление','fsvc2':'🔨 Ремонт','fsvc3':'🔤 Гравировка','fsvc4':'♻️ Переплавка','fsvc5':'📐 Изменение размера',
+    'float-lbl':'Связаться',
+    'ord-h3':'Сделать заказ','ord-tg':'✈️ Написать в Telegram',
+    'ord-call1':'📞 +998 97 481-20-10','ord-call2':'📞 +998 95 627-99-99','ord-close':'Закрыть',
+    'filter-all':'Все','search-ph':'Поиск…',
+    'loading':'Загрузка…','empty':'Изделий этого типа пока нет.','no-items':'Изделий пока нет.',
+    'searching':'Поиск…','notfound':'Заказ с этим кодом не найден.<br>Проверьте код или свяжитесь с нами.',
+    'error':'Произошла ошибка. Попробуйте позже.',
+    'due-label':'Дата выдачи:','recv-label':'Принят:',
+    'lang-btn':'🇺🇿 UZ',
+    'sl-yangi':'Принят','sl-jarayonda':'В работе','sl-tayyor':'Готов','sl-topshirildi':'Выдан',
+    'cbtn-txt':'Запросить цену','ord-item-suffix':'— интересует? Свяжитесь с нами:',
+  }
+};
+
+/* ===== LANGUAGE ===== */
+let currentLang=localStorage.getItem('lang')||'uz';
+
+function toggleLang(){setLang(currentLang==='uz'?'ru':'uz');}
+
+function setLang(lang){
+  currentLang=lang;
+  localStorage.setItem('lang',lang);
+  document.documentElement.lang=lang;
+  const t=TRANS[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(t[k]!==undefined) el.innerHTML=t[k];
+  });
+  document.getElementById('lang-btn').textContent=t['lang-btn'];
+  document.getElementById('lang-mob').textContent=t['lang-btn'];
+  const s=document.getElementById('cat-search');
+  if(s) s.placeholder=t['search-ph'];
+  SL.yangi=t['sl-yangi'];SL.jarayonda=t['sl-jarayonda'];SL.tayyor=t['sl-tayyor'];SL.topshirildi=t['sl-topshirildi'];
+  buildFilters();
+  render();
+}
+
 /* ===== UTILS ===== */
 function esc(s){if(s==null)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 function fdate(d){if(!d)return '—';return new Date(d).toLocaleDateString('uz-UZ',{day:'2-digit',month:'2-digit',year:'numeric'});}
@@ -653,23 +801,25 @@ function proba(metal){const m=(metal||'').match(/\d{3}/);return m?m[0]:'';}
 const VIEWS=['katalog','xizmatlar','buyurtmam','haqimizda','aloqa'];
 let currentView='katalog';
 
-function go(id, fromPop){
-  if(currentView===id) return;
+function go(id,fromPop){
+  if(currentView===id)return;
   currentView=id;
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
   document.getElementById('v-'+id).classList.add('on');
-  document.querySelectorAll('#nav button').forEach((b,i)=>{
-    b.classList.toggle('on', VIEWS[i]===id);
+  document.querySelectorAll('#nav button[data-i18n]').forEach((b,i)=>{
+    b.classList.toggle('on',VIEWS[i]===id);
   });
   window.scrollTo({top:0,behavior:'smooth'});
-  if(document.getElementById('mob-menu').classList.contains('open')) toggleMob();
+  if(document.getElementById('mob-menu').classList.contains('open'))toggleMob();
   triggerReveal();
-  if(!fromPop) history.pushState({view:id},'','#'+id);
+  if(!fromPop)history.pushState({view:id},'','#'+id);
 }
 
 window.addEventListener('popstate',e=>{
+  const lb=document.getElementById('lb');
+  if(lb.classList.contains('on')){lbClose();return;}
   const id=(e.state&&e.state.view)||'katalog';
-  go(id, true);
+  go(id,true);
 });
 
 /* ===== MOBILE MENU ===== */
@@ -688,28 +838,21 @@ window.addEventListener('scroll',()=>{
 },{passive:true});
 
 /* ===== CATALOG ===== */
-let catalog=[], catFilter='hammasi';
+let catalog=[],catFilter='hammasi';
 
 async function loadCatalog(){
   try{
-    const {data}=await sb.from('catalog')
-      .select('id,name,category,metal,item_type,created_at')
-      .order('created_at',{ascending:false});
+    const {data}=await sb.from('catalog').select('id,name,category,metal,item_type,created_at').order('created_at',{ascending:false});
     catalog=(data||[]).map(c=>({...c,images:[]}));
-    buildFilters();
-    render();
-    // Load images in batches
+    buildFilters();render();
     const ids=catalog.map(c=>c.id);
     for(let i=0;i<ids.length;i+=30){
       const {data:d2}=await sb.from('catalog').select('id,images').in('id',ids.slice(i,i+30));
-      if(d2) d2.forEach(r=>{
-        const idx=catalog.findIndex(c=>c.id===r.id);
-        if(idx>-1) catalog[idx].images=r.images||[];
-      });
+      if(d2)d2.forEach(r=>{const idx=catalog.findIndex(c=>c.id===r.id);if(idx>-1)catalog[idx].images=r.images||[];});
       render();
     }
   }catch(e){
-    document.getElementById('grid').innerHTML='<div class="skeleton">Hozircha buyumlar yo\'q.</div>';
+    document.getElementById('grid').innerHTML='<div class="skeleton">'+TRANS[currentLang]['no-items']+'</div>';
     console.error(e);
   }
 }
@@ -717,7 +860,8 @@ async function loadCatalog(){
 function buildFilters(){
   const types=[...new Set(catalog.map(c=>c.item_type).filter(Boolean))];
   const f=document.getElementById('filters');
-  let html='<button class="chip on" onclick="setFilter(\'hammasi\',this)">Hammasi</button>';
+  const allLabel=TRANS[currentLang]['filter-all'];
+  let html='<button class="chip on" onclick="setFilter(\'hammasi\',this)">'+allLabel+'</button>';
   types.forEach(t=>{html+='<button class="chip" onclick="setFilter(\''+esc(t)+'\',this)">'+esc(t)+'</button>';});
   f.innerHTML=html;
 }
@@ -725,28 +869,19 @@ function buildFilters(){
 function setFilter(t,el){
   catFilter=t;
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
-  el.classList.add('on');
-  render();
+  el.classList.add('on');render();
 }
 
 function render(){
   const g=document.getElementById('grid');
   const q=(document.getElementById('cat-search')?.value||'').toLowerCase().trim();
   let list=catalog;
-  if(catFilter!=='hammasi') list=list.filter(c=>c.item_type===catFilter);
-  if(q) list=list.filter(c=>
-    (c.name||'').toLowerCase().includes(q)||
-    (c.category||'').toLowerCase().includes(q)||
-    (c.item_type||'').toLowerCase().includes(q)
-  );
-  if(!list.length){
-    g.innerHTML='<div class="skeleton">Bu turdagi buyum hozircha yo\'q.</div>';
-    return;
-  }
+  if(catFilter!=='hammasi')list=list.filter(c=>c.item_type===catFilter);
+  if(q)list=list.filter(c=>(c.name||'').toLowerCase().includes(q)||(c.category||'').toLowerCase().includes(q)||(c.item_type||'').toLowerCase().includes(q));
+  if(!list.length){g.innerHTML='<div class="skeleton">'+TRANS[currentLang]['empty']+'</div>';return;}
+  const btnTxt=TRANS[currentLang]['cbtn-txt'];
   g.innerHTML=list.map(it=>{
-    const imgs=it.images||[];
-    const main=imgs[0]||'';
-    const pr=proba(it.metal);
+    const imgs=it.images||[];const main=imgs[0]||'';const pr=proba(it.metal);
     const imgsJson=JSON.stringify(imgs).replace(/"/g,'&quot;');
     return '<div class="card">'+
       '<div class="niche" onclick="lbOpen('+imgsJson+',0)">'+
@@ -759,7 +894,7 @@ function render(){
           '<span class="tag">'+esc(it.item_type||it.category||'')+'</span>'+
           (pr?'<span class="punch">'+pr+'°</span>':(it.metal?'<span class="tag">'+esc(it.metal)+'</span>':''))+
         '</div>'+
-        '<button class="cbtn" onclick="openOrd(\''+esc(it.name).replace(/\\/g,'\\\\').replace(/'/g,"\\'")+'\')">So\'rov yuborish</button>'+
+        '<button class="cbtn" onclick="openOrd(\''+esc(it.name).replace(/\\/g,'\\\\').replace(/'/g,"\\'")+'\')">'+btnTxt+'</button>'+
       '</div>'+
     '</div>';
   }).join('');
@@ -772,8 +907,9 @@ const ORDER_STEPS=['yangi','jarayonda','tayyor','topshirildi'];
 async function lookup(){
   const code=document.getElementById('code').value.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
   const area=document.getElementById('result');
+  const t=TRANS[currentLang];
   if(!code){area.innerHTML='';return;}
-  area.innerHTML='<div class="skeleton">Qidirilmoqda…</div>';
+  area.innerHTML='<div class="skeleton">'+t['searching']+'</div>';
   try{
     let {data}=await sb.from('orders').select('*').eq('code',code).limit(1);
     let o=data&&data[0];
@@ -781,22 +917,17 @@ async function lookup(){
       const r=await sb.from('orders').select('*').order('created_at',{ascending:false}).limit(500);
       o=(r.data||[]).find(x=>(x.code||x.id||'').slice(-5).toUpperCase()===code);
     }
-    if(!o){
-      area.innerHTML='<div class="notfound">Bu kod bo\'yicha buyurtma topilmadi.<br>Kodni tekshiring yoki biz bilan bog\'laning.</div>';
-      return;
-    }
+    if(!o){area.innerHTML='<div class="notfound">'+t['notfound']+'</div>';return;}
     const si=Math.max(0,ORDER_STEPS.indexOf(o.status));
     const pct=(si/(ORDER_STEPS.length-1))*100;
     const steps=ORDER_STEPS.map((s,i)=>{
       const cls=i<si?'done':i===si?'now':'';
       return '<div class="step '+cls+'"><div class="dot"></div>'+SL[s]+'</div>';
     }).join('');
-    const imgs=o.images||[];
-    const imgsJson=JSON.stringify(imgs).replace(/"/g,'&quot;');
-    const pr=proba(o.metal_type);
-    const tags=[];
-    if(o.metal_type) tags.push(pr?'<span class="punch">'+pr+'°</span>':'<span class="tag">'+esc(o.metal_type)+'</span>');
-    if(o.metal_gram) tags.push('<span class="tag">'+esc(String(o.metal_gram))+' g</span>');
+    const imgs=o.images||[];const imgsJson=JSON.stringify(imgs).replace(/"/g,'&quot;');
+    const pr=proba(o.metal_type);const tags=[];
+    if(o.metal_type)tags.push(pr?'<span class="punch">'+pr+'°</span>':'<span class="tag">'+esc(o.metal_type)+'</span>');
+    if(o.metal_gram)tags.push('<span class="tag">'+esc(String(o.metal_gram))+' g</span>');
     area.innerHTML=
       '<div class="cert">'+
         '<div class="cert-top">'+
@@ -809,8 +940,8 @@ async function lookup(){
           '<div class="pbar"><i style="width:'+pct+'%"></i></div>'+
           (tags.length?'<div class="cert-tags">'+tags.join('')+'</div>':'')+
           '<div class="cert-meta">'+
-            (o.due_date?'Topshirish sanasi: <b>'+fdate(o.due_date)+'</b><br>':'')+
-            'Qabul qilindi: <b>'+fdate(o.created_at)+'</b>'+
+            (o.due_date?t['due-label']+' <b>'+fdate(o.due_date)+'</b><br>':'')+
+            t['recv-label']+' <b>'+fdate(o.created_at)+'</b>'+
           '</div>'+
           (o.description?'<div class="cert-desc">'+esc(o.description)+'</div>':'')+
           (imgs.length?'<div class="cert-imgs">'+imgs.map((s,i)=>
@@ -819,14 +950,15 @@ async function lookup(){
         '</div>'+
       '</div>';
   }catch(e){
-    area.innerHTML='<div class="notfound">Xatolik yuz berdi. Keyinroq urinib ko\'ring.</div>';
+    area.innerHTML='<div class="notfound">'+TRANS[currentLang]['error']+'</div>';
     console.error(e);
   }
 }
 
 /* ===== ORDER MODAL ===== */
 function openOrd(name){
-  document.getElementById('ordItem').textContent=name+' — qiziqyapsizmi? Murojaat qiling:';
+  const t=TRANS[currentLang];
+  document.getElementById('ordItem').textContent=name+' '+t['ord-item-suffix'];
   document.getElementById('ordModal').classList.add('on');
 }
 function closeOrd(){document.getElementById('ordModal').classList.remove('on');}
@@ -840,6 +972,7 @@ function lbOpen(imgs,i){
   document.getElementById('lbImg').src=imgs[i];
   document.getElementById('lb').classList.add('on');
   updateLbCounter();
+  history.pushState({lb:true,view:currentView},'','#'+currentView);
 }
 function lbClose(){document.getElementById('lb').classList.remove('on');}
 function lbNav(d){
@@ -850,14 +983,13 @@ function lbNav(d){
 }
 function updateLbCounter(){
   const c=document.getElementById('lb-counter');
-  if(c) c.textContent=lbImgs.length>1?(lbI+1)+' / '+lbImgs.length:'';
+  if(c)c.textContent=lbImgs.length>1?(lbI+1)+' / '+lbImgs.length:'';
 }
 document.getElementById('lb').addEventListener('click',e=>{if(e.target.id==='lb')lbClose();});
 
 /* ===== KEYBOARD ===== */
 document.addEventListener('keydown',e=>{
-  const lb=document.getElementById('lb');
-  const mod=document.getElementById('ordModal');
+  const lb=document.getElementById('lb');const mod=document.getElementById('ordModal');
   if(e.key==='Escape'){
     if(lb.classList.contains('on'))lbClose();
     else if(mod.classList.contains('on'))closeOrd();
@@ -872,17 +1004,16 @@ document.addEventListener('keydown',e=>{
 /* ===== SCROLL REVEAL ===== */
 function triggerReveal(){
   const obs=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}
-    });
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
   },{threshold:0.08,rootMargin:'0px 0px -36px 0px'});
   document.querySelectorAll('.reveal:not(.visible)').forEach(el=>obs.observe(el));
 }
 
 /* ===== INIT ===== */
 (function(){
+  if(currentLang==='ru')setLang('ru');
   const hash=location.hash.replace('#','');
-  if(VIEWS.includes(hash)) go(hash, true);
+  if(VIEWS.includes(hash))go(hash,true);
   history.replaceState({view:currentView},'','#'+currentView);
 })();
 loadCatalog();
