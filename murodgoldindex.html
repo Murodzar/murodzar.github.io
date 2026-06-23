@@ -880,10 +880,6 @@ window.addEventListener('scroll',()=>{
 
 /* ===== CATALOG ===== */
 let catalog=[],catFilter='hammasi';
-function imgThumb(url,w=480){
-  if(!url)return url;
-  return url.replace('/storage/v1/object/public/','/storage/v1/render/image/public/')+'?width='+w+'&quality=75&format=webp';
-}
 
 async function loadCatalog(){
   try{
@@ -945,7 +941,7 @@ function render(){
     const safeId=esc(it.id);const safeName=esc(it.name).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     return '<div class="card">'+
       '<div class="niche" onclick="lbOpen('+imgsJson+',0)">'+
-        (main?'<img src="'+esc(imgThumb(main))+'" loading="lazy" decoding="async" alt="'+esc(it.name)+'">':'<div class="none">◇</div>')+
+        (main?'<img src="'+esc(main)+'" loading="lazy" decoding="async" alt="'+esc(it.name)+'">':'<div class="none">◇</div>')+
         (imgs.length>1?'<div class="cnt">'+imgs.length+' rasm</div>':'')+
       '</div>'+
       '<div class="cbody" style="cursor:pointer;" onclick="goProduct(\''+safeId+'\')">'+
@@ -1047,7 +1043,7 @@ function renderProduct(it){
   if(pr)tags.push('<span class="punch">'+pr+'°</span>');
   else if(it.metal)tags.push('<span class="tag">'+esc(it.metal)+'</span>');
   const thumbs=imgs.length>1?'<div class="m-thumbs">'+imgs.map((s,i)=>
-    '<div class="m-thumb'+(i===0?' on':'')+'" onclick="mThumb(this,'+i+')"><img src="'+esc(imgThumb(s,120))+'" loading="lazy"></div>'
+    '<div class="m-thumb'+(i===0?' on':'')+'" onclick="mThumb(this,'+i+')"><img src="'+esc(s)+'" loading="lazy"></div>'
   ).join('')+'</div>':'';
   const descHtml=it.description?'<p class="m-desc">'+esc(it.description)+'</p>':'';
   const safeName=esc(it.name).replace(/\\/g,'\\\\').replace(/'/g,"\\'");
@@ -1055,7 +1051,7 @@ function renderProduct(it){
     '<div class="m-imgs">'+
       '<button class="m-back" onclick="goBackToKat()">'+backLbl+'</button>'+
       '<div class="m-main-img" onclick="lbOpen(currentProductImgs,0)" id="m-main-wrap">'+
-        (main?'<img id="m-main" src="'+esc(imgThumb(main,720))+'" alt="'+esc(it.name)+'">':'<div class="none" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;">◇</div>')+
+        (main?'<img id="m-main" src="'+esc(main)+'" alt="'+esc(it.name)+'">':'<div class="none" style="height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;">◇</div>')+
       '</div>'+
       thumbs+
     '</div>'+
@@ -1073,7 +1069,7 @@ function mThumb(el,i){
   if(typeof el==='number'){el=document.querySelectorAll('.m-thumb')[el];}
   if(el)el.classList.add('on');
   const mi=document.getElementById('m-main');
-  if(mi&&currentProductImgs[i])mi.src=imgThumb(currentProductImgs[i],720);
+  if(mi&&currentProductImgs[i])mi.src=currentProductImgs[i];
   const wrap=document.getElementById('m-main-wrap');
   if(wrap)wrap.setAttribute('onclick','lbOpen(currentProductImgs,'+i+')');
 }
