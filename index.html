@@ -1334,7 +1334,7 @@ function sendTelegramToClient(orderId) {
   const code = ((o.code || o.id).slice(-5)).toUpperCase();
   const metal = o.metal_type || '';
   const metalText = metal ? 'Buyum: ' + metal + '.\n' : '';
-  const text = 'Hurmatli ' + o.client + ',\n\nBuyurtmangiz tayyor! Olib kelishingiz mumkin.\n\n' + metalText + 'Buyurtma kodi: ' + code + '.\n\nMurad Jewellery\n+998 97 481-20-10\n+998 95 627-99-99\nmurodzar.github.io/murodgoldindex.html';
+  const text = 'Hurmatli ' + o.client + ',\n\nBuyurtmangiz tayyor! Olib kelishingiz mumkin.\n\n' + metalText + 'Buyurtma kodi: ' + code + '.\n\nMurad Jewellery\n+998 97 481-20-10\n+998 95 627-99-99\nmurodgold.com';
   const phone = normalizePhone(o.phone);
   if(phone) {
     window.open('sms:' + phone + '?body=' + encodeURIComponent(text));
