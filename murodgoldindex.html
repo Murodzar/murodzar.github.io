@@ -119,12 +119,15 @@ header.scrolled{box-shadow:0 2px 24px rgba(27,26,22,0.09);}
 .hero-cta{margin-top:30px;display:flex;gap:12px;flex-wrap:wrap;}
 
 /* Filters + search */
-.catalog-toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:24px 0 18px;}
-.filters{display:flex;gap:7px;flex-wrap:wrap;flex:1;}
+.catalog-toolbar{display:flex;flex-direction:column;gap:10px;padding:24px 0 18px;}
+.filter-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+.filters{display:flex;gap:7px;flex-wrap:wrap;}
 .chip{background:none;border:1px solid var(--line);color:var(--muted);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:7px 15px;border-radius:40px;transition:all .2s;font-weight:400;}
 .chip:hover{border-color:var(--gold-soft);color:var(--ink);}
 .chip.on{background:var(--ink);border-color:var(--ink);color:#fff;}
-.cat-search{background:var(--surface);border:1px solid var(--line);color:var(--ink);padding:9px 15px;font-family:'Jost',sans-serif;font-size:13px;border-radius:40px;outline:none;transition:border-color .2s;min-width:160px;}
+.chip-sm{font-size:10px;padding:5px 12px;}
+.chip-metal.on{background:var(--gold-deep);border-color:var(--gold-deep);color:#fff;}
+.cat-search{background:var(--surface);border:1px solid var(--line);color:var(--ink);padding:9px 15px;font-family:'Jost',sans-serif;font-size:13px;border-radius:40px;outline:none;transition:border-color .2s;min-width:160px;align-self:flex-start;}
 .cat-search:focus{border-color:var(--gold);}
 .cat-search::placeholder{color:var(--muted);}
 
@@ -398,8 +401,11 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:48px 0 28px;}
     </div>
 
     <div class="catalog-toolbar">
-      <div class="filters" id="filters"></div>
-      <input class="cat-search" id="cat-search" type="text" placeholder="Qidirish…" oninput="render()" autocomplete="off">
+      <div class="filter-row">
+        <div class="filters" id="filters"></div>
+        <input class="cat-search" id="cat-search" type="text" placeholder="Qidirish…" oninput="render()" autocomplete="off">
+      </div>
+      <div class="filter-row" id="metal-filters"></div>
     </div>
     <div class="grid" id="grid"><div class="skeleton">Yuklanmoqda…</div></div>
   </div>
@@ -897,7 +903,7 @@ window.addEventListener('scroll',()=>{
 },{passive:true});
 
 /* ===== CATALOG ===== */
-let catalog=[],catFilter='hammasi';
+let catalog=[],catFilter='hammasi',catMetal='hammasi';
 
 async function loadCatalog(){
   try{
@@ -920,25 +926,41 @@ async function loadCatalog(){
 }
 
 function buildFilters(){
-  const types=[...new Set(catalog.map(c=>c.item_type).filter(Boolean))];
+  const cats=[...new Set(catalog.map(c=>c.category).filter(Boolean))];
+  const hasKumush=catalog.some(c=>(c.metal||'').toLowerCase().includes('kumush'));
+  const hasOltin=catalog.some(c=>(c.metal||'').toLowerCase().includes('oltin'));
   const f=document.getElementById('filters');
   const allLabel=TRANS[currentLang]['filter-all'];
   let html='<button class="chip on" onclick="setFilter(\'hammasi\',this)">'+allLabel+'</button>';
-  types.forEach(t=>{html+='<button class="chip" onclick="setFilter(\''+esc(t)+'\',this)">'+esc(t)+'</button>';});
+  cats.forEach(t=>{html+='<button class="chip" onclick="setFilter(\''+esc(t)+'\',this)">'+esc(t)+'</button>';});
   f.innerHTML=html;
+  const mf=document.getElementById('metal-filters');
+  if(!mf)return;
+  if(!hasKumush&&!hasOltin){mf.innerHTML='';return;}
+  let mhtml='<button class="chip chip-sm chip-metal on" onclick="setMetalFilter(\'hammasi\',this)">'+allLabel+'</button>';
+  if(hasOltin)mhtml+='<button class="chip chip-sm chip-metal" onclick="setMetalFilter(\'oltin\',this)">Oltin</button>';
+  if(hasKumush)mhtml+='<button class="chip chip-sm chip-metal" onclick="setMetalFilter(\'kumush\',this)">Kumush</button>';
+  mf.innerHTML=mhtml;
 }
 
 function setFilter(t,el){
   catFilter=t;
-  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  document.querySelectorAll('#filters .chip').forEach(c=>c.classList.remove('on'));
   if(el)el.classList.add('on');render();
   const h=t==='hammasi'?'katalog':'katalog/'+encodeURIComponent(t);
   history.replaceState({view:'katalog',sub:t==='hammasi'?'':t},'','#'+h);
 }
 
+function setMetalFilter(t,el){
+  catMetal=t;
+  document.querySelectorAll('#metal-filters .chip').forEach(c=>c.classList.remove('on'));
+  if(el)el.classList.add('on');
+  render();
+}
+
 function applyFilterSilent(t){
   catFilter=t||'hammasi';
-  document.querySelectorAll('.chip').forEach(c=>{
+  document.querySelectorAll('#filters .chip').forEach(c=>{
     const fn=c.getAttribute('onclick')||'';
     c.classList.toggle('on',fn.includes("'"+t+"'")||(!t&&fn.includes('hammasi')));
   });
@@ -949,7 +971,8 @@ function render(){
   const g=document.getElementById('grid');
   const q=(document.getElementById('cat-search')?.value||'').toLowerCase().trim();
   let list=catalog;
-  if(catFilter!=='hammasi')list=list.filter(c=>c.item_type===catFilter);
+  if(catFilter!=='hammasi')list=list.filter(c=>c.category===catFilter);
+  if(catMetal!=='hammasi')list=list.filter(c=>(c.metal||'').toLowerCase().includes(catMetal));
   if(q)list=list.filter(c=>(c.name||'').toLowerCase().includes(q)||(c.category||'').toLowerCase().includes(q)||(c.item_type||'').toLowerCase().includes(q));
   if(!list.length){g.innerHTML='<div class="skeleton">'+TRANS[currentLang]['empty']+'</div>';return;}
   const btnTxt=TRANS[currentLang]['cbtn-txt'];
