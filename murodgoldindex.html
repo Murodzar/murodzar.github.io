@@ -405,7 +405,6 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:48px 0 28px;}
         <div class="filters" id="filters"></div>
         <input class="cat-search" id="cat-search" type="text" placeholder="Qidirish…" oninput="render()" autocomplete="off">
       </div>
-      <div class="filter-row" id="metal-filters"></div>
     </div>
     <div class="grid" id="grid"><div class="skeleton">Yuklanmoqda…</div></div>
   </div>
@@ -903,7 +902,7 @@ window.addEventListener('scroll',()=>{
 },{passive:true});
 
 /* ===== CATALOG ===== */
-let catalog=[],catFilter='hammasi',catMetal='hammasi';
+let catalog=[],catFilter='hammasi';
 
 async function loadCatalog(){
   try{
@@ -928,19 +927,12 @@ async function loadCatalog(){
 function buildFilters(){
   const cats=[...new Set(catalog.map(c=>c.category).filter(Boolean))];
   const hasKumush=catalog.some(c=>(c.metal||'').toLowerCase().includes('kumush'));
-  const hasOltin=catalog.some(c=>(c.metal||'').toLowerCase().includes('oltin'));
   const f=document.getElementById('filters');
   const allLabel=TRANS[currentLang]['filter-all'];
   let html='<button class="chip on" onclick="setFilter(\'hammasi\',this)">'+allLabel+'</button>';
-  cats.forEach(t=>{html+='<button class="chip" onclick="setFilter(\''+esc(t)+'\',this)">'+esc(t)+'</button>';});
+  cats.forEach(t=>{html+='<button class="chip" onclick="setFilter(\'cat:'+esc(t)+'\',this)">'+esc(t)+'</button>';});
+  if(hasKumush)html+='<button class="chip" onclick="setFilter(\'metal:kumush\',this)">Kumush</button>';
   f.innerHTML=html;
-  const mf=document.getElementById('metal-filters');
-  if(!mf)return;
-  if(!hasKumush&&!hasOltin){mf.innerHTML='';return;}
-  let mhtml='<button class="chip chip-sm chip-metal on" onclick="setMetalFilter(\'hammasi\',this)">'+allLabel+'</button>';
-  if(hasOltin)mhtml+='<button class="chip chip-sm chip-metal" onclick="setMetalFilter(\'oltin\',this)">Oltin</button>';
-  if(hasKumush)mhtml+='<button class="chip chip-sm chip-metal" onclick="setMetalFilter(\'kumush\',this)">Kumush</button>';
-  mf.innerHTML=mhtml;
 }
 
 function setFilter(t,el){
@@ -949,13 +941,6 @@ function setFilter(t,el){
   if(el)el.classList.add('on');render();
   const h=t==='hammasi'?'katalog':'katalog/'+encodeURIComponent(t);
   history.replaceState({view:'katalog',sub:t==='hammasi'?'':t},'','#'+h);
-}
-
-function setMetalFilter(t,el){
-  catMetal=t;
-  document.querySelectorAll('#metal-filters .chip').forEach(c=>c.classList.remove('on'));
-  if(el)el.classList.add('on');
-  render();
 }
 
 function applyFilterSilent(t){
@@ -971,8 +956,8 @@ function render(){
   const g=document.getElementById('grid');
   const q=(document.getElementById('cat-search')?.value||'').toLowerCase().trim();
   let list=catalog;
-  if(catFilter!=='hammasi')list=list.filter(c=>c.category===catFilter);
-  if(catMetal!=='hammasi')list=list.filter(c=>(c.metal||'').toLowerCase().includes(catMetal));
+  if(catFilter.startsWith('cat:'))list=list.filter(c=>c.category===catFilter.slice(4));
+  else if(catFilter.startsWith('metal:'))list=list.filter(c=>(c.metal||'').toLowerCase().includes(catFilter.slice(6)));
   if(q)list=list.filter(c=>(c.name||'').toLowerCase().includes(q)||(c.category||'').toLowerCase().includes(q)||(c.item_type||'').toLowerCase().includes(q));
   if(!list.length){g.innerHTML='<div class="skeleton">'+TRANS[currentLang]['empty']+'</div>';return;}
   const btnTxt=TRANS[currentLang]['cbtn-txt'];
