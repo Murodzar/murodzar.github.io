@@ -399,6 +399,12 @@ textarea.form-input{resize:vertical;min-height:70px;}
 ::-webkit-scrollbar-track{background:var(--dark);}
 ::-webkit-scrollbar-thumb{background:var(--gold);}
 @media(max-width:600px){.form-row,.form-row3{grid-template-columns:1fr;}.header-stats{gap:10px;}main{padding:14px;}}
+.sms-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);background:#1a1410;border:1px solid rgba(201,168,76,0.3);color:var(--cream2);padding:14px 18px;border-radius:8px;display:flex;align-items:center;gap:12px;z-index:999;box-shadow:0 8px 32px rgba(0,0,0,0.5);transition:transform .35s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;}
+.sms-toast.show{transform:translateX(-50%) translateY(0);}
+.sms-toast-txt{font-size:13px;color:var(--mid);}
+.sms-toast-btn{background:var(--gold);color:#1a1410;border:none;padding:7px 14px;border-radius:5px;font-size:12px;font-weight:600;cursor:pointer;letter-spacing:.04em;}
+.sms-toast-btn:hover{background:var(--gold-light);}
+.sms-toast-close{background:none;border:none;color:var(--mid);cursor:pointer;font-size:18px;padding:0 2px;line-height:1;}
 </style>
 </head>
 <body>
@@ -1328,6 +1334,31 @@ async function sendTelegram(msg) {
 }
 
 // ===== SMS XABAR MIJOZGA =====
+let _smsToastOrderId = null, _smsToastTimer = null;
+function showSmsToast(orderId) {
+  _smsToastOrderId = orderId;
+  const t = document.getElementById('sms-toast');
+  if(t) t.classList.add('show');
+  clearTimeout(_smsToastTimer);
+  _smsToastTimer = setTimeout(hideSmsTost, 12000);
+}
+function hideSmsTost() {
+  const t = document.getElementById('sms-toast');
+  if(t) t.classList.remove('show');
+}
+function sendQabulSms() {
+  const o = orders.find(x => x.id === _smsToastOrderId);
+  if(!o) return;
+  const code = ((o.code || o.id).slice(-5)).toUpperCase();
+  const text = 'Hurmatli ' + o.client + ',\n\nBuyurtmangiz qabul qilindi!\n\nBuyurtma kodi: ' + code + '\nHolatingizni kuzatish: murodgold.com\n\nMurad Jewellery\n+998 97 481-20-10\n+998 95 627-99-99';
+  const phone = normalizePhone(o.phone);
+  if(phone) {
+    window.open('sms:' + phone + '?body=' + encodeURIComponent(text));
+  } else {
+    alert('Telefon raqam yoq! Xabar matni:\n\n' + text);
+  }
+  hideSmsTost();
+}
 function sendTelegramToClient(orderId) {
   const o = orders.find(x => x.id === orderId);
   if(!o) return;
@@ -1855,6 +1886,7 @@ async function saveOrder() {
       await dbSave('orders', data);
       orders.unshift(data);
       try { sendTelegram('Yangi buyurtma: ' + data.client + ' | ' + (data.metal_type||'')); } catch(e) {}
+      showSmsToast(data.id);
     }
 
     window._lastOrderId = data.id;
@@ -3484,6 +3516,12 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape')closeViewer();
 });
 </script>
+
+<div class="sms-toast" id="sms-toast">
+  <span class="sms-toast-txt">Buyurtma saqlandi</span>
+  <button class="sms-toast-btn" id="sms-toast-btn" onclick="sendQabulSms()">📩 Mijozga SMS</button>
+  <button class="sms-toast-close" onclick="hideSmsTost()">×</button>
+</div>
 
 </body>
 </html>
