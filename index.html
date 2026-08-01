@@ -1346,8 +1346,9 @@ function hideSmsTost() {
   const t = document.getElementById('sms-toast');
   if(t) t.classList.remove('show');
 }
-function sendQabulSms() {
-  const o = orders.find(x => x.id === _smsToastOrderId);
+function sendQabulSms(orderId) {
+  const id = orderId || _smsToastOrderId;
+  const o = orders.find(x => x.id === id);
   if(!o) return;
   const code = ((o.code || o.id).slice(-5)).toUpperCase();
   const text = 'Hurmatli ' + o.client + ',\n\nBuyurtmangiz qabul qilindi!\n\nBuyurtma kodi: ' + code + '\nHolatingizni kuzatish: murodgold.com\n\nMurad Jewellery\n+998 95 627-99-99';
@@ -1987,6 +1988,7 @@ function renderOrders() {
       ${imgsHtml}
       <div class="order-actions">
         ${o.status!=='topshirildi'?`<button class="btn-outline btn-sm" onclick="openOrderModal('${o.id}')">✏️ Tahrir</button>`:''}
+        ${o.status==='yangi'?`<button class="btn-outline btn-sm" style="color:#27ae60;border-color:#27ae60;" onclick="sendQabulSms('${o.id}')">📩 SMS</button>`:''}
         ${o.status==='yangi'?`<button class="btn-outline btn-sm" style="color:var(--orange);border-color:var(--orange);" onclick="changeStatus('${o.id}','jarayonda')">▶ Jarayonda</button>`:''}
         ${o.status==='jarayonda'?`<button class="btn-outline btn-sm" style="color:var(--green);border-color:var(--green);" onclick="changeStatus('${o.id}','tayyor')">✅ Tayyor</button>`:''}
         ${o.status==='tayyor'?`<button class="btn-gold btn-sm" onclick="openTopshirildiConfirm('${o.id}')">📦 Topshirildi</button>`:''}
