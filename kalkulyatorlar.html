@@ -83,6 +83,12 @@ header{
   transition:filter .2s;
 }
 .btn-calc:hover{filter:brightness(1.08);}
+.btn-row{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-secondary{background:transparent;border:1px solid var(--line);color:var(--muted);padding:13px 22px;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border-radius:6px;cursor:pointer;transition:all .2s;font-family:inherit;}
+.btn-secondary:hover{border-color:var(--gold);color:var(--gold-soft);}
+.metal-toggle{display:flex;background:var(--bg2);border:1px solid var(--line);border-radius:30px;padding:4px;gap:4px;margin-bottom:18px;max-width:340px;}
+.metal-toggle button{flex:1;border:none;background:transparent;color:var(--muted);padding:10px 0;border-radius:24px;font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;transition:all .2s;font-family:inherit;}
+.metal-toggle button.on{background:linear-gradient(180deg,var(--gold-soft),var(--gold-deep));color:#1b1408;}
 .result{margin-top:20px;padding:0;border-radius:8px;overflow:hidden;max-height:0;transition:max-height .25s ease;}
 .result.show{max-height:600px;}
 .result-inner{background:var(--bg2);border:1px solid var(--gold-deep);border-radius:8px;padding:18px 20px;margin-top:2px;}
@@ -126,7 +132,7 @@ footer a{color:var(--gold-soft);}
   <button class="tile" data-target="c1"><span class="tnum">01</span><span class="ttitle">Mum/rezin quyma og'irligi</span></button>
   <button class="tile" data-target="c2"><span class="tnum">02</span><span class="ttitle">Ligatura hisoblash (GOST 6835-80)</span></button>
   <button class="tile" data-target="c3"><span class="tnum">03</span><span class="ttitle">Qotishma aralashtirish</span></button>
-  <button class="tile" data-target="c4"><span class="tnum">04</span><span class="ttitle">Uzuk og'irligi</span></button>
+  <button class="tile" data-target="c4"><span class="tnum">04</span><span class="ttitle">Uzuk shinkasi og'irligi</span></button>
   <button class="tile" data-target="c5"><span class="tnum">05</span><span class="ttitle">Gips nisbatlari</span></button>
   <button class="tile" data-target="c6"><span class="tnum">06</span><span class="ttitle">Uzuk o'lchami</span></button>
   <button class="tile" data-target="c7"><span class="tnum">07</span><span class="ttitle">Quyma harorati</span></button>
@@ -191,15 +197,34 @@ footer a{color:var(--gold-soft);}
 
   <!-- 4 -->
   <section class="calc" id="c4">
-    <div class="calc-head"><span class="calc-num">04</span><h2>Uzuk og'irligi</h2></div>
-    <p class="calc-desc">Uzuk o'lchami (ichki diametr), kengligi va qalinligiga qarab taxminiy og'irlikni hisoblaydi. Bu &mdash; taxminiy muhandislik baholashi.</p>
+    <div class="calc-head"><span class="calc-num">04</span><h2>Uzuk shinkasi og'irligi</h2></div>
+    <p class="calc-desc">Uzuk shinkasi (halqasi)ning ichki diametri, kesim shakli, kengligi va qalinligiga qarab taxminiy og'irlik va (ixtiyoriy) qiymatini hisoblaydi.</p>
+    <div class="metal-toggle" id="c4-type">
+      <button type="button" class="on" data-type="au" onclick="c4SetType('au')">Oltin</button>
+      <button type="button" data-type="ag" onclick="c4SetType('ag')">Kumush</button>
+    </div>
+    <div class="field-grid">
+      <div class="field"><label>Metall probasi</label><select id="c4-proba" onchange="c4ProbaChange()"></select></div>
+      <div class="field"><label>Zichlik (g/sm&sup3;)</label><input type="number" id="c4-density" step="0.01"></div>
+      <div class="field"><label>Kesim shakli</label><select id="c4-shape" onchange="c4ShapeToggle()">
+        <option value="semi">&#9084; Yarim dumaloq</option>
+        <option value="rect">&#9645; To'g'ri burchakli</option>
+        <option value="tri">&#9650; Uchburchak</option>
+        <option value="round">&#9679; Dumaloq</option>
+      </select></div>
+    </div>
     <div class="field-grid">
       <div class="field"><label>Ichki diametr (mm)</label><input type="number" id="c4-d" step="0.1" placeholder="masalan: 17"><span class="hint">RU o'lcham raqami &asymp; diametr, mm</span></div>
-      <div class="field"><label>Halqa kengligi (mm)</label><input type="number" id="c4-w" step="0.1" placeholder="masalan: 4"></div>
-      <div class="field"><label>Metall qalinligi (mm)</label><input type="number" id="c4-t" step="0.1" placeholder="masalan: 1.5"></div>
-      <div class="field"><label>Metall turi</label><select id="c4-metal" class="metal-select"></select></div>
+      <div class="field" id="c4-w-field"><label>Kengligi (mm)</label><input type="number" id="c4-w" step="0.1" placeholder="masalan: 4"></div>
+      <div class="field"><label>Qalinligi (mm)</label><input type="number" id="c4-t" step="0.1" placeholder="masalan: 1.5"></div>
     </div>
-    <button class="btn-calc" onclick="calc4()">Hisoblash</button>
+    <div class="field-grid">
+      <div class="field wide"><label>1 gramm metall narxi (so'm) &mdash; ixtiyoriy</label><input type="number" id="c4-price" step="1000" placeholder="masalan: 1150000"></div>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn-secondary" onclick="c4Clear()">Tozalash</button>
+      <button class="btn-calc" onclick="calc4()">Hisoblash</button>
+    </div>
     <div class="result" id="r4"></div>
   </section>
 
@@ -468,6 +493,17 @@ var PLATE_METALS = {
 var UNITS = { g:1, ct:0.2, oz:31.1035, tael:37.5, misqol:4.26, funt:409.512 };
 var UNIT_NAMES = { g:"Gramm", ct:"Karat (massa)", oz:"Troy untsiya", tael:"Tael", misqol:"Misqol", funt:"Funt" };
 
+/* Shinka kalkulyatori uchun: proba ro'yxati va mos zichlik (g/sm3) */
+var AU_PROBA = [
+  {p:999, k:24, d:19.30}, {p:958, k:23, d:18.10}, {p:916, k:22, d:17.70},
+  {p:900, k:null, d:17.50}, {p:850, k:null, d:16.00}, {p:750, k:18, d:15.60},
+  {p:585, k:14, d:13.60}, {p:583, k:14, d:13.50}, {p:500, k:12, d:12.50}, {p:375, k:9, d:11.30}
+];
+var AG_PROBA = [
+  {p:999, k:null, d:10.50}, {p:960, k:null, d:10.40}, {p:925, k:null, d:10.35},
+  {p:875, k:null, d:10.20}, {p:830, k:null, d:10.00}, {p:800, k:null, d:9.80}
+];
+
 function fillSelect(sel, obj, selectedKey){
   sel.innerHTML = "";
   for(var key in obj){
@@ -484,6 +520,8 @@ document.addEventListener("DOMContentLoaded", function(){
   fillSelect(document.getElementById("c15-stone"), STONES, "diamond");
   document.getElementById("year").textContent = new Date().getFullYear();
   c8Toggle();
+  c4FillProba();
+  c4ShapeToggle();
 });
 
 /* ===== Yordamchi funksiyalar ===== */
@@ -565,20 +603,68 @@ function calc3(){
   );
 }
 
-/* ===== 4: Uzuk og'irligi ===== */
+/* ===== 4: Uzuk shinkasi og'irligi ===== */
+var c4Type = "au";
+function c4SetType(type){
+  c4Type = type;
+  document.querySelectorAll("#c4-type button").forEach(function(b){ b.classList.toggle("on", b.dataset.type === type); });
+  c4FillProba();
+}
+function c4FillProba(){
+  var list = c4Type === "au" ? AU_PROBA : AG_PROBA;
+  var sel = document.getElementById("c4-proba");
+  sel.innerHTML = "";
+  list.forEach(function(item, i){
+    var o = document.createElement("option");
+    o.value = item.p;
+    o.dataset.density = item.d;
+    o.textContent = item.k ? (item.p + " (" + item.k + "k)") : String(item.p);
+    if(c4Type === "au" ? item.p === 585 : item.p === 925) o.selected = true;
+    sel.appendChild(o);
+  });
+  c4ProbaChange();
+}
+function c4ProbaChange(){
+  var sel = document.getElementById("c4-proba");
+  var opt = sel.options[sel.selectedIndex];
+  if(opt) document.getElementById("c4-density").value = opt.dataset.density;
+}
+function c4ShapeToggle(){
+  var shape = document.getElementById("c4-shape").value;
+  document.getElementById("c4-w-field").style.display = shape === "round" ? "none" : "flex";
+}
+function c4ShapeArea(shape, w, t){
+  if(shape === "rect") return w * t;
+  if(shape === "semi") return (Math.PI / 4) * w * t;
+  if(shape === "tri") return 0.5 * w * t;
+  if(shape === "round") return Math.PI * Math.pow(t / 2, 2);
+}
+function c4Clear(){
+  ["c4-d","c4-w","c4-t","c4-price"].forEach(function(id){ document.getElementById(id).value = ""; });
+  document.getElementById("r4").classList.remove("show");
+  document.getElementById("r4").innerHTML = "";
+}
 function calc4(){
   var d = parseFloat(document.getElementById("c4-d").value);
-  var w = parseFloat(document.getElementById("c4-w").value);
   var t = parseFloat(document.getElementById("c4-t").value);
-  var metal = METALS[document.getElementById("c4-metal").value];
-  if(!(d > 0) || !(w > 0) || !(t > 0)){ showError("r4", "Diametr, kenglik va qalinlikni kiriting."); return; }
+  var shape = document.getElementById("c4-shape").value;
+  var w = shape === "round" ? t : parseFloat(document.getElementById("c4-w").value);
+  var density = parseFloat(document.getElementById("c4-density").value);
+  var price = parseFloat(document.getElementById("c4-price").value);
+  if(!(d > 0) || !(t > 0) || (shape !== "round" && !(w > 0)) || !(density > 0)){
+    showError("r4", "Diametr, qalinlik va (dumaloqdan boshqa shakllarda) kenglikni kiriting.");
+    return;
+  }
+  var area = c4ShapeArea(shape, w, t);
   var dMean = d + t;
-  var volumeMm3 = Math.PI * dMean * w * t;
-  var weight = (volumeMm3 / 1000) * metal.d;
-  showResult("r4",
+  var volumeMm3 = Math.PI * dMean * area;
+  var weight = (volumeMm3 / 1000) * density;
+  var rows = row("Kesim yuzasi", fmt(area, 2) + " mm&sup2;") +
     row("Hajm", fmt(volumeMm3, 1) + " mm&sup3;") +
-    row("Taxminiy og'irlik", fmt(weight) + " g", true),
-    "Halqa taxminan tekis tasma sifatida modellashtiriladi: hajm = &pi; &times; o'rtacha diametr &times; kenglik &times; qalinlik."
+    row("Taxminiy og'irlik", fmt(weight) + " g", !(price > 0));
+  if(price > 0) rows += row("Taxminiy qiymati", fmt(weight * price, 0) + " so'm", true);
+  showResult("r4", rows,
+    "Halqa aylanma tasma sifatida modellashtiriladi: hajm = &pi; &times; o'rtacha diametr &times; kesim yuzasi."
   );
 }
 
