@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zargar Kalkulyatorlari · 18 Professional Kalkulyator | Murad Jewellery</title>
+<meta name="description" content="Zargar ustalari uchun 18 ta professional kalkulyator: quyma og'irligi, ligatura (GOST 6835-80), qotishma aralashtirish, uzuk og'irligi va o'lchami, gips nisbatlari, quyma harorati va boshqalar.">
+<style>
+:root{
+  --bg:#0b0906; --bg2:#141110; --surface:#1b1714; --surface2:#221c17;
+  --ink:#f3ead9; --muted:#a9967a; --line:#3a2f24;
+  --gold:#d4af37; --gold-deep:#b8860b; --gold-soft:#e8c874;
+  --danger:#e06c5c; --ok:#6fbf73;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:radial-gradient(1200px 600px at 50% -10%, #201a12 0%, var(--bg) 55%) fixed, var(--bg);
+  color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px;}
+a{color:inherit;text-decoration:none;}
+
+/* ===== HEADER ===== */
+header{
+  position:sticky;top:0;z-index:40;
+  background:rgba(11,9,6,0.88);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.bar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;max-width:1100px;margin:0 auto;gap:12px;flex-wrap:wrap;}
+.brand{font-family:Georgia,"Times New Roman",serif;font-size:21px;font-weight:700;color:var(--gold-soft);letter-spacing:.01em;}
+.brand small{display:block;font-family:-apple-system,sans-serif;font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-top:3px;font-weight:500;}
+.back-link{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);padding:9px 16px;border-radius:3px;transition:all .2s;white-space:nowrap;}
+.back-link:hover{border-color:var(--gold);color:var(--gold-soft);}
+
+/* ===== HERO ===== */
+.hero{padding:56px 20px 34px;text-align:center;}
+.hero .eyebrow{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);font-weight:600;}
+.hero h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(28px,4.5vw,44px);margin:14px 0 12px;color:var(--ink);}
+.hero h1 em{color:var(--gold-soft);font-style:normal;}
+.hero p{color:var(--muted);max-width:620px;margin:0 auto;font-size:15px;}
+
+/* ===== TILES ===== */
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;padding:20px 20px 10px;max-width:1100px;margin:0 auto;}
+.tile{
+  display:flex;align-items:center;gap:12px;
+  background:linear-gradient(180deg,var(--surface),var(--surface2));
+  border:1px solid var(--line);border-radius:8px;padding:14px 16px;
+  cursor:pointer;text-align:left;color:var(--ink);transition:all .18s;
+  font-family:inherit;
+}
+.tile:hover{border-color:var(--gold-deep);transform:translateY(-1px);box-shadow:0 8px 20px rgba(0,0,0,.35);}
+.tile.on{border-color:var(--gold);background:linear-gradient(180deg,#241c11,#1c1610);}
+.tnum{font-family:Georgia,serif;font-size:13px;color:var(--gold);border:1px solid var(--gold-deep);border-radius:50%;width:30px;height:30px;min-width:30px;display:flex;align-items:center;justify-content:center;}
+.ttitle{font-size:13.5px;line-height:1.35;color:var(--ink);}
+
+/* ===== CALC AREA ===== */
+#calc-area{max-width:760px;margin:30px auto 80px;padding:0 20px;}
+.calc{display:none;background:linear-gradient(180deg,var(--surface),var(--surface2));border:1px solid var(--line);border-radius:12px;padding:30px 28px;animation:fade .25s ease;}
+.calc.active{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.calc-head{display:flex;align-items:center;gap:14px;margin-bottom:6px;}
+.calc-num{font-family:Georgia,serif;color:var(--gold);font-size:14px;border:1px solid var(--gold-deep);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;flex:none;}
+.calc h2{font-family:Georgia,"Times New Roman",serif;font-size:22px;color:var(--gold-soft);}
+.calc-desc{color:var(--muted);font-size:13.5px;margin:10px 0 22px;line-height:1.6;}
+.field-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:18px;}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field.wide{grid-column:1/-1;}
+.field label{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+.field input, .field select{
+  background:var(--bg2);border:1px solid var(--line);border-radius:6px;
+  color:var(--ink);padding:11px 12px;font-size:14.5px;font-family:inherit;width:100%;
+}
+.field input:focus, .field select:focus{outline:none;border-color:var(--gold);}
+.field .hint{font-size:11px;color:#7a6f5c;}
+.btn-calc{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(180deg,var(--gold-soft),var(--gold-deep));
+  color:#1b1408;border:none;padding:13px 26px;font-size:13px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;border-radius:6px;cursor:pointer;
+  transition:filter .2s;
+}
+.btn-calc:hover{filter:brightness(1.08);}
+.result{margin-top:20px;padding:0;border-radius:8px;overflow:hidden;max-height:0;transition:max-height .25s ease;}
+.result.show{max-height:600px;}
+.result-inner{background:var(--bg2);border:1px solid var(--gold-deep);border-radius:8px;padding:18px 20px;margin-top:2px;}
+.result-row{display:flex;justify-content:space-between;gap:16px;padding:6px 0;font-size:14.5px;border-bottom:1px dashed var(--line);}
+.result-row:last-child{border-bottom:none;}
+.result-row .k{color:var(--muted);}
+.result-row .v{color:var(--gold-soft);font-weight:700;text-align:right;}
+.result-row.main .v{font-size:18px;}
+.result-note{margin-top:10px;font-size:12px;color:#7a6f5c;line-height:1.5;}
+.err{color:var(--danger);font-size:13px;margin-top:10px;}
+table.ref{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px;}
+table.ref th, table.ref td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;}
+table.ref th{color:var(--gold);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em;}
+table.ref td.num{color:var(--gold-soft);font-weight:600;text-align:right;}
+
+footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;color:var(--muted);font-size:12.5px;}
+footer a{color:var(--gold-soft);}
+
+@media(max-width:560px){
+  .calc{padding:22px 18px;}
+  .bar{padding:14px 16px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bar">
+    <div class="brand">Murad Jewellery<small>Zargar Ustasi &middot; G'allaorol</small></div>
+    <a class="back-link" href="index.html">&larr; Bosh sahifa</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Amaliy vositalar</div>
+  <h1>Zargar <em>Kalkulyatorlari</em></h1>
+  <p>Quyma, ligatura, qotishma, uzuk o'lchami va boshqa kundalik hisob-kitoblar uchun 18 ta professional kalkulyator. Kerakli bo'limni tanlang.</p>
+</section>
+
+<div class="tiles" id="tiles">
+  <button class="tile" data-target="c1"><span class="tnum">01</span><span class="ttitle">Mum/rezin quyma og'irligi</span></button>
+  <button class="tile" data-target="c2"><span class="tnum">02</span><span class="ttitle">Ligatura hisoblash (GOST 6835-80)</span></button>
+  <button class="tile" data-target="c3"><span class="tnum">03</span><span class="ttitle">Qotishma aralashtirish</span></button>
+  <button class="tile" data-target="c4"><span class="tnum">04</span><span class="ttitle">Uzuk og'irligi</span></button>
+  <button class="tile" data-target="c5"><span class="tnum">05</span><span class="ttitle">Gips nisbatlari</span></button>
+  <button class="tile" data-target="c6"><span class="tnum">06</span><span class="ttitle">Uzuk o'lchami</span></button>
+  <button class="tile" data-target="c7"><span class="tnum">07</span><span class="ttitle">Quyma harorati</span></button>
+  <button class="tile" data-target="c8"><span class="tnum">08</span><span class="ttitle">Metall og'irligi (shakl bo'yicha)</span></button>
+  <button class="tile" data-target="c9"><span class="tnum">09</span><span class="ttitle">Proba / Karat / Foiz konvertori</span></button>
+  <button class="tile" data-target="c10"><span class="tnum">10</span><span class="ttitle">Zanjir og'irligi va narxi</span></button>
+  <button class="tile" data-target="c11"><span class="tnum">11</span><span class="ttitle">Buyum narxini hisoblash</span></button>
+  <button class="tile" data-target="c12"><span class="tnum">12</span><span class="ttitle">Lom qayta ishlash</span></button>
+  <button class="tile" data-target="c13"><span class="tnum">13</span><span class="ttitle">Kuyish (ugar) yo'qotish</span></button>
+  <button class="tile" data-target="c14"><span class="tnum">14</span><span class="ttitle">Elektroliz / gilvirlash vaqti</span></button>
+  <button class="tile" data-target="c15"><span class="tnum">15</span><span class="ttitle">Qimmatbaho tosh og'irligi</span></button>
+  <button class="tile" data-target="c16"><span class="tnum">16</span><span class="ttitle">Bilaguzuk/taqinchoq uzunligi</span></button>
+  <button class="tile" data-target="c17"><span class="tnum">17</span><span class="ttitle">Og'irlik birliklari konvertori</span></button>
+  <button class="tile" data-target="c18"><span class="tnum">18</span><span class="ttitle">Ish haqi / foyda hisoblagichi</span></button>
+</div>
+
+<div id="calc-area">
+
+  <!-- 1 -->
+  <section class="calc" id="c1">
+    <div class="calc-head"><span class="calc-num">01</span><h2>Mum/rezin quyma og'irligi</h2></div>
+    <p class="calc-desc">Mum yoki rezin model og'irligidan kerakli metall og'irligini hisoblaydi: metall og'irligi = mum og'irligi &times; (metall zichligi &divide; mum zichligi).</p>
+    <div class="field-grid">
+      <div class="field"><label>Mum/model og'irligi (g)</label><input type="number" id="c1-wax" step="0.01" placeholder="masalan: 3.2"></div>
+      <div class="field"><label>Mum zichligi (g/sm&sup3;)</label><input type="number" id="c1-waxd" step="0.01" value="0.90"><span class="hint">Odatiy quyma mumi &asymp; 0.90&ndash;0.96</span></div>
+      <div class="field"><label>Metall turi</label><select id="c1-metal" class="metal-select"></select></div>
+    </div>
+    <button class="btn-calc" onclick="calc1()">Hisoblash</button>
+    <div class="result" id="r1"></div>
+  </section>
+
+  <!-- 2 -->
+  <section class="calc" id="c2">
+    <div class="calc-head"><span class="calc-num">02</span><h2>Ligatura hisoblash</h2></div>
+    <p class="calc-desc">GOST 6835-80 standartiga asosan, yuqori probali metallni past probagacha suyultirish uchun qo'shiladigan ligatura (mis/kumush) miqdorini hisoblaydi: ligatura = W &times; (P1&minus;P2) &divide; P2.</p>
+    <div class="field-grid">
+      <div class="field"><label>Boshlang'ich metall og'irligi (g)</label><input type="number" id="c2-w" step="0.01" placeholder="masalan: 10"></div>
+      <div class="field"><label>Boshlang'ich proba</label>
+        <select id="c2-p1"><option value="999.9">999.9 (sof)</option><option value="958">958</option><option value="916">916</option><option value="750">750</option><option value="585" selected>585</option><option value="500">500</option><option value="375">375</option></select>
+      </div>
+      <div class="field"><label>Maqsad proba</label>
+        <select id="c2-p2"><option value="958">958</option><option value="916">916</option><option value="750">750</option><option value="585">585</option><option value="500">500</option><option value="375" selected>375</option></select>
+      </div>
+    </div>
+    <button class="btn-calc" onclick="calc2()">Hisoblash</button>
+    <div class="result" id="r2"></div>
+  </section>
+
+  <!-- 3 -->
+  <section class="calc" id="c3">
+    <div class="calc-head"><span class="calc-num">03</span><h2>Qotishma aralashtirish</h2></div>
+    <p class="calc-desc">Ikki xil metallni aralashtirganda hosil bo'ladigan umumiy hajm va o'rtacha zichlikni hisoblaydi: hajm = og'irlik &divide; zichlik.</p>
+    <div class="field-grid">
+      <div class="field"><label>1-metall og'irligi (g)</label><input type="number" id="c3-w1" step="0.01" placeholder="masalan: 8"></div>
+      <div class="field"><label>1-metall</label><select id="c3-d1" class="metal-select"></select></div>
+      <div class="field"><label>2-metall og'irligi (g)</label><input type="number" id="c3-w2" step="0.01" placeholder="masalan: 2"></div>
+      <div class="field"><label>2-metall</label><select id="c3-d2" class="metal-select"></select></div>
+    </div>
+    <button class="btn-calc" onclick="calc3()">Hisoblash</button>
+    <div class="result" id="r3"></div>
+  </section>
+
+  <!-- 4 -->
+  <section class="calc" id="c4">
+    <div class="calc-head"><span class="calc-num">04</span><h2>Uzuk og'irligi</h2></div>
+    <p class="calc-desc">Uzuk o'lchami (ichki diametr), kengligi va qalinligiga qarab taxminiy og'irlikni hisoblaydi. Bu &mdash; taxminiy muhandislik baholashi.</p>
+    <div class="field-grid">
+      <div class="field"><label>Ichki diametr (mm)</label><input type="number" id="c4-d" step="0.1" placeholder="masalan: 17"><span class="hint">RU o'lcham raqami &asymp; diametr, mm</span></div>
+      <div class="field"><label>Halqa kengligi (mm)</label><input type="number" id="c4-w" step="0.1" placeholder="masalan: 4"></div>
+      <div class="field"><label>Metall qalinligi (mm)</label><input type="number" id="c4-t" step="0.1" placeholder="masalan: 1.5"></div>
+      <div class="field"><label>Metall turi</label><select id="c4-metal" class="metal-select"></select></div>
+    </div>
+    <button class="btn-calc" onclick="calc4()">Hisoblash</button>
+    <div class="result" id="r4"></div>
+  </section>
+
+  <!-- 5 -->
+  <section class="calc" id="c5">
+    <div class="calc-head"><span class="calc-num">05</span><h2>Gips (investitsiya) nisbatlari</h2></div>
+    <p class="calc-desc">Quyma uchun gips (investitsiya) kukuni va suv nisbatini hisoblaydi. Aniq nisbat kukun ishlab chiqaruvchisiga qarab farq qilishi mumkin &mdash; standart taxminiy 40% qabul qilingan.</p>
+    <div class="field-grid">
+      <div class="field"><label>Kukun og'irligi (g)</label><input type="number" id="c5-powder" step="1" placeholder="masalan: 500"></div>
+      <div class="field"><label>Suv nisbati (%)</label><input type="number" id="c5-ratio" step="1" value="40"></div>
+      <div class="field wide"><label>Yoki: flakon (silindr) hajmi (sm&sup3;) &mdash; kukun avtomatik hisoblanadi</label><input type="number" id="c5-flask" step="1" placeholder="ixtiyoriy, masalan: 350"></div>
+    </div>
+    <button class="btn-calc" onclick="calc5()">Hisoblash</button>
+    <div class="result" id="r5"></div>
+  </section>
+
+  <!-- 6 -->
+  <section class="calc" id="c6">
+    <div class="calc-head"><span class="calc-num">06</span><h2>Uzuk o'lchami</h2></div>
+    <p class="calc-desc">Ichki diametr yoki aylana uzunligidan RU, US va EU (Fransiya) tizimlaridagi uzuk o'lchamini hisoblaydi.</p>
+    <div class="field-grid">
+      <div class="field"><label>Ichki diametr (mm)</label><input type="number" id="c6-d" step="0.1" placeholder="masalan: 17.3"></div>
+      <div class="field"><label>Yoki aylana uzunligi (mm)</label><input type="number" id="c6-c" step="0.1" placeholder="masalan: 54.3"></div>
+    </div>
+    <button class="btn-calc" onclick="calc6()">Hisoblash</button>
+    <div class="result" id="r6"></div>
+  </section>
+
+  <!-- 7 -->
+  <section class="calc" id="c7">
+    <div class="calc-head"><span class="calc-num">07</span><h2>Quyma harorati</h2></div>
+    <p class="calc-desc">Tanlangan qotishmaning erish harorati va tavsiya etilgan quyma haroratini (erish + qo'shimcha qizdirish) ko'rsatadi.</p>
+    <div class="field-grid">
+      <div class="field"><label>Qotishma</label><select id="c7-alloy"></select></div>
+      <div class="field"><label>Qo'shimcha qizdirish, &deg;C</label><input type="number" id="c7-super" step="5" value="130"><span class="hint">Odatda 100&ndash;150&deg;C</span></div>
+    </div>
+    <button class="btn-calc" onclick="calc7()">Hisoblash</button>
+    <div class="result" id="r7"></div>
+  </section>
+
+  <!-- 8 -->
+  <section class="calc" id="c8">
+    <div class="calc-head"><span class="calc-num">08</span><h2>Metall og'irligi (shakl bo'yicha)</h2></div>
+    <p class="calc-desc">Varaq, sim yoki nay shaklidagi metall bo'lagining o'lchamlariga qarab og'irligini hisoblaydi: og'irlik = hajm &times; zichlik.</p>
+    <div class="field-grid">
+      <div class="field"><label>Shakl</label><select id="c8-shape" onchange="c8Toggle()"><option value="sheet">Varaq (list)</option><option value="wire">Sim (dumaloq)</option><option value="tube">Nay</option></select></div>
+      <div class="field"><label>Metall turi</label><select id="c8-metal" class="metal-select"></select></div>
+    </div>
+    <div class="field-grid" id="c8-sheet">
+      <div class="field"><label>Uzunligi (mm)</label><input type="number" id="c8-l" step="0.1"></div>
+      <div class="field"><label>Kengligi (mm)</label><input type="number" id="c8-wd" step="0.1"></div>
+      <div class="field"><label>Qalinligi (mm)</label><input type="number" id="c8-th" step="0.01"></div>
+    </div>
+    <div class="field-grid" id="c8-wire" style="display:none;">
+      <div class="field"><label>Diametri (mm)</label><input type="number" id="c8-wd2" step="0.1"></div>
+      <div class="field"><label>Uzunligi (mm)</label><input type="number" id="c8-l2" step="0.1"></div>
+    </div>
+    <div class="field-grid" id="c8-tube" style="display:none;">
+      <div class="field"><label>Tashqi diametr (mm)</label><input type="number" id="c8-do" step="0.1"></div>
+      <div class="field"><label>Ichki diametr (mm)</label><input type="number" id="c8-di" step="0.1"></div>
+      <div class="field"><label>Uzunligi (mm)</label><input type="number" id="c8-l3" step="0.1"></div>
+    </div>
+    <button class="btn-calc" onclick="calc8()">Hisoblash</button>
+    <div class="result" id="r8"></div>
+  </section>
+
+  <!-- 9 -->
+  <section class="calc" id="c9">
+    <div class="calc-head"><span class="calc-num">09</span><h2>Proba / Karat / Foiz konvertori</h2></div>
+    <p class="calc-desc">Metall tozaligini uchta tizimda o'zaro o'girish: proba (0&ndash;999), karat (0&ndash;24) va foiz (0&ndash;100%). Faqat bittasini kiriting.</p>
+    <div class="field-grid">
+      <div class="field"><label>Proba (0&ndash;999)</label><input type="number" id="c9-proba" step="1" placeholder="masalan: 585"></div>
+      <div class="field"><label>Karat (0&ndash;24)</label><input type="number" id="c9-karat" step="0.1" placeholder="masalan: 14"></div>
+      <div class="field"><label>Foiz (0&ndash;100%)</label><input type="number" id="c9-percent" step="0.1" placeholder="masalan: 58.5"></div>
+    </div>
+    <button class="btn-calc" onclick="calc9()">Hisoblash</button>
+    <div class="result" id="r9"></div>
+  </section>
+
+  <!-- 10 -->
+  <section class="calc" id="c10">
+    <div class="calc-head"><span class="calc-num">10</span><h2>Zanjir og'irligi va narxi</h2></div>
+    <p class="calc-desc">1 santimetr zanjir og'irligi va umumiy uzunligiga qarab zanjirning to'liq og'irligi hamda (ixtiyoriy) narxini hisoblaydi.</p>
+    <div class="field-grid">
+      <div class="field"><label>1 sm og'irligi (g)</label><input type="number" id="c10-pcm" step="0.001" placeholder="masalan: 0.35"></div>
+      <div class="field"><label>Zanjir uzunligi (sm)</label><input type="number" id="c10-len" step="0.1" placeholder="masalan: 50"></div>
+      <div class="field"><label>1 gramm narxi (so'm) &mdash; ixtiyoriy</label><input type="number" id="c10-price" step="1000" placeholder="masalan: 1150000"></div>
+    </div>
+    <button class="btn-calc" onclick="calc10()">Hisoblash</button>
+    <div class="result" id="r10"></div>
+  </section>
+
+  <!-- 11 -->
+  <section class="calc" id="c11">
+    <div class="calc-head"><span class="calc-num">11</span><h2>Buyum narxini hisoblash</h2></div>
+    <p class="calc-desc">Metall og'irligi, probasi va bozor narxidan kelib chiqib buyum tannarxi va sotish narxini hisoblaydi.</p>
+    <div class="field-grid">
+      <div class="field"><label>Buyum og'irligi (g)</label><input type="number" id="c11-w" step="0.01" placeholder="masalan: 5.2"></div>
+      <div class="field"><label>Proba</label><input type="number" id="c11-p" step="1" value="585"></div>
+      <div class="field"><label>Sof metall (999) 1 g narxi (so'm)</label><input type="number" id="c11-price" step="1000" placeholder="masalan: 1250000"></div>
+      <div class="field"><label>Ishchi haqi (so'm)</label><input type="number" id="c11-labor" step="1000" placeholder="masalan: 150000"></div>
+      <div class="field"><label>Qo'shimcha xarajat / tosh (so'm)</label><input type="number" id="c11-extra" step="1000" placeholder="ixtiyoriy"></div>
+      <div class="field"><label>Foyda ustamasi (%)</label><input type="number" id="c11-margin" step="1" value="0"></div>
+    </div>
+    <button class="btn-calc" onclick="calc11()">Hisoblash</button>
+    <div class="result" id="r11"></div>
+  </section>
+
+  <!-- 12 -->
+  <section class="calc" id="c12">
+    <div class="calc-head"><span class="calc-num">12</span><h2>Lom qayta ishlash</h2></div>
+    <p class="calc-desc">Eski (lom) metallni erituvda kuyish yo'qotishini hisobga olgan holda yangi probaga qayta hisoblaydi.</p>
+    <div class="field-grid">
+      <div class="field"><label>Lom og'irligi (g)</label><input type="number" id="c12-w" step="0.01" placeholder="masalan: 20"></div>
+      <div class="field"><label>Lom probasi</label><input type="number" id="c12-p1" step="1" value="585"></div>
+      <div class="field"><label>Kuyish yo'qotishi (%)</label><input type="number" id="c12-loss" step="0.1" value="2"></div>
+      <div class="field"><label>Maqsad proba</label><input type="number" id="c12-p2" step="1" value="585"></div>
+    </div>
+    <button class="btn-calc" onclick="calc12()">Hisoblash</button>
+    <div class="result" id="r12"></div>
+  </section>
+
+  <!-- 13 -->
+  <section class="calc" id="c13">
+    <div class="calc-head"><span class="calc-num">13</span><h2>Kuyish (ugar) yo'qotish</h2></div>
+    <p class="calc-desc">Quyishdan oldingi va keyingi og'irlikdan yo'qotish foizini, yoki kutilayotgan yo'qotish foizidan taxminiy natija og'irligini hisoblaydi. Faqat "keyingi og'irlik" yoki "kutilgan yo'qotish %" dan birini kiriting.</p>
+    <div class="field-grid">
+      <div class="field"><label>Quyishdan oldingi og'irlik (g)</label><input type="number" id="c13-before" step="0.01" placeholder="masalan: 15"></div>
+      <div class="field"><label>Quyishdan keyingi og'irlik (g)</label><input type="number" id="c13-after" step="0.01" placeholder="masalan: 14.7"></div>
+      <div class="field"><label>Yoki kutilgan yo'qotish (%)</label><input type="number" id="c13-loss" step="0.1" placeholder="masalan: 2"></div>
+    </div>
+    <button class="btn-calc" onclick="calc13()">Hisoblash</button>
+    <div class="result" id="r13"></div>
+  </section>
+
+  <!-- 14 -->
+  <section class="calc" id="c14">
+    <div class="calc-head"><span class="calc-num">14</span><h2>Elektroliz / gilvirlash vaqti</h2></div>
+    <p class="calc-desc">Faraday elektroliz qonuniga asosan, berilgan tok, maydon va qoplama qalinligi uchun zarur vaqtni hisoblaydi.</p>
+    <div class="field-grid">
+      <div class="field"><label>Qoplama metali</label><select id="c14-metal">
+        <option value="au">Oltin (Au)</option><option value="ag">Kumush (Ag)</option><option value="rh">Rodiy (Rh)</option><option value="ni">Nikel (Ni)</option><option value="cu">Mis (Cu)</option>
+      </select></div>
+      <div class="field"><label>Maydon (sm&sup2;)</label><input type="number" id="c14-area" step="0.1" placeholder="masalan: 12"></div>
+      <div class="field"><label>Qoplama qalinligi (mikron, &micro;m)</label><input type="number" id="c14-thick" step="0.01" placeholder="masalan: 0.5"></div>
+      <div class="field"><label>Tok kuchi (A)</label><input type="number" id="c14-current" step="0.01" placeholder="masalan: 0.5"></div>
+      <div class="field"><label>Tok samaradorligi (%)</label><input type="number" id="c14-eff" step="1" value="90"></div>
+    </div>
+    <button class="btn-calc" onclick="calc14()">Hisoblash</button>
+    <div class="result" id="r14"></div>
+  </section>
+
+  <!-- 15 -->
+  <section class="calc" id="c15">
+    <div class="calc-head"><span class="calc-num">15</span><h2>Qimmatbaho tosh og'irligi</h2></div>
+    <p class="calc-desc">Dumaloq (round brilliant) kesimli tosh diametri va chuqurligidan taxminiy karat og'irligini hisoblaydi: karat = D&sup2; &times; chuqurlik &times; 0.0061 &times; (SG &divide; 3.52).</p>
+    <div class="field-grid">
+      <div class="field"><label>Tosh turi</label><select id="c15-stone"></select></div>
+      <div class="field"><label>Diametri (mm)</label><input type="number" id="c15-d" step="0.01" placeholder="masalan: 6.5"></div>
+      <div class="field"><label>Chuqurligi / balandligi (mm)</label><input type="number" id="c15-h" step="0.01" placeholder="masalan: 4.0"></div>
+    </div>
+    <button class="btn-calc" onclick="calc15()">Hisoblash</button>
+    <div class="result" id="r15"></div>
+  </section>
+
+  <!-- 16 -->
+  <section class="calc" id="c16">
+    <div class="calc-head"><span class="calc-num">16</span><h2>Bilaguzuk/taqinchoq uzunligi</h2></div>
+    <p class="calc-desc">Bilak yoki bo'yin aylanasi va qulaylik zaxirasidan kerakli taqinchoq uzunligini hisoblaydi.</p>
+    <div class="field-grid">
+      <div class="field"><label>Turi</label><select id="c16-type" onchange="c16Default()">
+        <option value="1.5">Bilaguzuk (+1&ndash;2 sm)</option>
+        <option value="3">Bo'yinbog' / marjon (+2&ndash;5 sm)</option>
+        <option value="0.5">Uzuk halqasi (+0.3&ndash;0.5 sm)</option>
+      </select></div>
+      <div class="field"><label>Aylana o'lchovi (sm)</label><input type="number" id="c16-circ" step="0.1" placeholder="masalan: 16.5"></div>
+      <div class="field"><label>Qulaylik zaxirasi (sm)</label><input type="number" id="c16-allow" step="0.1" value="1.5"></div>
+    </div>
+    <button class="btn-calc" onclick="calc16()">Hisoblash</button>
+    <div class="result" id="r16"></div>
+  </section>
+
+  <!-- 17 -->
+  <section class="calc" id="c17">
+    <div class="calc-head"><span class="calc-num">17</span><h2>Og'irlik birliklari konvertori</h2></div>
+    <p class="calc-desc">Gramm, karat (massa), troy untsiya, tael va an'anaviy misqol o'rtasida o'girish.</p>
+    <div class="field-grid">
+      <div class="field"><label>Qiymat</label><input type="number" id="c17-val" step="0.001" placeholder="masalan: 10"></div>
+      <div class="field"><label>Birlik</label><select id="c17-unit">
+        <option value="g">Gramm (g)</option>
+        <option value="ct">Karat, massa (ct)</option>
+        <option value="oz">Troy untsiya (oz t)</option>
+        <option value="tael">Tael (xitoy)</option>
+        <option value="misqol">Misqol (an'anaviy)</option>
+        <option value="funt">Funt (rus, tarixiy)</option>
+      </select></div>
+    </div>
+    <button class="btn-calc" onclick="calc17()">Hisoblash</button>
+    <div class="result" id="r17"></div>
+  </section>
+
+  <!-- 18 -->
+  <section class="calc" id="c18">
+    <div class="calc-head"><span class="calc-num">18</span><h2>Ish haqi / foyda hisoblagichi</h2></div>
+    <p class="calc-desc">Xom-ashyo, ishchi haqi va boshqa xarajatlardan tannarxni, so'ng belgilangan foyda ustamasi asosida sotish narxini hisoblaydi.</p>
+    <div class="field-grid">
+      <div class="field"><label>Xom-ashyo (metall) narxi (so'm)</label><input type="number" id="c18-material" step="1000" placeholder="masalan: 4000000"></div>
+      <div class="field"><label>Ishchi haqi (so'm)</label><input type="number" id="c18-labor" step="1000" placeholder="masalan: 300000"></div>
+      <div class="field"><label>Boshqa xarajatlar (so'm)</label><input type="number" id="c18-other" step="1000" placeholder="ixtiyoriy"></div>
+      <div class="field"><label>Foyda ustamasi (%)</label><input type="number" id="c18-margin" step="1" value="30"></div>
+    </div>
+    <button class="btn-calc" onclick="calc18()">Hisoblash</button>
+    <div class="result" id="r18"></div>
+  </section>
+
+</div>
+
+<footer>
+  &copy; <span id="year"></span> Murad Jewellery &middot; G'allaorol, Jizzax. Barcha hisob-kitoblar taxminiy bo'lib, amaliy tajriba va ishlab chiqaruvchi ko'rsatmalari bilan tekshirilishi tavsiya etiladi.
+  <br><a href="index.html">Bosh sahifaga qaytish</a>
+</footer>
+
+<script>
+/* ===== Ma'lumotlar bazasi ===== */
+var METALS = {
+  au999:{name:"Oltin 999 (sof)", d:19.32},
+  au916:{name:"Oltin 916 (22K)", d:17.80},
+  au750:{name:"Oltin 750 (18K)", d:15.60},
+  au585:{name:"Oltin 585 (14K)", d:13.40},
+  au375:{name:"Oltin 375 (9K)",  d:11.30},
+  ag999:{name:"Kumush 999",      d:10.49},
+  ag925:{name:"Kumush 925",      d:10.36},
+  ag800:{name:"Kumush 800",      d:10.00},
+  pt950:{name:"Platina 950",     d:20.00},
+  pd950:{name:"Palladiy 950",    d:11.90},
+  cu:   {name:"Mis",             d:8.96}
+};
+var ALLOYS = {
+  au999:{name:"Oltin 999 (sof)", melt:1064},
+  au916:{name:"Oltin 916 (22K)", melt:1010},
+  au750:{name:"Oltin 750 (18K)", melt:930},
+  au585:{name:"Oltin 585 (14K)", melt:880},
+  ag999:{name:"Kumush 999",      melt:961},
+  ag925:{name:"Kumush 925",      melt:893},
+  cu:   {name:"Mis",             melt:1085},
+  pt950:{name:"Platina 950",     melt:1775},
+  pd950:{name:"Palladiy 950",    melt:1500}
+};
+var STONES = {
+  diamond:{name:"Olmos", sg:3.52},
+  ruby:{name:"Yoqut", sg:4.00},
+  sapphire:{name:"Safir", sg:4.00},
+  emerald:{name:"Zumrad", sg:2.76},
+  cz:{name:"Fianit (CZ)", sg:5.80},
+  topaz:{name:"Topaz", sg:3.53},
+  amethyst:{name:"Ametist", sg:2.65},
+  garnet:{name:"Granat", sg:3.80}
+};
+var PLATE_METALS = {
+  au:{name:"Oltin (Au)", M:196.97, n:1, d:19.30},
+  ag:{name:"Kumush (Ag)", M:107.87, n:1, d:10.49},
+  rh:{name:"Rodiy (Rh)", M:102.91, n:3, d:12.41},
+  ni:{name:"Nikel (Ni)", M:58.69, n:2, d:8.90},
+  cu:{name:"Mis (Cu)", M:63.55, n:2, d:8.96}
+};
+var UNITS = { g:1, ct:0.2, oz:31.1035, tael:37.5, misqol:4.26, funt:409.512 };
+var UNIT_NAMES = { g:"Gramm", ct:"Karat (massa)", oz:"Troy untsiya", tael:"Tael", misqol:"Misqol", funt:"Funt" };
+
+function fillSelect(sel, obj, selectedKey){
+  sel.innerHTML = "";
+  for(var key in obj){
+    var o = document.createElement("option");
+    o.value = key;
+    o.textContent = obj[key].name;
+    if(key === selectedKey) o.selected = true;
+    sel.appendChild(o);
+  }
+}
+document.addEventListener("DOMContentLoaded", function(){
+  document.querySelectorAll(".metal-select").forEach(function(sel){ fillSelect(sel, METALS, "au585"); });
+  fillSelect(document.getElementById("c7-alloy"), ALLOYS, "au585");
+  fillSelect(document.getElementById("c15-stone"), STONES, "diamond");
+  document.getElementById("year").textContent = new Date().getFullYear();
+  c8Toggle();
+});
+
+/* ===== Yordamchi funksiyalar ===== */
+function fmt(n, d){
+  if(d === undefined) d = 2;
+  if(!isFinite(n)) return "&mdash;";
+  return n.toLocaleString("ru-RU", {minimumFractionDigits:0, maximumFractionDigits:d});
+}
+function showResult(id, rowsHtml, noteHtml){
+  var el = document.getElementById(id);
+  el.innerHTML = '<div class="result-inner">' + rowsHtml + (noteHtml ? '<div class="result-note">'+noteHtml+'</div>' : '') + '</div>';
+  el.classList.add("show");
+}
+function showError(id, msg){
+  var el = document.getElementById(id);
+  el.innerHTML = '<div class="result-inner"><div class="err">' + msg + '</div></div>';
+  el.classList.add("show");
+}
+function row(k, v, main){
+  return '<div class="result-row' + (main ? ' main' : '') + '"><span class="k">' + k + '</span><span class="v">' + v + '</span></div>';
+}
+
+/* ===== Tile navigatsiyasi ===== */
+document.getElementById("tiles").addEventListener("click", function(e){
+  var tile = e.target.closest(".tile");
+  if(!tile) return;
+  document.querySelectorAll(".tile").forEach(function(t){ t.classList.remove("on"); });
+  document.querySelectorAll(".calc").forEach(function(c){ c.classList.remove("active"); });
+  tile.classList.add("on");
+  document.getElementById(tile.dataset.target).classList.add("active");
+  document.getElementById("calc-area").scrollIntoView({behavior:"smooth", block:"start"});
+});
+
+/* ===== 1: Mum/rezin quyma og'irligi ===== */
+function calc1(){
+  var wax = parseFloat(document.getElementById("c1-wax").value);
+  var waxD = parseFloat(document.getElementById("c1-waxd").value);
+  var metal = METALS[document.getElementById("c1-metal").value];
+  if(!(wax > 0) || !(waxD > 0)){ showError("r1", "Mum og'irligi va zichligini kiriting."); return; }
+  var result = wax * (metal.d / waxD);
+  showResult("r1",
+    row("Metall zichligi", metal.d + " g/sm&sup3;") +
+    row("Kerakli metall og'irligi", fmt(result) + " g", true),
+    "Formula: metall og'irligi = mum og'irligi &times; (metall zichligi &divide; mum zichligi)."
+  );
+}
+
+/* ===== 2: Ligatura hisoblash ===== */
+function calc2(){
+  var w = parseFloat(document.getElementById("c2-w").value);
+  var p1 = parseFloat(document.getElementById("c2-p1").value);
+  var p2 = parseFloat(document.getElementById("c2-p2").value);
+  if(!(w > 0)){ showError("r2", "Boshlang'ich og'irlikni kiriting."); return; }
+  if(p2 >= p1){ showError("r2", "Maqsad proba boshlang'ich probadan past bo'lishi kerak."); return; }
+  var ligature = w * (p1 - p2) / p2;
+  var total = w + ligature;
+  showResult("r2",
+    row("Qo'shiladigan ligatura (mis/kumush)", fmt(ligature) + " g", true) +
+    row("Yakuniy qotishma og'irligi", fmt(total) + " g (proba " + p2 + ")"),
+    "GOST 6835-80: ligatura = W &times; (P1&minus;P2) &divide; P2."
+  );
+}
+
+/* ===== 3: Qotishma aralashtirish ===== */
+function calc3(){
+  var w1 = parseFloat(document.getElementById("c3-w1").value);
+  var w2 = parseFloat(document.getElementById("c3-w2").value);
+  var d1 = METALS[document.getElementById("c3-d1").value].d;
+  var d2 = METALS[document.getElementById("c3-d2").value].d;
+  if(!(w1 > 0) || !(w2 > 0)){ showError("r3", "Ikkala metall og'irligini kiriting."); return; }
+  var v1 = w1 / d1, v2 = w2 / d2;
+  var totalW = w1 + w2, totalV = v1 + v2;
+  var avgD = totalW / totalV;
+  showResult("r3",
+    row("Umumiy og'irlik", fmt(totalW) + " g") +
+    row("Umumiy hajm", fmt(totalV) + " sm&sup3;") +
+    row("O'rtacha zichlik", fmt(avgD) + " g/sm&sup3;", true),
+    "Hajm = og'irlik &divide; zichlik; o'rtacha zichlik = umumiy og'irlik &divide; umumiy hajm."
+  );
+}
+
+/* ===== 4: Uzuk og'irligi ===== */
+function calc4(){
+  var d = parseFloat(document.getElementById("c4-d").value);
+  var w = parseFloat(document.getElementById("c4-w").value);
+  var t = parseFloat(document.getElementById("c4-t").value);
+  var metal = METALS[document.getElementById("c4-metal").value];
+  if(!(d > 0) || !(w > 0) || !(t > 0)){ showError("r4", "Diametr, kenglik va qalinlikni kiriting."); return; }
+  var dMean = d + t;
+  var volumeMm3 = Math.PI * dMean * w * t;
+  var weight = (volumeMm3 / 1000) * metal.d;
+  showResult("r4",
+    row("Hajm", fmt(volumeMm3, 1) + " mm&sup3;") +
+    row("Taxminiy og'irlik", fmt(weight) + " g", true),
+    "Halqa taxminan tekis tasma sifatida modellashtiriladi: hajm = &pi; &times; o'rtacha diametr &times; kenglik &times; qalinlik."
+  );
+}
+
+/* ===== 5: Gips nisbatlari ===== */
+function calc5(){
+  var ratio = parseFloat(document.getElementById("c5-ratio").value) / 100;
+  var powder = parseFloat(document.getElementById("c5-powder").value);
+  var flask = parseFloat(document.getElementById("c5-flask").value);
+  var note = "Suv miqdori = kukun &times; nisbat. Aniq nisbat kukun ishlab chiqaruvchisi ko'rsatmasiga qarab moslashtirilishi kerak.";
+  if(!(ratio > 0)){ showError("r5", "Suv nisbatini kiriting."); return; }
+  if(flask > 0){
+    var totalMass = flask * 1.85;
+    powder = totalMass / (1 + ratio);
+    note = "Flakon hajmidan taxminiy kukun miqdori aralashma zichligi &asymp; 1.85 g/sm&sup3; asosida baholandi.";
+  }
+  if(!(powder > 0)){ showError("r5", "Kukun og'irligi yoki flakon hajmini kiriting."); return; }
+  var water = powder * ratio;
+  showResult("r5",
+    row("Kukun (gips)", fmt(powder, 0) + " g") +
+    row("Suv", fmt(water, 0) + " ml", true),
+    note
+  );
+}
+
+/* ===== 6: Uzuk o'lchami ===== */
+function calc6(){
+  var d = parseFloat(document.getElementById("c6-d").value);
+  var c = parseFloat(document.getElementById("c6-c").value);
+  if(!(d > 0) && c > 0) d = c / Math.PI;
+  if(!(d > 0)){ showError("r6", "Diametr yoki aylana uzunligini kiriting."); return; }
+  c = d * Math.PI;
+  var ru = Math.round(d * 2) / 2;
+  var us = Math.round(((d - 11.63) / 0.8128) * 2) / 2;
+  var fr = Math.round(c - 40);
+  showResult("r6",
+    row("Aylana uzunligi", fmt(c, 1) + " mm") +
+    row("RU/UZ o'lcham", fmt(ru, 1)) +
+    row("US o'lcham", us >= 0 ? fmt(us, 1) : "&mdash;") +
+    row("EU (Fransiya) o'lcham", fmt(fr, 0), true),
+    "RU o'lcham &asymp; ichki diametr (mm). US o'lcham &asymp; (diametr&minus;11.63)/0.8128."
+  );
+}
+
+/* ===== 7: Quyma harorati ===== */
+function calc7(){
+  var alloy = ALLOYS[document.getElementById("c7-alloy").value];
+  var superheat = parseFloat(document.getElementById("c7-super").value) || 0;
+  var castTemp = alloy.melt + superheat;
+  showResult("r7",
+    row("Qotishma", alloy.name) +
+    row("Erish harorati", alloy.melt + " &deg;C") +
+    row("Tavsiya etilgan quyma harorati", castTemp + " &deg;C", true),
+    "Quyma harorati odatda erish haroratidan 100&ndash;150&deg;C yuqori bo'ladi."
+  );
+}
+
+/* ===== 8: Metall og'irligi (shakl bo'yicha) ===== */
+function c8Toggle(){
+  var shape = document.getElementById("c8-shape").value;
+  document.getElementById("c8-sheet").style.display = shape === "sheet" ? "grid" : "none";
+  document.getElementById("c8-wire").style.display = shape === "wire" ? "grid" : "none";
+  document.getElementById("c8-tube").style.display = shape === "tube" ? "grid" : "none";
+}
+function calc8(){
+  var shape = document.getElementById("c8-shape").value;
+  var metal = METALS[document.getElementById("c8-metal").value];
+  var volumeMm3;
+  if(shape === "sheet"){
+    var l = parseFloat(document.getElementById("c8-l").value);
+    var w = parseFloat(document.getElementById("c8-wd").value);
+    var t = parseFloat(document.getElementById("c8-th").value);
+    if(!(l > 0) || !(w > 0) || !(t > 0)){ showError("r8", "Varaq o'lchamlarini to'liq kiriting."); return; }
+    volumeMm3 = l * w * t;
+  } else if(shape === "wire"){
+    var d = parseFloat(document.getElementById("c8-wd2").value);
+    var len = parseFloat(document.getElementById("c8-l2").value);
+    if(!(d > 0) || !(len > 0)){ showError("r8", "Sim diametri va uzunligini kiriting."); return; }
+    volumeMm3 = Math.PI * Math.pow(d / 2, 2) * len;
+  } else {
+    var doo = parseFloat(document.getElementById("c8-do").value);
+    var di = parseFloat(document.getElementById("c8-di").value);
+    var l3 = parseFloat(document.getElementById("c8-l3").value);
+    if(!(doo > 0) || !(di >= 0) || !(l3 > 0) || doo <= di){ showError("r8", "Nay diametrlari va uzunligini to'g'ri kiriting."); return; }
+    volumeMm3 = (Math.PI / 4) * (doo * doo - di * di) * l3;
+  }
+  var weight = (volumeMm3 / 1000) * metal.d;
+  showResult("r8",
+    row("Hajm", fmt(volumeMm3, 1) + " mm&sup3;") +
+    row("Og'irlik", fmt(weight) + " g", true)
+  );
+}
+
+/* ===== 9: Proba/Karat/Foiz ===== */
+function calc9(){
+  var proba = parseFloat(document.getElementById("c9-proba").value);
+  var karat = parseFloat(document.getElementById("c9-karat").value);
+  var percent = parseFloat(document.getElementById("c9-percent").value);
+  var k;
+  if(!isNaN(proba)) k = proba / 1000 * 24;
+  else if(!isNaN(karat)) k = karat;
+  else if(!isNaN(percent)) k = percent / 100 * 24;
+  else { showError("r9", "Proba, karat yoki foizdan birini kiriting."); return; }
+  proba = k / 24 * 1000;
+  percent = k / 24 * 100;
+  showResult("r9",
+    row("Proba", fmt(proba, 1)) +
+    row("Karat", fmt(k, 2) + " K") +
+    row("Foiz", fmt(percent, 2) + " %", true)
+  );
+}
+
+/* ===== 10: Zanjir og'irligi va narxi ===== */
+function calc10(){
+  var perCm = parseFloat(document.getElementById("c10-pcm").value);
+  var len = parseFloat(document.getElementById("c10-len").value);
+  var price = parseFloat(document.getElementById("c10-price").value);
+  if(!(perCm > 0) || !(len > 0)){ showError("r10", "1 sm og'irligi va uzunlikni kiriting."); return; }
+  var weight = perCm * len;
+  var rows = row("Umumiy og'irlik", fmt(weight) + " g", !(price > 0));
+  if(price > 0) rows += row("Umumiy narx", fmt(weight * price, 0) + " so'm", true);
+  showResult("r10", rows);
+}
+
+/* ===== 11: Buyum narxini hisoblash ===== */
+function calc11(){
+  var w = parseFloat(document.getElementById("c11-w").value);
+  var p = parseFloat(document.getElementById("c11-p").value);
+  var price = parseFloat(document.getElementById("c11-price").value);
+  var labor = parseFloat(document.getElementById("c11-labor").value) || 0;
+  var extra = parseFloat(document.getElementById("c11-extra").value) || 0;
+  var margin = parseFloat(document.getElementById("c11-margin").value) || 0;
+  if(!(w > 0) || !(p > 0) || !(price > 0)){ showError("r11", "Og'irlik, proba va sof metall narxini kiriting."); return; }
+  var metalCost = w * (p / 1000) * price;
+  var subtotal = metalCost + labor + extra;
+  var total = subtotal * (1 + margin / 100);
+  showResult("r11",
+    row("Metall qiymati", fmt(metalCost, 0) + " so'm") +
+    row("Ishchi haqi + qo'shimcha", fmt(labor + extra, 0) + " so'm") +
+    row("Tannarx", fmt(subtotal, 0) + " so'm") +
+    row("Sotish narxi", fmt(total, 0) + " so'm", true)
+  );
+}
+
+/* ===== 12: Lom qayta ishlash ===== */
+function calc12(){
+  var w = parseFloat(document.getElementById("c12-w").value);
+  var p1 = parseFloat(document.getElementById("c12-p1").value);
+  var loss = parseFloat(document.getElementById("c12-loss").value) || 0;
+  var p2 = parseFloat(document.getElementById("c12-p2").value);
+  if(!(w > 0) || !(p1 > 0) || !(p2 > 0)){ showError("r12", "Lom og'irligi va probalarni kiriting."); return; }
+  var pureContent = w * (p1 / 1000);
+  var pureAfterLoss = pureContent * (1 - loss / 100);
+  var finalWeight = pureAfterLoss / (p2 / 1000);
+  var ligature = finalWeight - pureAfterLoss;
+  showResult("r12",
+    row("Sof metall (yo'qotishdan keyin)", fmt(pureAfterLoss) + " g") +
+    row("Qo'shiladigan ligatura", fmt(ligature) + " g") +
+    row("Yakuniy og'irlik (proba " + p2 + ")", fmt(finalWeight) + " g", true)
+  );
+}
+
+/* ===== 13: Kuyish (ugar) yo'qotish ===== */
+function calc13(){
+  var before = parseFloat(document.getElementById("c13-before").value);
+  var after = parseFloat(document.getElementById("c13-after").value);
+  var lossPct = parseFloat(document.getElementById("c13-loss").value);
+  if(!(before > 0)){ showError("r13", "Quyishdan oldingi og'irlikni kiriting."); return; }
+  if(!isNaN(after)){
+    lossPct = (before - after) / before * 100;
+  } else if(!isNaN(lossPct)){
+    after = before * (1 - lossPct / 100);
+  } else {
+    showError("r13", "Keyingi og'irlik yoki kutilgan yo'qotish foizini kiriting.");
+    return;
+  }
+  showResult("r13",
+    row("Yo'qotish", fmt(before - after) + " g") +
+    row("Yo'qotish foizi", fmt(lossPct) + " %") +
+    row("Natija og'irligi", fmt(after) + " g", true)
+  );
+}
+
+/* ===== 14: Elektroliz / gilvirlash vaqti ===== */
+function calc14(){
+  var metal = PLATE_METALS[document.getElementById("c14-metal").value];
+  var area = parseFloat(document.getElementById("c14-area").value);
+  var thickMicron = parseFloat(document.getElementById("c14-thick").value);
+  var current = parseFloat(document.getElementById("c14-current").value);
+  var eff = (parseFloat(document.getElementById("c14-eff").value) || 100) / 100;
+  if(!(area > 0) || !(thickMicron > 0) || !(current > 0)){ showError("r14", "Maydon, qalinlik va tok kuchini kiriting."); return; }
+  var F = 96485;
+  var thicknessCm = thickMicron * 1e-4;
+  var seconds = (thicknessCm * metal.d * area * metal.n * F) / (current * metal.M * eff);
+  var minutes = seconds / 60;
+  var massDeposited = (current * seconds * eff * metal.M) / (metal.n * F);
+  showResult("r14",
+    row("Kerakli vaqt", fmt(minutes) + " daqiqa (" + fmt(seconds, 0) + " s)", true) +
+    row("Cho'kadigan metall massasi", fmt(massDeposited, 3) + " g"),
+    "Faraday elektroliz qonuni: t = (qalinlik &times; zichlik &times; maydon &times; n &times; F) &divide; (tok &times; molyar massa &times; samaradorlik)."
+  );
+}
+
+/* ===== 15: Qimmatbaho tosh og'irligi ===== */
+function calc15(){
+  var stone = STONES[document.getElementById("c15-stone").value];
+  var d = parseFloat(document.getElementById("c15-d").value);
+  var h = parseFloat(document.getElementById("c15-h").value);
+  if(!(d > 0) || !(h > 0)){ showError("r15", "Diametr va chuqurlikni kiriting."); return; }
+  var carat = d * d * h * 0.0061 * (stone.sg / 3.52);
+  showResult("r15",
+    row("Taxminiy og'irlik", fmt(carat, 3) + " karat") +
+    row("Grammda", fmt(carat * 0.2, 4) + " g", true),
+    "Dumaloq (round brilliant) kesim uchun taxminiy formula. Aniq og'irlik uchun elektron tarozi tavsiya etiladi."
+  );
+}
+
+/* ===== 16: Bilaguzuk/taqinchoq uzunligi ===== */
+function c16Default(){
+  document.getElementById("c16-allow").value = document.getElementById("c16-type").value;
+}
+function calc16(){
+  var circ = parseFloat(document.getElementById("c16-circ").value);
+  var allow = parseFloat(document.getElementById("c16-allow").value);
+  if(!(circ > 0) || isNaN(allow)){ showError("r16", "Aylana o'lchovi va zaxirani kiriting."); return; }
+  var length = circ + allow;
+  showResult("r16",
+    row("Tavsiya etilgan uzunlik", fmt(length) + " sm", true)
+  );
+}
+
+/* ===== 17: Birlik konvertori ===== */
+function calc17(){
+  var value = parseFloat(document.getElementById("c17-val").value);
+  var unit = document.getElementById("c17-unit").value;
+  if(!(value > 0)){ showError("r17", "Qiymatni kiriting."); return; }
+  var grams = value * UNITS[unit];
+  var rows = "";
+  for(var key in UNITS){
+    rows += row(UNIT_NAMES[key], fmt(grams / UNITS[key], 4), key === "g");
+  }
+  showResult("r17", rows);
+}
+
+/* ===== 18: Ish haqi / foyda hisoblagichi ===== */
+function calc18(){
+  var material = parseFloat(document.getElementById("c18-material").value) || 0;
+  var labor = parseFloat(document.getElementById("c18-labor").value) || 0;
+  var other = parseFloat(document.getElementById("c18-other").value) || 0;
+  var margin = parseFloat(document.getElementById("c18-margin").value) || 0;
+  if(material + labor + other <= 0){ showError("r18", "Kamida bitta xarajat kiriting."); return; }
+  var cost = material + labor + other;
+  var sellingPrice = cost * (1 + margin / 100);
+  var profit = sellingPrice - cost;
+  showResult("r18",
+    row("Tannarx", fmt(cost, 0) + " so'm") +
+    row("Foyda", fmt(profit, 0) + " so'm") +
+    row("Sotish narxi", fmt(sellingPrice, 0) + " so'm", true)
+  );
+}
+</script>
+
+</body>
+</html>
