@@ -3256,17 +3256,21 @@ function printQarz(id){
 
 // ===== XARID STATISTIKA =====
 function getXaridStats() {
-  const today = new Date().toISOString().split('T')[0];
-  const monthAgo = new Date(Date.now()-30*24*60*60*1000).toISOString().split('T')[0];
+  const now = new Date();
+  const today = now.toISOString().split('T')[0];
+  // Joriy oyning 1-sanasi (so'nggi 30 kun emas!)
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
 
   const is375 = x => (x.metal_type||'').includes('375');
   const is583 = x => (x.metal_type||'').includes('583')||(x.metal_type||'').includes('585');
 
-  const monthX = xaridList.filter(x=>String(x.date||x.created_at||'').slice(0,10)>=monthAgo);
+  const monthX = xaridList.filter(x=>String(x.date||x.created_at||'').slice(0,10)>=monthStart);
   const todayX = xaridList.filter(x=>String(x.date||x.created_at||'').slice(0,10)===today);
 
   const g = list => list.reduce((s,x)=>s+(parseFloat(x.gram)||0),0);
-  const s = list => list.reduce((s,x)=>s+(parseFloat(x.total)||0),0);
+  // total yo'q bo'lsa gram*price_gram dan hisoblaydi
+  const xsum = x => parseFloat(x.total) || (parseFloat(x.gram||0)*parseFloat(x.price_gram||0));
+  const s = list => list.reduce((acc,x)=>acc+xsum(x),0);
   const round = n => Math.round(n*100)/100;
 
   return {
