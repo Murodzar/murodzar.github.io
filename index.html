@@ -2417,7 +2417,7 @@ function renderNotes() {
 let remont = [];
 let remontImgs = [];
 let editingRemontId = null;
-let currentRemontFilter = 'hammasi';
+let currentRemontFilter = 'faol';
 
 async function loadRemont() {
   try {
@@ -2645,7 +2645,7 @@ async function loadXaridImages() {
       if(data) {
         data.forEach(row=>{
           const idx = xaridList.findIndex(x=>x.id===row.id);
-          if(idx>-1) xaridList[idx] = {...xaridList[idx], images:row.images||[], signature:row.signature};
+          if(idx>-1) xaridList[idx] = {...xaridList[idx], images:row.images||[], signature:row.signature, _imgsChecked:true};
         });
         // Faqat xarid tab ochiq bo'lsa renderni yangilaymiz
         const xaridSection = document.getElementById('admin-xarid');
@@ -2846,7 +2846,7 @@ async function saveXarid() {
   }
 
   btn.textContent='💾 Saqlash'; btn.disabled=false;
-  renderXarid(); closeModal('xarid-modal');
+  renderXarid(); renderDashboard(); closeModal('xarid-modal');
 }
 
 async function deleteXarid(id) {
@@ -2855,7 +2855,7 @@ async function deleteXarid(id) {
   await deleteImagesFromStorage(x?.images||[]);
   await dbDelete('xarid', id);
   xaridList = xaridList.filter(i=>i.id!==id);
-  renderXarid();
+  renderXarid(); renderDashboard();
 }
 
 function renderXarid() {
@@ -2971,7 +2971,7 @@ function printXarid(id) {
   ${x.signature?`<div class="sig"><div class="sig-label">Sotuvchi imzosi:</div><img src="${x.signature}"></div>`:'<div style="margin-top:40px;border-top:1px solid #ccc;text-align:center;font-size:11px;color:#999;">Imzo</div>'}
   <div class="footer">
     📞 +998 95 627-99-99<br>
-    murodzar.github.io/murodgoldindex.html
+    murodgold.com
   </div>
   <br><button onclick="window.print()" style="width:100%;padding:10px;background:#c9a84c;border:none;cursor:pointer;font-size:14px;">🖨️ Chop etish</button>
   </body></html>`);
@@ -3160,7 +3160,7 @@ async function saveQarz(){
   if(!gram){alert('Gramni kiriting!');return;}
   const btn=document.querySelector('#qarz-modal .btn-gold');
   btn.textContent='Saqlanmoqda...';btn.disabled=true;
-  const data={name,phone,passport,date:document.getElementById('q-date').value||new Date().toISOString().split('T')[0],metal,gram,qiymat:parseFloat(document.getElementById('q-qiymat').value)||null,total:parseFloat(document.getElementById('q-total').value)||null,tolangan:parseFloat(document.getElementById('q-tolangan').value)||null,qoldiq:parseFloat(document.getElementById('q-qoldiq').value)||null,return_date:document.getElementById('q-return-date').value||null,status:document.getElementById('q-status').value,note:document.getElementById('q-note').value.trim(),images:safeImgs(qarzImgs),signature:getQarzSig(),updated_at:new Date().toISOString()};
+  const data={name,phone,passport,date:document.getElementById('q-date').value||new Date().toISOString().split('T')[0],metal,gram,qiymat:parseFloat(document.getElementById('q-qiymat').value)||null,total:parseFloat(document.getElementById('q-total').value)||null,tolandan:parseFloat(document.getElementById('q-tolangan').value)||null,qoldiq:parseFloat(document.getElementById('q-qoldiq').value)||null,return_date:document.getElementById('q-return-date').value||null,status:document.getElementById('q-status').value,note:document.getElementById('q-note').value.trim(),images:safeImgs(qarzImgs),signature:getQarzSig(),updated_at:new Date().toISOString()};
   if(editingQarzId){data.id=editingQarzId;await dbSave('qarz',data);const i=qarzList.findIndex(x=>x.id===editingQarzId);qarzList[i]={...qarzList[i],...data};}
   else{data.id=uid();data.created_at=new Date().toISOString();await dbSave('qarz',data);qarzList.unshift(data);}
   btn.textContent='Saqlash';btn.disabled=false;
