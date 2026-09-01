@@ -1937,13 +1937,13 @@ async function changeStatus(id,status) {
 let currentMetalFilter = 'hammasi';
 function setFilter(f,el) {
   currentFilter=f;
-  document.querySelectorAll('#admin-orders .filter-row:first-of-type .filter-btn').forEach(b=>b.classList.remove('active'));
+  el.closest('.filter-row').querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
   renderOrders();
 }
 function setMetalFilter(f,el) {
   currentMetalFilter=f;
-  document.querySelectorAll('#admin-orders .filter-row:last-of-type .filter-btn').forEach(b=>b.classList.remove('active'));
+  el.closest('.filter-row').querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
   renderOrders();
 }
