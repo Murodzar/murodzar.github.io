@@ -2011,7 +2011,7 @@ function openCatalogModal(id=null) {
   const item=id?catalog.find(x=>x.id===id):null;
   document.getElementById('catalog-modal-title').textContent=id?'Buyumni tahrirlash':'Yangi buyum';
   document.getElementById('c-name').value=item?.name||'';
-  document.getElementById('c-cat').value=item?.category||'Uzuk';
+  document.getElementById('c-cat').value=item?.category||'Erkaklar';
   document.getElementById('c-metal').value=item?.metal||'';
   document.getElementById('c-desc').value=item?.description||'';
   if(item?.images) catalogImgs=[...item.images];
@@ -2327,18 +2327,18 @@ function renderArxiv() {
       <div class="order-top">
         <div>
           <div class="order-id">#${(o.code||o.id).slice(-5).toUpperCase()}</div>
-          <div class="order-client">${o.client}</div>
+          <div class="order-client">${esc(o.client)}</div>
         </div>
         <span class="status-badge status-topshirildi">Topshirildi</span>
       </div>
       <div class="order-meta">
-        ${o.phone?`<div class="meta-item">📞 <span>${o.phone}</span></div>`:''}
+        ${o.phone?`<div class="meta-item">📞 <span>${esc(o.phone)}</span></div>`:''}
         ${o.due_date?`<div class="meta-item">📅 <span>${fdate(o.due_date)}</span></div>`:''}
         <div class="meta-item">🗓 <span>${fdate(o.created_at)}</span></div>
         ${o.price?`<div class="meta-item">💰 <span>${fmoney(o.price)}</span></div>`:''}
       </div>
       ${metalHtml}
-      ${o.description?`<div class="order-desc">${o.description}</div>`:''}
+      ${o.description?`<div class="order-desc">${esc(o.description)}</div>`:''}
       ${imgsHtml}
     </div>`;
   }).join('');
@@ -2548,18 +2548,18 @@ function renderRemont() {
       <div class="order-top">
         <div>
           <div class="order-id">#${r.id.slice(-5).toUpperCase()}</div>
-          <div class="order-client">${r.client}</div>
-          <div class="order-code" style="color:var(--cream2);">🔧 ${r.item}</div>
+          <div class="order-client">${esc(r.client)}</div>
+          <div class="order-code" style="color:var(--cream2);">🔧 ${esc(r.item)}</div>
         </div>
         <span class="status-badge status-${r.status==='qabul'?'yangi':r.status}">${RSL[r.status]}</span>
       </div>
       <div class="order-meta">
-        ${r.phone?`<div class="meta-item">📞 <span>${r.phone}</span></div>`:''}
-        ${r.metal?`<div class="meta-item">⚗️ <span>${r.metal}</span></div>`:''}
+        ${r.phone?`<div class="meta-item">📞 <span>${esc(r.phone)}</span></div>`:''}
+        ${r.metal?`<div class="meta-item">⚗️ <span>${esc(r.metal)}</span></div>`:''}
         ${r.price?`<div class="meta-item">💰 <span>${fmoney(r.price)}</span></div>`:''}
         ${r.due_date?`<div class="meta-item">📅 <span>${fdate(r.due_date)}</span></div>`:''}
       </div>
-      ${r.problem?`<div class="order-desc">🔨 ${r.problem}</div>`:''}
+      ${r.problem?`<div class="order-desc">🔨 ${esc(r.problem)}</div>`:''}
       ${imgs.length?`<div class="order-images">${imgs.slice(0,3).map((s,i)=>`<img class="order-img-thumb" src="${s}" onclick="remontView('${r.id}',${i})">`).join('')}</div>`:''}
       <div class="order-actions">
         ${r.status!=='topshirildi'?`<button class="btn-outline btn-sm" onclick="openRemontModal('${r.id}')">✏️ Tahrir</button>`:''}
@@ -2876,22 +2876,22 @@ function renderXarid() {
       <div class="order-top">
         <div>
           <div class="order-id">#${x.id.slice(-5).toUpperCase()}</div>
-          <div class="order-client">${x.name}</div>
-          <div class="order-code">🪪 ${x.passport||'—'}</div>
+          <div class="order-client">${esc(x.name)}</div>
+          <div class="order-code">🪪 ${esc(x.passport||'—')}</div>
         </div>
         <span class="status-badge" style="color:var(--gold);border-color:var(--gold);">🥇 Xarid</span>
       </div>
       <div class="order-meta">
-        ${x.phone?`<div class="meta-item">📞 <span>${x.phone}</span></div>`:''}
+        ${x.phone?`<div class="meta-item">📞 <span>${esc(x.phone)}</span></div>`:''}
         ${x.date?`<div class="meta-item">📅 <span>${fdate(x.date)}</span></div>`:''}
       </div>
       <div class="metal-info-row">
-        ${x.metal_type?`<div class="mi">⚗️ <span>${x.metal_type}</span></div>`:''}
+        ${x.metal_type?`<div class="mi">⚗️ <span>${esc(x.metal_type)}</span></div>`:''}
         ${x.gram?`<div class="mi">⚖️ <span>${x.gram}g</span></div>`:''}
         ${x.price_gram?`<div class="mi">💵 <span>${Number(x.price_gram).toLocaleString()} som/g</span></div>`:''}
         ${x.total?`<div class="mi">💰 <span>${fmoney(x.total)}</span></div>`:''}
       </div>
-      ${x.note?`<div class="order-desc">💬 ${x.note}</div>`:''}
+      ${x.note?`<div class="order-desc">💬 ${esc(x.note)}</div>`:''}
       ${imgs.length?`<div class="order-images">${imgs.slice(0,4).map((s,i)=>`<img class="order-img-thumb" src="${s}" onclick="openXaridViewer('${x.id}',${i})">`).join('')}</div>`:x._imgsChecked?'':'<div style="font-size:10px;color:var(--mid);margin-top:6px;">📷 Rasmlar yuklanmoqda...</div>'}
       ${x.signature?`<div style="margin-top:10px;"><div style="font-size:10px;color:var(--mid);margin-bottom:4px;">✍️ Imzo:</div><img src="${x.signature}" style="max-width:200px;height:60px;object-fit:contain;border:1px solid rgba(201,168,76,0.2);background:#fff;border-radius:4px;"></div>`:''}
       <div class="order-actions">
@@ -3160,7 +3160,7 @@ async function saveQarz(){
   if(!gram){alert('Gramni kiriting!');return;}
   const btn=document.querySelector('#qarz-modal .btn-gold');
   btn.textContent='Saqlanmoqda...';btn.disabled=true;
-  const data={name,phone,passport,date:document.getElementById('q-date').value||new Date().toISOString().split('T')[0],metal,gram,qiymat:parseFloat(document.getElementById('q-qiymat').value)||null,total:parseFloat(document.getElementById('q-total').value)||null,tolandan:parseFloat(document.getElementById('q-tolangan').value)||null,qoldiq:parseFloat(document.getElementById('q-qoldiq').value)||null,return_date:document.getElementById('q-return-date').value||null,status:document.getElementById('q-status').value,note:document.getElementById('q-note').value.trim(),images:safeImgs(qarzImgs),signature:getQarzSig(),updated_at:new Date().toISOString()};
+  const data={name,phone,passport,date:document.getElementById('q-date').value||localDate(),metal,gram,qiymat:parseFloat(document.getElementById('q-qiymat').value)||null,total:parseFloat(document.getElementById('q-total').value)||null,tolandan:parseFloat(document.getElementById('q-tolangan').value)||null,qoldiq:parseFloat(document.getElementById('q-qoldiq').value)||null,return_date:document.getElementById('q-return-date').value||null,status:document.getElementById('q-status').value,note:document.getElementById('q-note').value.trim(),images:safeImgs(qarzImgs),signature:getQarzSig(),updated_at:new Date().toISOString()};
   if(editingQarzId){data.id=editingQarzId;await dbSave('qarz',data);const i=qarzList.findIndex(x=>x.id===editingQarzId);qarzList[i]={...qarzList[i],...data};}
   else{data.id=uid();data.created_at=new Date().toISOString();await dbSave('qarz',data);qarzList.unshift(data);}
   btn.textContent='Saqlash';btn.disabled=false;
@@ -3202,10 +3202,10 @@ function renderQarz(){
     const isLate=x.return_date&&x.return_date<today&&x.status==='faol';
     const id=x.id;
     let html='<div class="order-card" style="'+(isLate?'border-color:rgba(231,76,60,0.4);':'')+'">';
-    html+='<div class="order-top"><div><div class="order-client">'+x.name+'</div><div class="order-code">🪪 '+(x.passport||'')+'</div></div>';
+    html+='<div class="order-top"><div><div class="order-client">'+esc(x.name)+'</div><div class="order-code">🪪 '+esc(x.passport||'')+'</div></div>';
     html+='<span class="status-badge '+(x.status==='faol'?'status-jarayonda':'status-topshirildi')+'">'+(x.status==='faol'?'Faol':'Yopildi')+'</span></div>';
     html+='<div class="order-meta">';
-    if(x.phone)html+='<div class="meta-item">📞 <span>'+x.phone+'</span></div>';
+    if(x.phone)html+='<div class="meta-item">📞 <span>'+esc(x.phone)+'</span></div>';
     if(x.date)html+='<div class="meta-item">📅 <span>'+fdate(x.date)+'</span></div>';
     if(x.return_date)html+='<div class="meta-item" style="'+(isLate?'color:#e74c3c;':'')+'">⏰ <span>'+fdate(x.return_date)+'</span>'+(isLate?' ⚠️':'')+'</div>';
     html+='</div>';
@@ -3215,7 +3215,7 @@ function renderQarz(){
     if(x.total)html+='<div class="mi">💰 <span>'+Number(x.total).toLocaleString()+' som</span></div>';
     if(x.qoldiq&&x.status==='faol')html+='<div class="mi" style="color:#e74c3c;">⏳ <span>'+Number(x.qoldiq).toLocaleString()+' som</span></div>';
     html+='</div>';
-    if(x.note)html+='<div class="order-desc">💬 '+x.note+'</div>';
+    if(x.note)html+='<div class="order-desc">💬 '+esc(x.note)+'</div>';
     if(x.signature)html+='<div style="margin-top:8px;"><img src="'+x.signature+'" style="max-width:180px;height:50px;object-fit:contain;border:1px solid rgba(201,168,76,0.2);background:#fff;border-radius:3px;"></div>';
     html+='<div class="order-actions">';
     html+="<button class=\"btn-outline btn-sm\" onclick=\"openQarzModal('"+id+"')\">✏️ Tahrir</button>";
