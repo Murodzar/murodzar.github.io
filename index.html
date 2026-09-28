@@ -506,6 +506,11 @@ textarea.form-input{resize:vertical;min-height:70px;}
           <div class="dash-num" id="dash-num-remont">0</div>
           <div class="dash-label">Remont</div>
         </div>
+        <div class="dash-card" onclick="showDashDetail('buoy')" style="cursor:pointer;">
+          <div class="dash-icon">📅</div>
+          <div class="dash-num" id="dash-num-buoy">0</div>
+          <div class="dash-label">Bu oy</div>
+        </div>
       </div>
 
       <!-- MOLIYA -->
@@ -3384,11 +3389,16 @@ function renderDashboard() {
     return due < today;
   });
 
+  // Bu oy buyurtmalar (created_at yoki due_date asosida)
+  const monthPrefix = today.slice(0, 7);
+  const buoyList = orders.filter(o => String(o.created_at || '').slice(0, 7) === monthPrefix);
+
   // Update numbers - clickable
   document.getElementById('dash-num-yangi').textContent = yangiList.length;
   document.getElementById('dash-num-jarayonda').textContent = jarayondaList.length;
   document.getElementById('dash-num-tayyor').textContent = tayyorList.length;
   document.getElementById('dash-num-remont').textContent = remontList2.length;
+  document.getElementById('dash-num-buoy').textContent = buoyList.length;
 
   // Financial
   const activeOrders = orders.filter(o=>o.status!=='topshirildi');
@@ -3472,6 +3482,7 @@ function showDashDetail(type) {
   else if(type==='tayyor') { title='Tayyor buyurtmalar'; list=orders.filter(o=>o.status==='tayyor'); }
   else if(type==='remont') { title='Faol remontlar'; list=remont.filter(r=>r.status!=='topshirildi'); }
   else if(type==='kechikkan') { title='Kechikkan buyurtmalar'; list=orders.filter(o=>o.due_date && String(o.due_date).split('T')[0]<today && o.status!=='topshirildi'); }
+  else if(type==='buoy') { title='Bu oygi buyurtmalar'; list=orders.filter(o=>String(o.created_at||'').slice(0,7)===today.slice(0,7)); }
 
   const modal = document.getElementById('dash-detail-modal');
   const titleEl = document.getElementById('dash-detail-title');
