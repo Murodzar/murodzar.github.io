@@ -2364,8 +2364,8 @@ function renderCatalog() {
         </div>`:''}
       `:`<div class="catalog-img-placeholder">🏺</div>`}
       <div class="catalog-info">
-        <div class="catalog-name">${item.name}</div>
-        <div class="catalog-cat">${item.category}${item.metal?' · '+item.metal:''}</div>
+        <div class="catalog-name">${esc(item.name)}</div>
+        <div class="catalog-cat">${esc(item.category)}${item.metal?' · '+esc(item.metal):''}</div>
         <div class="catalog-actions">
           <button class="btn-outline btn-sm" onclick="openCatalogModal('${item.id}')">✏️</button>
           ${isAdmin()?`<button class="btn-danger" onclick="deleteCatalog('${item.id}')">🗑</button>`:''}
@@ -3215,7 +3215,7 @@ function renderQarz(){
     if(x.return_date)html+='<div class="meta-item" style="'+(isLate?'color:#e74c3c;':'')+'">⏰ <span>'+fdate(x.return_date)+'</span>'+(isLate?' ⚠️':'')+'</div>';
     html+='</div>';
     html+='<div class="metal-info-row">';
-    if(x.metal)html+='<div class="mi">⚗️ <span>'+x.metal+'</span></div>';
+    if(x.metal)html+='<div class="mi">⚗️ <span>'+esc(x.metal)+'</span></div>';
     if(x.gram)html+='<div class="mi">⚖️ <span>'+x.gram+'g</span></div>';
     if(x.total)html+='<div class="mi">💰 <span>'+Number(x.total).toLocaleString()+' som</span></div>';
     if(x.qoldiq&&x.status==='faol')html+='<div class="mi" style="color:#e74c3c;">⏳ <span>'+Number(x.qoldiq).toLocaleString()+' som</span></div>';
@@ -3413,8 +3413,8 @@ function renderDashboard() {
   if(todayOrders.length) {
     todayEl.innerHTML = todayOrders.map(o=>
       '<div class="dash-item">' +
-        '<div><div class="dash-item-name">'+o.client+'</div>' +
-        '<div class="dash-item-meta">'+(o.metal_type||'')+' '+(o.metal_gram?o.metal_gram+'g':'')+'</div></div>' +
+        '<div><div class="dash-item-name">'+esc(o.client)+'</div>' +
+        '<div class="dash-item-meta">'+esc(o.metal_type||'')+' '+(o.metal_gram?o.metal_gram+'g':'')+'</div></div>' +
         '<div class="dash-item-amount">'+(o.remain?Number(o.remain).toLocaleString()+' som':'')+'</div>' +
       '</div>'
     ).join('');
@@ -3428,8 +3428,8 @@ function renderDashboard() {
   if(remainOrders.length) {
     remainEl.innerHTML = remainOrders.map(o=>
       '<div class="dash-item">' +
-        '<div><div class="dash-item-name">'+o.client+'</div>' +
-        '<div class="dash-item-meta">'+(o.phone||'')+'</div></div>' +
+        '<div><div class="dash-item-name">'+esc(o.client)+'</div>' +
+        '<div class="dash-item-meta">'+esc(o.phone||'')+'</div></div>' +
         '<div class="dash-item-amount" style="color:#e74c3c;">'+Number(o.remain).toLocaleString()+' som</div>' +
       '</div>'
     ).join('');
@@ -3461,8 +3461,8 @@ function renderDashboard() {
   if(lateList.length) {
     lateEl.innerHTML = lateList.map(o=>
       '<div class="dash-item">' +
-        '<div><div class="dash-item-name">'+o.client+'</div>' +
-        '<div class="dash-item-meta">'+fdate(o.due_date)+' — '+(o.metal_type||'')+'</div></div>' +
+        '<div><div class="dash-item-name">'+esc(o.client)+'</div>' +
+        '<div class="dash-item-meta">'+fdate(o.due_date)+' — '+esc(o.metal_type||'')+'</div></div>' +
         '<div style="color:#e74c3c;font-size:11px;">Kechikdi</div>' +
       '</div>'
     ).join('');
@@ -3502,10 +3502,10 @@ function showDashDetail(type) {
       const status = {yangi:'Yangi',jarayonda:'Jarayonda',tayyor:'Tayyor',qabul:'Qabul',topshirildi:'Topshirildi'}[item.status]||item.status||'';
       return '<div class="order-card" style="margin-bottom:10px;">' +
         '<div class="order-top"><div>' +
-        '<div class="order-client">'+name+'</div>' +
-        (phone?'<div class="meta-item">📞 <span>'+phone+'</span></div>':'') +
+        '<div class="order-client">'+esc(name)+'</div>' +
+        (phone?'<div class="meta-item">📞 <span>'+esc(phone)+'</span></div>':'') +
         '</div><span class="status-badge status-'+(item.status||'yangi')+'">'+status+'</span></div>' +
-        (metal?'<div class="metal-info-row"><div class="mi">⚗️ <span>'+metal+'</span></div></div>':'') +
+        (metal?'<div class="metal-info-row"><div class="mi">⚗️ <span>'+esc(metal)+'</span></div></div>':'') +
         (date?'<div class="meta-item" style="font-size:12px;margin-top:6px;">📅 <span>'+date+'</span></div>':'') +
         (remain?'<div class="meta-item" style="font-size:12px;color:var(--gold);">💰 <span>'+remain+'</span></div>':'') +
         '</div>';
