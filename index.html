@@ -750,7 +750,7 @@ textarea.form-input{resize:vertical;min-height:70px;}
       </div>
       <div class="form-group">
         <label class="form-label">Oldindan to'lov</label>
-        <input class="form-input" id="o-prepay" placeholder="0" type="number">
+        <input class="form-input" id="o-oldindan-tolov" placeholder="0" type="number">
       </div>
       <div class="form-group">
         <label class="form-label">Qoldiq to'lov</label>
@@ -765,6 +765,53 @@ textarea.form-input{resize:vertical;min-height:70px;}
       <div class="form-group">
         <label class="form-label">Izoh</label>
         <input class="form-input" id="o-note" placeholder="Qo'shimcha...">
+      </div>
+    </div>
+    <!-- QOSHIMCHA MALUMOTLAR -->
+    <div class="metal-box">
+      <div class="metal-box-title">📋 Qo'shimcha ma'lumotlar</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Manba</label>
+          <select class="form-input" id="o-manba" onchange="toggleInstaUser()">
+            <option value="dokon">🏪 Do'kon</option>
+            <option value="instagram">📷 Instagram</option>
+            <option value="telegram">✈️ Telegram</option>
+            <option value="telefon">📞 Telefon</option>
+          </select>
+        </div>
+        <div class="form-group" id="o-insta-user-group" style="display:none;">
+          <label class="form-label">Instagram foydalanuvchi</label>
+          <input class="form-input" id="o-insta-user" placeholder="@username">
+        </div>
+        <div class="form-group" id="o-shahar-group">
+          <label class="form-label">Shahar</label>
+          <input class="form-input" id="o-shahar" placeholder="Masalan: Toshkent">
+        </div>
+      </div>
+      <div class="form-row3">
+        <div class="form-group" style="margin-bottom:0">
+          <label class="form-label">O'lcham (erkak)</label>
+          <input class="form-input" id="o-olcham-erkak" placeholder="Masalan: 20">
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label class="form-label">O'lcham (ayol)</label>
+          <input class="form-input" id="o-olcham-ayol" placeholder="Masalan: 17">
+        </div>
+      </div>
+      <div class="form-row3" style="margin-top:10px;">
+        <div class="form-group" style="margin-bottom:0">
+          <label class="form-label">Buyurtma gramm</label>
+          <input class="form-input" id="o-gramm-buyurtma" placeholder="0.00" type="number" step="0.01">
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label class="form-label">Haqiqiy gramm</label>
+          <input class="form-input" id="o-gramm-haqiqiy" placeholder="0.00" type="number" step="0.01">
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label class="form-label">Trek raqam</label>
+          <input class="form-input" id="o-trek" placeholder="Yetkazish kodi">
+        </div>
       </div>
     </div>
     <div class="form-group">
@@ -1538,7 +1585,7 @@ async function loadAll() {
   try {
     // 1-bosqich: rasmsiz tez yuklash
     const [oRes,cRes,nRes] = await Promise.all([
-      sb.from('orders').select('id,code,client,phone,description,metal_type,metal_gram,metal_sof,status,price,prepay,remain,due_date,note,created_at,updated_at').order('created_at',{ascending:false}),
+      sb.from('orders').select('id,code,client,phone,description,metal_type,metal_gram,metal_sof,status,price,oldindan_tolov,remain,due_date,note,manba,insta_user,shahar,olcham_erkak,olcham_ayol,gramm_buyurtma,gramm_haqiqiy,trek,created_at,updated_at').order('created_at',{ascending:false}),
       sb.from('catalog').select('id,name,category,metal,description,created_at').order('created_at',{ascending:false}),
       sb.from('notes').select('*').order('created_at',{ascending:false})
     ]);
@@ -1772,13 +1819,20 @@ function loadGoldPriceUI() {
   }
 }
 
+function toggleInstaUser() {
+  const manba = document.getElementById('o-manba')?.value;
+  const grp = document.getElementById('o-insta-user-group');
+  const shaharGrp = document.getElementById('o-shahar-group');
+  if(grp) grp.style.display = manba === 'instagram' ? '' : 'none';
+  if(shaharGrp) shaharGrp.style.display = manba === 'instagram' ? 'none' : '';
+}
 function calcRemain() {
   const price=parseFloat(document.getElementById('o-price').value)||0;
-  const prepay=parseFloat(document.getElementById('o-prepay').value)||0;
+  const prepay=parseFloat(document.getElementById('o-oldindan-tolov').value)||0;
   document.getElementById('o-remain').value=Math.max(0,price-prepay)||'';
 }
 document.getElementById('o-price')?.addEventListener('input',calcRemain);
-document.getElementById('o-prepay')?.addEventListener('input',calcRemain);
+document.getElementById('o-oldindan-tolov')?.addEventListener('input',calcRemain);
 
 async function handleOrderImg(e) {
   const files = Array.from(e.target.files);
@@ -1837,10 +1891,19 @@ function openOrderModal(id=null) {
   document.getElementById('o-metal-sof').value=o?.metal_sof||'';
   document.getElementById('o-status').value=o?.status||'yangi';
   document.getElementById('o-price').value=o?.price||'';
-  document.getElementById('o-prepay').value=o?.prepay||'';
+  document.getElementById('o-oldindan-tolov').value=o?.oldindan_tolov||'';
   document.getElementById('o-remain').value=o?.remain||'';
   document.getElementById('o-date').value=o?.due_date||'';
   document.getElementById('o-note').value=o?.note||'';
+  document.getElementById('o-manba').value=o?.manba||'dokon';
+  document.getElementById('o-insta-user').value=o?.insta_user||'';
+  document.getElementById('o-shahar').value=o?.shahar||'';
+  document.getElementById('o-olcham-erkak').value=o?.olcham_erkak||'';
+  document.getElementById('o-olcham-ayol').value=o?.olcham_ayol||'';
+  document.getElementById('o-gramm-buyurtma').value=o?.gramm_buyurtma||'';
+  document.getElementById('o-gramm-haqiqiy').value=o?.gramm_haqiqiy||'';
+  document.getElementById('o-trek').value=o?.trek||'';
+  toggleInstaUser();
   if(o?.images) orderImgs=[...o.images]; else orderImgs=[];
   renderOrderPreviews();
   openModal('order-modal');
@@ -1872,10 +1935,18 @@ async function saveOrder() {
       metal_sof: parseFloat(document.getElementById('o-metal-sof').value) || null,
       status: document.getElementById('o-status').value,
       price: parseFloat(document.getElementById('o-price').value) || null,
-      prepay: parseFloat(document.getElementById('o-prepay').value) || null,
+      oldindan_tolov: parseFloat(document.getElementById('o-oldindan-tolov').value) || null,
       remain: parseFloat(document.getElementById('o-remain').value) || null,
       due_date: document.getElementById('o-date').value || null,
       note: document.getElementById('o-note').value.trim(),
+      manba: document.getElementById('o-manba').value || 'dokon',
+      insta_user: document.getElementById('o-insta-user').value.trim() || null,
+      shahar: document.getElementById('o-shahar').value.trim() || null,
+      olcham_erkak: document.getElementById('o-olcham-erkak').value.trim() || null,
+      olcham_ayol: document.getElementById('o-olcham-ayol').value.trim() || null,
+      gramm_buyurtma: parseFloat(document.getElementById('o-gramm-buyurtma').value) || null,
+      gramm_haqiqiy: parseFloat(document.getElementById('o-gramm-haqiqiy').value) || null,
+      trek: document.getElementById('o-trek').value.trim() || null,
       images: safeImgs(orderImgs),
       updated_at: new Date().toISOString()
     };
@@ -1972,7 +2043,9 @@ function renderOrders() {
     const imgs=o.images||[];
     const imgsHtml=imgs.length?`<div class="order-images">${imgs.slice(0,4).map((s,i)=>`<img class="order-img-thumb" src="${s}" loading="lazy" onclick="openViewerStr('${o.id}',${i})">`).join('')}${imgs.length>4?`<div class="order-img-more" onclick="openViewerStr('${o.id}',0)">+${imgs.length-4}</div>`:''}</div>`:'';
     const metalHtml=o.metal_type?`<div class="metal-info-row"><div class="mi">⚗️ <span>${o.metal_type}</span></div>${o.metal_gram?`<div class="mi">⚖️ <span>${o.metal_gram}g</span></div>`:''}</div>`:'';
-    const payHtml=(o.price||o.prepay)?`<div class="metal-info-row">${o.price?`<div class="mi">💰 <span>${fmoney(o.price)}</span></div>`:''} ${o.prepay?`<div class="mi">✅ <span>${fmoney(o.prepay)}</span></div>`:''} ${o.remain?`<div class="mi">⏳ <span>${fmoney(o.remain)}</span></div>`:''}</div>`:'';
+    const payHtml=(o.price||o.oldindan_tolov)?`<div class="metal-info-row">${o.price?`<div class="mi">💰 <span>${fmoney(o.price)}</span></div>`:''} ${o.oldindan_tolov?`<div class="mi">✅ <span>${fmoney(o.oldindan_tolov)}</span></div>`:''} ${o.remain?`<div class="mi">⏳ <span>${fmoney(o.remain)}</span></div>`:''}</div>`:'';
+    const manbaIcon={dokon:'🏪',instagram:'📷',telegram:'✈️',telefon:'📞'};
+    const extraHtml=(o.manba&&o.manba!=='dokon'||o.shahar||o.trek||o.olcham_erkak||o.olcham_ayol)?`<div class="metal-info-row">${o.manba&&o.manba!=='dokon'?`<div class="mi">${manbaIcon[o.manba]||'📋'} <span>${esc(o.manba)}${o.insta_user?' @'+esc(o.insta_user):''}</span></div>`:''}${o.shahar?`<div class="mi">📍 <span>${esc(o.shahar)}</span></div>`:''}${o.olcham_erkak?`<div class="mi">👨 <span>${esc(o.olcham_erkak)}</span></div>`:''}${o.olcham_ayol?`<div class="mi">👩 <span>${esc(o.olcham_ayol)}</span></div>`:''}${o.trek?`<div class="mi">🚚 <span>${esc(o.trek)}</span></div>`:''}</div>`:'';
     return `<div class="order-card">
       <div class="order-top">
         <div>
@@ -1987,7 +2060,7 @@ function renderOrders() {
         ${o.due_date?`<div class="meta-item">📅 <span>${fdate(o.due_date)}</span></div>`:''}
         <div class="meta-item">🗓 <span>${fdate(o.created_at)}</span></div>
       </div>
-      ${metalHtml}${payHtml}
+      ${metalHtml}${payHtml}${extraHtml}
       ${o.description?`<div class="order-desc">${esc(o.description)}</div>`:''}
       ${o.note?`<div class="order-desc">💬 ${esc(o.note)}</div>`:''}
       ${imgsHtml}
@@ -3017,7 +3090,7 @@ function printOrder(id) {
     + row('Buyum', o.description)
     + divider
     + row('Narx', o.price ? Number(o.price).toLocaleString()+' som' : '')
-    + row('Oldindan', o.prepay ? Number(o.prepay).toLocaleString()+' som' : '')
+    + row('Oldindan', o.oldindan_tolov ? Number(o.oldindan_tolov).toLocaleString()+' som' : '')
     + row('Qoldiq', o.remain ? Number(o.remain).toLocaleString()+' som' : '', '#c9a84c')
     + divider
     + '<div style="text-align:center;font-size:10px;color:#6b5a3e;margin-top:12px;line-height:2;">'
