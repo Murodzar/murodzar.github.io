@@ -1585,7 +1585,7 @@ async function loadAll() {
   try {
     // 1-bosqich: rasmsiz tez yuklash
     const [oRes,cRes,nRes] = await Promise.all([
-      sb.from('orders').select('id,code,client,phone,description,metal_type,metal_gram,metal_sof,status,price,oldindan_tolov,remain,due_date,note,manba,insta_user,shahar,olcham_erkak,olcham_ayol,gramm_buyurtma,gramm_haqiqiy,trek,created_at,updated_at').order('created_at',{ascending:false}),
+      sb.from('orders').select('*').order('created_at',{ascending:false}),
       sb.from('catalog').select('id,name,category,metal,description,created_at').order('created_at',{ascending:false}),
       sb.from('notes').select('*').order('created_at',{ascending:false})
     ]);
