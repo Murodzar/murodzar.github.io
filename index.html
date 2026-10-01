@@ -1935,21 +1935,25 @@ async function saveOrder() {
       metal_sof: parseFloat(document.getElementById('o-metal-sof').value) || null,
       status: document.getElementById('o-status').value,
       price: parseFloat(document.getElementById('o-price').value) || null,
-      oldindan_tolov: parseFloat(document.getElementById('o-oldindan-tolov').value) || null,
       remain: parseFloat(document.getElementById('o-remain').value) || null,
       due_date: document.getElementById('o-date').value || null,
       note: document.getElementById('o-note').value.trim(),
-      manba: document.getElementById('o-manba').value || 'dokon',
-      insta_user: document.getElementById('o-insta-user').value.trim() || null,
-      shahar: document.getElementById('o-shahar').value.trim() || null,
-      olcham_erkak: document.getElementById('o-olcham-erkak').value.trim() || null,
-      olcham_ayol: document.getElementById('o-olcham-ayol').value.trim() || null,
-      gramm_buyurtma: parseFloat(document.getElementById('o-gramm-buyurtma').value) || null,
-      gramm_haqiqiy: parseFloat(document.getElementById('o-gramm-haqiqiy').value) || null,
-      trek: document.getElementById('o-trek').value.trim() || null,
       images: safeImgs(orderImgs),
       updated_at: new Date().toISOString()
     };
+    // Yangi ustunlarni faqat DB da mavjud bo'lsa qo'shish
+    const hasNewCols = orders.length === 0 || 'gramm_buyurtma' in (orders[0]||{});
+    if(hasNewCols) {
+      data.oldindan_tolov = parseFloat(document.getElementById('o-oldindan-tolov').value) || null;
+      data.manba = document.getElementById('o-manba').value || 'dokon';
+      data.insta_user = document.getElementById('o-insta-user').value.trim() || null;
+      data.shahar = document.getElementById('o-shahar').value.trim() || null;
+      data.olcham_erkak = document.getElementById('o-olcham-erkak').value.trim() || null;
+      data.olcham_ayol = document.getElementById('o-olcham-ayol').value.trim() || null;
+      data.gramm_buyurtma = parseFloat(document.getElementById('o-gramm-buyurtma').value) || null;
+      data.gramm_haqiqiy = parseFloat(document.getElementById('o-gramm-haqiqiy').value) || null;
+      data.trek = document.getElementById('o-trek').value.trim() || null;
+    }
 
     if(editingOrderId) {
       data.id = editingOrderId;
