@@ -1559,18 +1559,12 @@ async function dbLoad(table) {
 }
 
 async function dbSave(table, row) {
-  try {
-    const {data, error} = await sb.from(table).upsert(row).select();
-    if(error) {
-      console.error('dbSave error:', error);
-      alert('Saqlashda xato: ' + error.message);
-    } else {
-    // saved ok
-    }
-  } catch(e) { 
-    console.error('dbSave catch:', e);
-    alert('Xato: ' + e.message);
+  const {data, error} = await sb.from(table).upsert(row).select();
+  if(error) {
+    console.error('dbSave error:', error);
+    throw new Error(error.message);
   }
+  return data;
 }
 
 async function dbDelete(table, id) {
@@ -1942,7 +1936,7 @@ async function saveOrder() {
       updated_at: new Date().toISOString()
     };
     // Yangi ustunlarni faqat DB da mavjud bo'lsa qo'shish
-    const hasNewCols = orders.length === 0 || 'gramm_buyurtma' in (orders[0]||{});
+    const hasNewCols = orders.length > 0 && 'gramm_buyurtma' in (orders[0]||{});
     if(hasNewCols) {
       data.oldindan_tolov = parseFloat(document.getElementById('o-oldindan-tolov').value) || null;
       data.manba = document.getElementById('o-manba').value || 'dokon';
@@ -1973,13 +1967,14 @@ async function saveOrder() {
     window._lastOrderId = data.id;
     renderOrders();
     updateStats();
+    document.getElementById('order-modal').classList.remove('open');
 
   } catch(e) {
     console.error('saveOrder error:', e);
+    alert('❌ Saqlashda xato:\n' + e.message + '\n\nIltimos qayta urinib ko\'ring yoki sahifani yangilang.');
   } finally {
     btn.textContent = 'Saqlash';
     btn.disabled = false;
-    document.getElementById('order-modal').classList.remove('open');
   }
 }
 
@@ -2111,18 +2106,22 @@ async function saveCatalog() {
     images:safeImgs(catalogImgs),
     updated_at:new Date().toISOString()
   };
-  if(editingCatalogId){
-    data.id=editingCatalogId;
-    await dbSave('catalog',data);
-    const i=catalog.findIndex(x=>x.id===editingCatalogId);
-    catalog[i]={...catalog[i],...data};
-  } else {
-    data.id=uid();
-    data.created_at=new Date().toISOString();
-    await dbSave('catalog',data);
-    catalog.unshift(data);
+  try {
+    if(editingCatalogId){
+      data.id=editingCatalogId;
+      await dbSave('catalog',data);
+      const i=catalog.findIndex(x=>x.id===editingCatalogId);
+      catalog[i]={...catalog[i],...data};
+    } else {
+      data.id=uid();
+      data.created_at=new Date().toISOString();
+      await dbSave('catalog',data);
+      catalog.unshift(data);
+    }
+    renderCatalog(); updateStats(); closeModal('catalog-modal');
+  } catch(e) {
+    alert('❌ Saqlashda xato:\n' + e.message);
   }
-  renderCatalog(); updateStats(); closeModal('catalog-modal');
 }
 
 // ===== KO'P RASM YUKLASH (BULK) =====
@@ -2575,18 +2574,22 @@ async function saveRemont() {
     images:safeImgs(remontImgs),
     updated_at:new Date().toISOString()
   };
-  if(editingRemontId){
-    data.id=editingRemontId;
-    await dbSave('remont',data);
-    const i=remont.findIndex(x=>x.id===editingRemontId);
-    remont[i]={...remont[i],...data};
-  } else {
-    data.id=uid();
-    data.created_at=new Date().toISOString();
-    await dbSave('remont',data);
-    remont.unshift(data);
+  try {
+    if(editingRemontId){
+      data.id=editingRemontId;
+      await dbSave('remont',data);
+      const i=remont.findIndex(x=>x.id===editingRemontId);
+      remont[i]={...remont[i],...data};
+    } else {
+      data.id=uid();
+      data.created_at=new Date().toISOString();
+      await dbSave('remont',data);
+      remont.unshift(data);
+    }
+    renderRemont(); closeModal('remont-modal');
+  } catch(e) {
+    alert('❌ Saqlashda xato:\n' + e.message);
   }
-  renderRemont(); closeModal('remont-modal');
 }
 
 async function deleteRemont(id) {
@@ -2915,20 +2918,24 @@ async function saveXarid() {
     updated_at: new Date().toISOString()
   };
 
-  if(editingXaridId) {
-    data.id = editingXaridId;
-    await dbSave('xarid', data);
-    const i = xaridList.findIndex(x=>x.id===editingXaridId);
-    xaridList[i] = {...xaridList[i], ...data};
-  } else {
-    data.id = uid();
-    data.created_at = new Date().toISOString();
-    await dbSave('xarid', data);
-    xaridList.unshift(data);
+  try {
+    if(editingXaridId) {
+      data.id = editingXaridId;
+      await dbSave('xarid', data);
+      const i = xaridList.findIndex(x=>x.id===editingXaridId);
+      xaridList[i] = {...xaridList[i], ...data};
+    } else {
+      data.id = uid();
+      data.created_at = new Date().toISOString();
+      await dbSave('xarid', data);
+      xaridList.unshift(data);
+    }
+    renderXarid(); renderDashboard(); closeModal('xarid-modal');
+  } catch(e) {
+    alert('❌ Saqlashda xato:\n' + e.message);
+  } finally {
+    btn.textContent='💾 Saqlash'; btn.disabled=false;
   }
-
-  btn.textContent='💾 Saqlash'; btn.disabled=false;
-  renderXarid(); renderDashboard(); closeModal('xarid-modal');
 }
 
 async function deleteXarid(id) {
@@ -3243,10 +3250,15 @@ async function saveQarz(){
   const btn=document.querySelector('#qarz-modal .btn-gold');
   btn.textContent='Saqlanmoqda...';btn.disabled=true;
   const data={name,phone,passport,date:document.getElementById('q-date').value||localDate(),metal,gram,qiymat:parseFloat(document.getElementById('q-qiymat').value)||null,total:parseFloat(document.getElementById('q-total').value)||null,tolandan:parseFloat(document.getElementById('q-tolangan').value)||null,qoldiq:parseFloat(document.getElementById('q-qoldiq').value)||null,return_date:document.getElementById('q-return-date').value||null,status:document.getElementById('q-status').value,note:document.getElementById('q-note').value.trim(),images:safeImgs(qarzImgs),signature:getQarzSig(),updated_at:new Date().toISOString()};
-  if(editingQarzId){data.id=editingQarzId;await dbSave('qarz',data);const i=qarzList.findIndex(x=>x.id===editingQarzId);qarzList[i]={...qarzList[i],...data};}
-  else{data.id=uid();data.created_at=new Date().toISOString();await dbSave('qarz',data);qarzList.unshift(data);}
-  btn.textContent='Saqlash';btn.disabled=false;
-  renderQarz();closeModal('qarz-modal');
+  try {
+    if(editingQarzId){data.id=editingQarzId;await dbSave('qarz',data);const i=qarzList.findIndex(x=>x.id===editingQarzId);qarzList[i]={...qarzList[i],...data};}
+    else{data.id=uid();data.created_at=new Date().toISOString();await dbSave('qarz',data);qarzList.unshift(data);}
+    renderQarz();closeModal('qarz-modal');
+  } catch(e) {
+    alert('❌ Saqlashda xato:\n' + e.message);
+  } finally {
+    btn.textContent='Saqlash';btn.disabled=false;
+  }
 }
 
 async function deleteQarz(id){
