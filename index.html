@@ -147,6 +147,7 @@ textarea.form-input{resize:vertical;min-height:70px;}
 .order-meta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:8px;}
 .meta-item{font-size:12px;color:var(--mid);}
 .meta-item span{color:var(--cream2);}
+.tel-link{color:var(--gold);text-decoration:none;font-weight:600;}
 .metal-info-row{background:rgba(201,168,76,0.05);border:1px solid rgba(201,168,76,0.1);padding:8px 12px;margin:8px 0;display:flex;gap:16px;flex-wrap:wrap;font-size:12px;}
 .metal-info-row .mi{color:var(--mid);}
 .metal-info-row .mi span{color:var(--gold-light);}
@@ -2060,7 +2061,7 @@ function renderOrders() {
         <span class="status-badge status-${o.status}">${SL[o.status]}</span>
       </div>
       <div class="order-meta">
-        ${o.phone?`<div class="meta-item">📞 <span>${esc(o.phone)}</span></div>`:''}
+        ${o.phone?`<div class="meta-item">📞 <a href="tel:${normalizePhone(o.phone)||esc(o.phone)}" class="tel-link">${esc(o.phone)}</a></div>`:''}
         ${o.due_date?`<div class="meta-item">📅 <span>${fdate(o.due_date)}</span></div>`:''}
         <div class="meta-item">🗓 <span>${fdate(o.created_at)}</span></div>
       </div>
@@ -2418,7 +2419,7 @@ function renderArxiv() {
         <span class="status-badge status-topshirildi">Topshirildi</span>
       </div>
       <div class="order-meta">
-        ${o.phone?`<div class="meta-item">📞 <span>${esc(o.phone)}</span></div>`:''}
+        ${o.phone?`<div class="meta-item">📞 <a href="tel:${normalizePhone(o.phone)||esc(o.phone)}" class="tel-link">${esc(o.phone)}</a></div>`:''}
         ${o.due_date?`<div class="meta-item">📅 <span>${fdate(o.due_date)}</span></div>`:''}
         <div class="meta-item">🗓 <span>${fdate(o.created_at)}</span></div>
         ${o.price?`<div class="meta-item">💰 <span>${fmoney(o.price)}</span></div>`:''}
@@ -2644,7 +2645,7 @@ function renderRemont() {
         <span class="status-badge status-${r.status==='qabul'?'yangi':r.status}">${RSL[r.status]}</span>
       </div>
       <div class="order-meta">
-        ${r.phone?`<div class="meta-item">📞 <span>${esc(r.phone)}</span></div>`:''}
+        ${r.phone?`<div class="meta-item">📞 <a href="tel:${normalizePhone(r.phone)||esc(r.phone)}" class="tel-link">${esc(r.phone)}</a></div>`:''}
         ${r.metal?`<div class="meta-item">⚗️ <span>${esc(r.metal)}</span></div>`:''}
         ${r.price?`<div class="meta-item">💰 <span>${fmoney(r.price)}</span></div>`:''}
         ${r.due_date?`<div class="meta-item">📅 <span>${fdate(r.due_date)}</span></div>`:''}
@@ -2976,7 +2977,7 @@ function renderXarid() {
         <span class="status-badge" style="color:var(--gold);border-color:var(--gold);">🥇 Xarid</span>
       </div>
       <div class="order-meta">
-        ${x.phone?`<div class="meta-item">📞 <span>${esc(x.phone)}</span></div>`:''}
+        ${x.phone?`<div class="meta-item">📞 <a href="tel:${normalizePhone(x.phone)||esc(x.phone)}" class="tel-link">${esc(x.phone)}</a></div>`:''}
         ${x.date?`<div class="meta-item">📅 <span>${fdate(x.date)}</span></div>`:''}
       </div>
       <div class="metal-info-row">
@@ -3053,7 +3054,7 @@ function printXarid(id) {
   <div class="row"><span class="label">Chek raqami:</span><span class="value">#${x.id.slice(-5).toUpperCase()}</span></div>
   <div class="divider"></div>
   <div class="row"><span class="label">Ism familiya:</span><span class="value">${x.name}</span></div>
-  <div class="row"><span class="label">Telefon:</span><span class="value">${x.phone||'—'}</span></div>
+  <div class="row"><span class="label">Telefon:</span><span class="value">${x.phone?`<a href="tel:${normalizePhone(x.phone)||esc(x.phone)}" class="tel-link">${esc(x.phone)}</a>`:'—'}</span></div>
   <div class="row"><span class="label">Pasport:</span><span class="value">${x.passport||'—'}</span></div>
   <div class="divider"></div>
   <div class="row"><span class="label">Tillo turi:</span><span class="value">${x.metal_type||'—'}</span></div>
@@ -3304,7 +3305,7 @@ function renderQarz(){
     html+='<div class="order-top"><div><div class="order-client">'+esc(x.name)+'</div><div class="order-code">🪪 '+esc(x.passport||'')+'</div></div>';
     html+='<span class="status-badge '+(x.status==='faol'?'status-jarayonda':'status-topshirildi')+'">'+(x.status==='faol'?'Faol':'Yopildi')+'</span></div>';
     html+='<div class="order-meta">';
-    if(x.phone)html+='<div class="meta-item">📞 <span>'+esc(x.phone)+'</span></div>';
+    if(x.phone)html+='<div class="meta-item">📞 <a href="tel:'+(normalizePhone(x.phone)||esc(x.phone))+'" class="tel-link">'+esc(x.phone)+'</a></div>';
     if(x.date)html+='<div class="meta-item">📅 <span>'+fdate(x.date)+'</span></div>';
     if(x.return_date)html+='<div class="meta-item" style="'+(isLate?'color:#e74c3c;':'')+'">⏰ <span>'+fdate(x.return_date)+'</span>'+(isLate?' ⚠️':'')+'</div>';
     html+='</div>';
@@ -3338,7 +3339,7 @@ function printQarz(id){
     +'<div class="row"><span class="label">Raqam:</span><span class="value">#'+q.id.slice(-5).toUpperCase()+'</span></div>'
     +'<div class="divider"></div>'
     +'<div class="row"><span class="label">Ism:</span><span class="value">'+q.name+'</span></div>'
-    +'<div class="row"><span class="label">Telefon:</span><span class="value">'+(q.phone||'')+'</span></div>'
+    +'<div class="row"><span class="label">Telefon:</span><span class="value">'+(q.phone?'<a href="tel:'+(normalizePhone(q.phone)||esc(q.phone))+'" class="tel-link">'+esc(q.phone)+'</a>':'')+'</span></div>'
     +'<div class="row"><span class="label">Pasport:</span><span class="value">'+(q.passport||'')+'</span></div>'
     +'<div class="divider"></div>'
     +'<div class="row"><span class="label">Tillo:</span><span class="value">'+(q.metal||'')+' '+q.gram+'g</span></div>'
