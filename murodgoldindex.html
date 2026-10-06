@@ -606,7 +606,6 @@ footer{background:var(--ink);color:rgba(255,255,255,.5);padding:48px 0 28px;}
         <div class="crd reveal">
           <span class="lbl" data-i18n="phone-lbl">📞 Telefon</span>
           <a href="tel:+998956279999"><span class="ic">📞</span>+998 95 627-99-99</a>
-          <a href="tel:+998956279999"><span class="ic">📞</span>+998 95 627-99-99 — Murod</a>
         </div>
         <div class="crd reveal rd1">
           <span class="lbl" data-i18n="social-lbl">🌐 Ijtimoiy tarmoqlar</span>
@@ -760,7 +759,7 @@ const TRANS={
     'loading':"Yuklanmoqda…",'empty':"Bu turdagi buyum hozircha yo'q.",'no-items':"Hozircha buyumlar yo'q.",
     'searching':"Qidirilmoqda…",'notfound':"Bu kod bo'yicha buyurtma topilmadi.<br>Kodni tekshiring yoki biz bilan bog'laning.",
     'error':"Xatolik yuz berdi. Keyinroq urinib ko'ring.",
-    'due-label':'Topshirish sanasi:','recv-label':'Qabul qilindi:',
+    'due-label':'Topshirish sanasi:','recv-label':'Qabul qilindi:','prepay-label':'Oldindan to\'lov:',
     'lang-btn':'🇷🇺 RU',
     'sl-yangi':'Qabul qilindi','sl-jarayonda':'Jarayonda','sl-tayyor':'Tayyor','sl-topshirildi':'Topshirildi',
     'cbtn-txt':"So'rov yuborish",'ord-item-suffix':'— qiziqyapsizmi? Murojaat qiling:',
@@ -817,7 +816,7 @@ const TRANS={
     'loading':'Загрузка…','empty':'Изделий этого типа пока нет.','no-items':'Изделий пока нет.',
     'searching':'Поиск…','notfound':'Заказ с этим кодом не найден.<br>Проверьте код или свяжитесь с нами.',
     'error':'Произошла ошибка. Попробуйте позже.',
-    'due-label':'Дата выдачи:','recv-label':'Принят:',
+    'due-label':'Дата выдачи:','recv-label':'Принят:','prepay-label':'Предоплата:',
     'lang-btn':'🇺🇿 UZ',
     'sl-yangi':'Принят','sl-jarayonda':'В работе','sl-tayyor':'Готов','sl-topshirildi':'Выдан',
     'cbtn-txt':'Запросить цену','ord-item-suffix':'— интересует? Свяжитесь с нами:',
@@ -1022,6 +1021,7 @@ async function lookup(){
           '<div class="cert-meta">'+
             (o.due_date?t['due-label']+' <b>'+fdate(o.due_date)+'</b><br>':'')+
             t['recv-label']+' <b>'+fdate(o.created_at)+'</b>'+
+            (o.oldindan_tolov?'<br>'+t['prepay-label']+' <b>'+Number(o.oldindan_tolov).toLocaleString()+' so\'m</b>':'')+
           '</div>'+
           (o.description?'<div class="cert-desc">'+esc(o.description)+'</div>':'')+
           (imgs.length?'<div class="cert-imgs">'+imgs.map((s,i)=>
