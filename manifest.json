@@ -1,0 +1,23 @@
+{
+  "name": "Murod Gold — Admin",
+  "short_name": "MurodGold",
+  "description": "Zargarlik buyurtmalar boshqaruvi paneli",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#1a1409",
+  "theme_color": "#c9a84c",
+  "lang": "uz",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "mg-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "prefer_related_applications": false
+}
